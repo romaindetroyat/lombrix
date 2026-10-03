@@ -1,0 +1,38 @@
+{
+  "repository": "romaindetroyat/lombrix",
+  "commit": "ef958f7e843e991069b81ce534cbd859cacbaf12",
+  "version": "0.5.2",
+  "createdAt": "2026-10-03T17:28:37.195569+00:00",
+  "claimBefore": "2026-10-03T18:28:37.195569+00:00",
+  "status": "verified-http",
+  "checks": [
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 404
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    }
+  ],
+  "url": "https://lombrix.tough-archduke.workers.dev"
+}

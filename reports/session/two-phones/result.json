@@ -1,0 +1,269 @@
+{
+  "url": "https://127.0.0.1:8787",
+  "commit": "3a244898321217994d90c870171d5b5916b3d03e",
+  "checkedAt": "2026-10-03T17:27:19.611841+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "RMGCKN",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "9e576046-f7bb-4017-87ce-9d31114eba88",
+            "you": "9e576046-f7bb-4017-87ce-9d31114eba88",
+            "players": [
+              {
+                "id": "9e576046-f7bb-4017-87ce-9d31114eba88",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "ed387b60-a7c7-4918-a071-b277455cbfe2",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "RMGCKN",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "9e576046-f7bb-4017-87ce-9d31114eba88",
+            "you": "ed387b60-a7c7-4918-a071-b277455cbfe2",
+            "players": [
+              {
+                "id": "9e576046-f7bb-4017-87ce-9d31114eba88",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "ed387b60-a7c7-4918-a071-b277455cbfe2",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/presence",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/RMGCKN/sync",
+      "http": 200
+    }
+  ]
+}

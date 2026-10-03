@@ -1,0 +1,269 @@
+{
+  "url": "https://lombrix.tough-archduke.workers.dev",
+  "commit": "ef958f7e843e991069b81ce534cbd859cacbaf12",
+  "checkedAt": "2026-10-03T17:29:32.084915+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "GV665P",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0ab4c0e0-32e4-495e-9e85-2306397d5bfa",
+            "you": "0ab4c0e0-32e4-495e-9e85-2306397d5bfa",
+            "players": [
+              {
+                "id": "0ab4c0e0-32e4-495e-9e85-2306397d5bfa",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "bc64023f-e69f-4616-9a78-a8bf558413ae",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "GV665P",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0ab4c0e0-32e4-495e-9e85-2306397d5bfa",
+            "you": "bc64023f-e69f-4616-9a78-a8bf558413ae",
+            "players": [
+              {
+                "id": "0ab4c0e0-32e4-495e-9e85-2306397d5bfa",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "bc64023f-e69f-4616-9a78-a8bf558413ae",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/presence",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/GV665P/sync",
+      "http": 200
+    }
+  ]
+}
