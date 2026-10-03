@@ -1,0 +1,46 @@
+name: Import isolated LOMBRIX snapshot
+on:
+  push:
+    paths: ['.github/workflows/import-lombrix.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-initial-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import game files only, never source repository history
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          if test -f MIGRATION.json; then echo 'Snapshot already imported; leaving it untouched.'; exit 0; fi
+          SOURCE='06106bd840b6c73d229464a810426cac083560c0'
+          curl --fail --location --retry 2 --max-time 90 "https://codeload.github.com/romaindetroyat/culture-ge/tar.gz/$SOURCE" -o /tmp/source.tar.gz
+          mkdir -p /tmp/source
+          tar -xzf /tmp/source.tar.gz -C /tmp/source
+          SRC="/tmp/source/culture-ge-$SOURCE/iphone"
+          test -s "$SRC/site/engine.js"
+          test -s "$SRC/worker.mjs"
+          cp -R "$SRC/site" ./site
+          for file in core.mjs worker.mjs worker.test.mjs package.json package-lock.json wrangler.jsonc check-live.py solo.html; do
+            if test -f "$SRC/$file"; then cp "$SRC/$file" "$file"; fi
+          done
+          printf 'node_modules/\n.wrangler/\n.env\n.env.*\n!.env.example\n*.pem\n*.log\nplaywright-report/\n.private/\n' > .gitignore
+          python3 - <<'PY'
+          import json, hashlib, pathlib, datetime
+          files = list(pathlib.Path('site').rglob('*')) + [pathlib.Path(x) for x in ['core.mjs','worker.mjs','worker.test.mjs','package.json','package-lock.json','wrangler.jsonc','check-live.py','solo.html']]
+          data={'target':'romaindetroyat/lombrix','sourceCommit':'06106bd840b6c73d229464a810426cac083560c0','sourceSubdirectory':'iphone','historyImported':False,'importedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sha256':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files if p.is_file()}}
+          pathlib.Path('MIGRATION.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+          node --test worker.test.mjs
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site core.mjs worker.mjs worker.test.mjs package.json package-lock.json wrangler.jsonc check-live.py solo.html .gitignore MIGRATION.json
+          git commit -m 'Import LOMBRIX runtime and authority only, without other project history'
+          git push origin HEAD:main
