@@ -1,0 +1,33 @@
+{
+  "target": "romaindetroyat/lombrix",
+  "sourceCommit": "06106bd840b6c73d229464a810426cac083560c0",
+  "sourceSubdirectory": "iphone",
+  "historyImported": false,
+  "importedAt": "2026-10-03T16:54:39.023855+00:00",
+  "sha256": {
+    "site/audio.js": "e79b858a51d2dbd8aff05ed7c5904840a165c67ac83627d7fbfd3c3b5e019d70",
+    "site/renderer.js": "6ff4ea812c20911b788d98b1c2a3216f0b6acc7fcde47f5340e48499797a2307",
+    "site/render-cache.js": "99c01e8e18efc0c2bbfd029d2221d6141cfb1b0f0e59e743da25ec271d4b8df8",
+    "site/manifest.webmanifest": "af396210520378bb981762f909914e2ac408c22c18f1f2f51fb406fd52b5d851",
+    "site/boot.js": "919df54b8aada7c67059c04ebb04c73b3af97975959bad2c7236585bf1f73403",
+    "site/engine.js": "93f2c2ff434b862efe2c186c09ddaabbfc7a9246139a1fc3fe0bb607531501ab",
+    "site/index.html": "6d2b61123115330329761e267a79f43fe0952a277fdeb21924345a945d83c9b9",
+    "site/sw.js": "b79fb9fa50b2653d7d328777786a9abb0e88768c5064970780bb95c9fc9a27d8",
+    "site/app.js": "a35c741d381b1972f374cc8e1330465669447ff43b2d5d8aefd2feec45c059af",
+    "site/art.js": "407e17fc150326d0f7928a590906ade1ba7b5ebb3e737f5be9f464590343b918",
+    "site/style.css": "3960375c4cead2219e26e63a1bb57851755bbd11d7cfda4a74075d34d7c91f64",
+    "site/interaction.js": "ae1240db2108a9cf2626f8669455ae43dfa551c3d6e5a0e236f11ecd0dfccf10",
+    "site/assets/icon.svg": "c5d0ffde65956713c7c516f582c46e91c98719cdb393e5a8a5b7d1a6169c452d",
+    "site/assets/icon-512.png": "505d58615d14f7ee5e87b3d3caa57101d91e7b8fc5cfa46cbe872de0ed3ac7f1",
+    "site/assets/icon-192.png": "5ae5275ecd355ca370e994a3bf82daadf97a23af14684c6b7221f8b74bead4dc",
+    "site/assets/mascots.svg": "0bf8a7106d3a729548293678ed72ad86df46959e919a7f98dd9467a37a03d783",
+    "core.mjs": "73c16b2dfedf075d1c8d5dba9d257e024c23031d8ef84a79d0555b2ff714e615",
+    "worker.mjs": "ce055d263d27ec3554a72f514f20c989426714e52d415f1db52b2b98f5f5f1fa",
+    "worker.test.mjs": "c1630138d19c9748757feec8d742615fd2960cb50460e826cc49f6558de4d46a",
+    "package.json": "8e85790053cf4601ad82dec18359ffd127f010c190b4bb2906aac6cde2543164",
+    "package-lock.json": "251fb1cd81692683161fe70b2fca176463ce993f5222a5950784fabbeeed3ebd",
+    "wrangler.jsonc": "c29ec967220b6ed1a730dadd3678b098ed929b01bccd26f306a223cc3bab1c24",
+    "check-live.py": "c6353ff544440245cc13a530ab86fd4ace055c06fc815241a1febec338ed457e",
+    "solo.html": "0170fbd1520e0bf3f97398ea3a21b182e68d55d4affa78c36fe2d75285d6ebfa"
+  }
+}
