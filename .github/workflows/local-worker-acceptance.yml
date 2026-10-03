@@ -1,0 +1,62 @@
+name: LOMBRIX Worker browser acceptance
+on:
+  push:
+    paths: ['.github/workflows/local-worker-acceptance.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-requested-iphone-preview
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare actual Worker runtime and browsers
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports/local
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test > reports/local/node-tests.tap
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+      - name: Exercise unchanged Worker and independent browser sessions
+        id: browsers
+        continue-on-error: true
+        run: |
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 > /tmp/local-worker.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            curl --silent --fail http://127.0.0.1:8787/health > /tmp/local-health.json && break
+            sleep 1
+          done
+          cat /tmp/local-health.json
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path('scripts/check-live-v052.py').read_text()
+          original="OUT=Path('reports');OUT.mkdir(exist_ok=True)"
+          assert original in source
+          # Change only the report destination; do not alter tests, game, cookies or roles.
+          Path('/tmp/check-worker.py').write_text(source.replace(original,"OUT=Path('reports/local');OUT.mkdir(parents=True,exist_ok=True)"))
+          PY
+          LOMBRIX_URL=http://127.0.0.1:8787 timeout 360 python3 /tmp/check-worker.py
+      - name: Preserve measured local runtime results
+        if: always()
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/local
+          git diff --cached --quiet || git commit -m 'Record Worker runtime browser acceptance distinctly from public hosting results'
+          git push origin HEAD:main
+      - name: Acceptance gate
+        if: always()
+        run: test '${{ steps.browsers.outcome }}' = success
