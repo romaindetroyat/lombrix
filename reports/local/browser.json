@@ -1,0 +1,47 @@
+{
+  "url": "http://127.0.0.1:8787",
+  "version": "0.5.2",
+  "checkedAt": "2026-10-03T17:18:48.239871+00:00",
+  "webkitOfflineValidation": "offline-origin-stopped.json",
+  "results": [
+    {
+      "engine": "webkit",
+      "step": "solo-start-real-shot-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "step": "reload-with-active-service-worker",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "step": "two-independent-guests-online",
+      "status": "fail",
+      "error": "Page.wait_for_function: Timeout 20000ms exceeded.",
+      "trace": "Traceback (most recent call last):\n  File \"/tmp/check-worker.py\", line 74, in run\n    await a.wait_for_function('!document.querySelector(\"#start-room\").disabled');await a.locator('#start-room').tap()\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/.local/lib/python3.12/site-packages/playwright/async_api/_generated.py\", line 12739, in wait_for_function\n    await self._impl_obj.wait_for_function(\n  File \"/home/runner/.local/lib/python3.12/site-packages/playwright/_impl/_page.py\", line 1153, in wait_for_function\n    return await self._main_frame.wait_for_function(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/.local/lib/python3.12/site-packages/playwright/_impl/_frame.py\", line 941, in wait_for_function\n    await self._channel.send(\"waitForFunction\", self._timeout, params)\n  File \"/home/runner/.local/lib/python3.12/site-packages/playwright/_impl/_connection.py\", line 76, in send\n    return await self._connection.wrap_api_call(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/.local/lib/python3.12/site-packages/playwright/_impl/_connection.py\", line 632, in wrap_api_call\n    raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nplaywright._impl._errors.TimeoutError: Page.wait_for_function: Timeout 20000ms exceeded.\n"
+    },
+    {
+      "engine": "chromium",
+      "step": "solo-start-real-shot-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "reload-with-active-service-worker",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "offline-solo-action-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "two-independent-guests-invite-turn-security-crater-reload",
+      "status": "pass",
+      "craters": 1,
+      "sameMembershipAfterReload": true
+    }
+  ]
+}
