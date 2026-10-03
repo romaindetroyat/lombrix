@@ -1,52 +1,50 @@
 {
   "url": "https://lombrix.warm-zircon.workers.dev",
   "version": "0.5.2",
-  "checkedAt": "2026-10-03T17:04:58.395961+00:00",
+  "checkedAt": "2026-10-03T17:13:56.496606+00:00",
+  "webkitOfflineValidation": "offline-origin-stopped.json",
   "results": [
     {
       "engine": "webkit",
       "step": "solo-start-real-shot-AI-return",
-      "status": "pass"
-    },
-    {
-      "engine": "webkit",
-      "step": "reload-with-active-service-worker",
-      "status": "pass"
+      "status": "fail",
+      "error": "Game navigation not HTTP 200",
+      "pageErrors": [
+        "/challenges.cloudflare.com\" from accessing a frame with origin \"https://lombrix.warm-zircon.workers.dev\". Protocols, domains, and ports must match."
+      ]
     },
     {
       "engine": "webkit",
       "step": "offline-and-reload",
       "status": "fail",
-      "error": "Page.reload: WebKit encountered an internal error\nCall log:\n  - waiting for navigation until \"domcontentloaded\"\n"
+      "error": "Page.evaluate: Execution context was destroyed, most likely because of a navigation"
     },
     {
       "engine": "webkit",
       "step": "two-independent-guests-online",
       "status": "fail",
-      "error": "",
-      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 70, in run\n    assert first['game']['worms']==second['game']['worms']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+      "error": "Game navigation not HTTP 200",
+      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 65, in run\n    for p in pages:await go(p,URL+'/')\n                   ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 15, in go\n    assert r and r.status==200,'Game navigation not HTTP 200'\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: Game navigation not HTTP 200\n"
     },
     {
       "engine": "chromium",
       "step": "solo-start-real-shot-AI-return",
-      "status": "pass"
+      "status": "fail",
+      "error": "Game navigation not HTTP 200",
+      "pageErrors": []
     },
     {
       "engine": "chromium",
-      "step": "reload-with-active-service-worker",
-      "status": "pass"
-    },
-    {
-      "engine": "chromium",
-      "step": "offline-solo-action-AI-return",
-      "status": "pass"
+      "step": "offline-and-reload",
+      "status": "fail",
+      "error": "Page.evaluate: Execution context was destroyed, most likely because of a navigation."
     },
     {
       "engine": "chromium",
       "step": "two-independent-guests-online",
       "status": "fail",
-      "error": "",
-      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 70, in run\n    assert first['game']['worms']==second['game']['worms']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+      "error": "Game navigation not HTTP 200",
+      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 65, in run\n    for p in pages:await go(p,URL+'/')\n                   ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 15, in go\n    assert r and r.status==200,'Game navigation not HTTP 200'\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: Game navigation not HTTP 200\n"
     }
   ]
 }
