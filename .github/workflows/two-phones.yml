@@ -1,0 +1,55 @@
+name: LOMBRIX two foreground phones
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/two-phones.yml', 'scripts/check-two-phones.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-requested-iphone-preview
+  cancel-in-progress: false
+jobs:
+  safari-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare game authority and WebKit
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports/two-phones
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test > reports/two-phones/node-tests.tap
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit > /tmp/webkit-install.log 2>&1
+      - name: Two independent browser processes
+        id: pair
+        continue-on-error: true
+        run: |
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 > /tmp/local-worker.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            curl --silent --fail http://127.0.0.1:8787/health > /tmp/local-health.json && break
+            sleep 1
+          done
+          LOMBRIX_URL=http://127.0.0.1:8787 timeout 180 python3 scripts/check-two-phones.py
+      - name: Save results without erasing previous failures
+        if: always()
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/two-phones
+          git diff --cached --quiet || git commit -m 'Record independent foreground WebKit phone validation'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Require successful acceptance
+        if: always()
+        run: test '${{ steps.pair.outcome }}' = success
