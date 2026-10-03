@@ -1,0 +1,68 @@
+name: LOMBRIX requested iPhone session
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-session.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-requested-iphone-preview
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require the exact code already tested over HTTPS
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports/session/two-phones
+          python3 - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          tested=json.loads(Path('reports/two-phones-https/result.json').read_text())
+          assert tested['results'] and all(r['status']=='pass' for r in tested['results'])
+          subprocess.run(['git','diff','--exit-code',tested['commit'],'HEAD','--','site','core.mjs','worker.mjs','package.json','package-lock.json','wrangler.jsonc'],check=True)
+          Path('reports/session/two-phones/result.json').write_text(json.dumps(tested,indent=2)+'\n')
+          PY
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test > reports/session/node-tests.tap
+      - name: Publish and verify public responses
+        id: deploy
+        run: python3 scripts/publish-session.py
+      - name: Exercise the public address without bypassing host protection
+        id: public
+        continue-on-error: true
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit > /tmp/public-webkit.log 2>&1
+          URL=$(python3 -c 'import json;print(json.load(open("reports/session/deployment.json"))["url"])')
+          LOMBRIX_URL="$URL" LOMBRIX_REPORT_DIR=reports/session/public-two-phones timeout 180 python3 scripts/check-two-phones.py
+      - name: Save deployment and measured browser outcomes only
+        if: always()
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/session
+          git diff --cached --quiet || git commit -m 'Record requested dedicated iPhone session and measured public-browser outcome'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-session-results
+          path: reports/session
+          retention-days: 2
+      - name: Public-browser acceptance gate
+        if: always()
+        run: test '${{ steps.deploy.outcome }}' = success && test '${{ steps.public.outcome }}' = success
