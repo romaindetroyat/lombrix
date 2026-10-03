@@ -1,7 +1,7 @@
-import {cacheSprite} from './render-cache.js?v=0.5.1';
-import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.5.1';
-import {pullFromPower,wormActing} from './interaction.js?v=0.5.1';
-import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.5.1';
+import {cacheSprite} from './render-cache.js?v=0.5.2';
+import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.5.2';
+import {pullFromPower,wormActing} from './interaction.js?v=0.5.2';
+import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.5.2';
 const TAU=Math.PI*2;
 export const TEAM_COLORS=['#80f2c6','#ff93a5','#ffd181','#b6b0ff'];
 function ellipse(c,x,y,rx,ry,color){c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,TAU);c.fill();}

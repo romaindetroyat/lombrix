@@ -1,0 +1,38 @@
+{
+  "version": "0.5.2",
+  "repository": "romaindetroyat/lombrix",
+  "commit": "83178b69040fbe663be722ec481645e4765a8b09",
+  "startedAt": "2026-10-03T17:03:56.632261+00:00",
+  "status": "verified-http",
+  "checks": [
+    {
+      "path": "/health",
+      "error": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/",
+      "error": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/sw.js",
+      "error": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    }
+  ],
+  "url": "https://lombrix.warm-zircon.workers.dev",
+  "claimBefore": "2026-10-03T18:03:56.632261+00:00"
+}

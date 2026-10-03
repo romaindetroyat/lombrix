@@ -1,0 +1,74 @@
+
+> lombrix@0.5.2 test
+> node --test *.test.mjs
+
+TAP version 13
+# Subtest: Safari navigation uses decoded non-redirected HTML
+ok 1 - Safari navigation uses decoded non-redirected HTML
+  ---
+  duration_ms: 42.949674
+  type: 'test'
+  ...
+# Subtest: Offline reload and invitation query keep the game shell available
+ok 2 - Offline reload and invitation query keep the game shell available
+  ---
+  duration_ms: 10.857731
+  type: 'test'
+  ...
+# Subtest: API calls never enter the game cache
+ok 3 - API calls never enter the game cache
+  ---
+  duration_ms: 8.280718
+  type: 'test'
+  ...
+# Subtest: Failed precache rejects incomplete release
+ok 4 - Failed precache rejects incomplete release
+  ---
+  duration_ms: 8.249217
+  type: 'test'
+  ...
+# Subtest: Activation removes only obsolete LOMBRIX caches
+ok 5 - Activation removes only obsolete LOMBRIX caches
+  ---
+  duration_ms: 7.634692
+  type: 'test'
+  ...
+# Subtest: public Fetch authority: two guests, shared terrain, secure cookie, no opponent command
+ok 6 - public Fetch authority: two guests, shared terrain, secure cookie, no opponent command
+  ---
+  duration_ms: 109.384823
+  type: 'test'
+  ...
+# Subtest: durable room restoration preserves membership and match
+ok 7 - durable room restoration preserves membership and match
+  ---
+  duration_ms: 49.199333
+  type: 'test'
+  ...
+# Subtest: four-team match and tournament create separate authoritative games
+ok 8 - four-team match and tournament create separate authoritative games
+  ---
+  duration_ms: 44.174147
+  type: 'test'
+  ...
+# Subtest: unknown membership rejected; no auth cookie visible in room JSON
+ok 9 - unknown membership rejected; no auth cookie visible in room JSON
+  ---
+  duration_ms: 11.838469
+  type: 'test'
+  ...
+# Subtest: origin and malformed payload rejected
+ok 10 - origin and malformed payload rejected
+  ---
+  duration_ms: 0.826348
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 306.402083

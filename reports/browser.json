@@ -1,0 +1,52 @@
+{
+  "url": "https://lombrix.warm-zircon.workers.dev",
+  "version": "0.5.2",
+  "checkedAt": "2026-10-03T17:04:58.395961+00:00",
+  "results": [
+    {
+      "engine": "webkit",
+      "step": "solo-start-real-shot-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "step": "reload-with-active-service-worker",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "step": "offline-and-reload",
+      "status": "fail",
+      "error": "Page.reload: WebKit encountered an internal error\nCall log:\n  - waiting for navigation until \"domcontentloaded\"\n"
+    },
+    {
+      "engine": "webkit",
+      "step": "two-independent-guests-online",
+      "status": "fail",
+      "error": "",
+      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 70, in run\n    assert first['game']['worms']==second['game']['worms']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "engine": "chromium",
+      "step": "solo-start-real-shot-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "reload-with-active-service-worker",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "offline-solo-action-AI-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "step": "two-independent-guests-online",
+      "status": "fail",
+      "error": "",
+      "trace": "Traceback (most recent call last):\n  File \"/home/runner/work/lombrix/lombrix/scripts/check-live-v052.py\", line 70, in run\n    assert first['game']['worms']==second['game']['worms']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+  ]
+}

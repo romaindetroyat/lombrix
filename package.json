@@ -1,1 +1,15 @@
-{"name":"lombrix-iphone-online","version":"0.5.1-online.1","private":true,"type":"module","scripts":{"deploy":"wrangler deploy --temporary","test":"node --test worker.test.mjs"},"devDependencies":{"wrangler":"^4.102.0"}}
+{
+  "name": "lombrix",
+  "version": "0.5.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test *.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test:live": "python3 check-live.py"
+  },
+  "devDependencies": {
+    "wrangler": "^4.102.0"
+  }
+}

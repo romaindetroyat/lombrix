@@ -1,7 +1,7 @@
-import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.5.1';
-import {Renderer,TEAM_COLORS} from './renderer.js?v=0.5.1';
-import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.5.1';
-import {Sound} from './audio.js?v=0.5.1';
+import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.5.2';
+import {Renderer,TEAM_COLORS} from './renderer.js?v=0.5.2';
+import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.5.2';
+import {Sound} from './audio.js?v=0.5.2';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const storage={get(k,d=null){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},remove(k){try{localStorage.removeItem(k);}catch{}}};

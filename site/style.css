@@ -96,7 +96,7 @@ body.fallback-modal:before{content:'';position:fixed;inset:0;background:#071421c
  .arsenal-belt #arsenal-fuse button{height:24px}
 }
 
-/* 0.5.1 — show only the controls actually used by the selected item. */
+/* 0.5.2 — show only the controls actually used by the selected item. */
 .action-help{flex:1.7;min-width:0;color:#c7d9d1;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:4px 0}
 .action-help strong{font-size:8px;letter-spacing:1px;color:#b3eacf}.action-help>span{font-size:10px;line-height:1.35}
 .fire.context-action{font-size:12px;letter-spacing:0;gap:7px;padding-left:12px;padding-right:12px}
