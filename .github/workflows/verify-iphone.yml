@@ -1,0 +1,50 @@
+name: LOMBRIX deployed iPhone verification
+on:
+  push:
+    paths: ['.github/workflows/verify-iphone.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-requested-iphone-preview
+  cancel-in-progress: false
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preserve earlier measured results
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports/history
+          test ! -f reports/browser.json || cp reports/browser.json "reports/history/browser-before-$GITHUB_RUN_ID.json"
+          npm test
+      - name: Install test browsers
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/lombrix-browser-install.log 2>&1
+      - name: Verify solo and separate online players on live HTTPS
+        id: live
+        continue-on-error: true
+        run: timeout 360 python3 scripts/check-live-v052.py
+      - name: Verify cache with origin actually unavailable
+        id: offline
+        continue-on-error: true
+        run: timeout 180 python3 scripts/check-origin-offline.py
+      - name: Record measured results
+        if: always()
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports
+          git diff --cached --quiet || git commit -m 'Record live multiplayer and offline-origin acceptance without hiding earlier failures'
+          git push origin HEAD:main
+      - name: Gate success on both actual acceptance results
+        if: always()
+        run: |
+          test '${{ steps.live.outcome }}' = success
+          test '${{ steps.offline.outcome }}' = success
