@@ -1,0 +1,57 @@
+name: LOMBRIX iPhone HTTPS acceptance
+on:
+  push:
+    paths: ['.github/workflows/iphone-preview.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-requested-iphone-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare coherent release
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports
+          node scripts/prepare-release.mjs
+          node --check worker.mjs
+          node --check core.mjs
+          for file in site/*.js; do node --check "$file"; done
+          npm ci --ignore-scripts --no-audit --no-fund
+      - name: Authority and offline-shell regression tests
+        run: |
+          set -o pipefail
+          npm test | tee reports/node-tests.tap
+      - name: Install actual browser engines
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/lombrix-browser-install.log 2>&1
+      - name: Deploy and verify public HTTPS
+        run: python3 scripts/deploy-preview.py
+      - name: Real HTTPS WebKit and Chromium acceptance
+        run: timeout 360 python3 scripts/check-live-v052.py
+      - name: Preserve source and measured results even when a check fails
+        if: always()
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'Record dedicated LOMBRIX 0.5.2 build and measured iPhone acceptance results'
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-iphone-measured-results
+          path: reports/
+          retention-days: 2
