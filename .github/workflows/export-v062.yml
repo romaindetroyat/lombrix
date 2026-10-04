@@ -1,0 +1,33 @@
+name: LOMBRIX 0.6.2 verified export
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/export-v062.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify application hashes and public acceptance
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          for name in ['reports/v062/gate.json','reports/v062/session/gate.json']:
+            d=json.loads(Path(name).read_text());assert d['allPassed'] and d['version']=='0.6.2'
+          d=json.loads(Path('BUILD.json').read_text());assert d['version']=='0.6.2'
+          for p,sha in d['files'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==sha,p
+          print('Published application hashes and acceptance results verified.')
+          PY
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6.2_VERIFIE.zip HEAD
+          unzip -t /tmp/LOMBRIX_v0.6.2_VERIFIE.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lombrix-v062-final
+          path: /tmp/LOMBRIX_v0.6.2_VERIFIE.zip
+          retention-days: 3
