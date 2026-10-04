@@ -1,41 +1,49 @@
-# LOMBRIX — version 0.6.0
+# LOMBRIX — version 0.6.1
 
-Jeu d’artillerie PWA : équipes de vers, terrains destructibles, solo et salons privés entre appareils distincts. Ce dépôt est exclusivement consacré à LOMBRIX. Il ne contient pas l’historique Git de Culture Gé ni des autres applications.
+Jeu d’artillerie PWA : équipes de vers, terrains destructibles, solo et salons privés entre appareils distincts. Dépôt exclusivement consacré à LOMBRIX, sans l’historique Git des autres applications.
 
-## Changements 0.6
+## Changements 0.6.1
 
-**Caméra tactile.** Deux doigts déplacent le décor horizontalement et verticalement. Le pincement règle le zoom autour du milieu des doigts. Une faible variation d’écartement pendant un panoramique ne déclenche pas de zoom parasite. La visée et la puissance préparées sont conservées. Après avoir retiré un des deux doigts, le doigt restant ne reprend pas la visée : il faut terminer le geste. La barre panoramique reste disponible.
+**Caméra à deux doigts.** Un défaut a été reproduit en 0.6.0 : premier doigt sur le décor et second sur une commande, la caméra restait presque immobile et la visée changeait. Le suivi prend désormais en compte l’ensemble des contacts de l’arène, même si le second doigt arrive sur une commande. Le geste de caméra prend priorité et ne déclenche pas de tir. Après retrait d’un doigt, le doigt restant ne reprend pas la visée. Les deux doigts réservés aux boutons marcher/sauter ne sont pas automatiquement interprétés comme un panoramique.
 
-**Cadrage initial.** Le combat démarre au zoom 1,6 et directement sur le ver actif, au lieu de dériver depuis le centre de la carte. Cela donne une marge de déplacement même sur les terrains modestes et évite de commencer hors champ lorsque les premières images sont lentes.
+**Armes accessibles directement.** La roue est remplacée par une bande permanente des 18 équipements, en ordre fixe. Balayer horizontalement parcourt les armes ; un appui équipe. Le balayage ne sélectionne pas accidentellement une arme. Aucun dialogue, catégorie ni bouton de confirmation. Le nom, les munitions et l’équipement sélectionné restent visibles. FEU reste distinct. Au clavier, flèches/Home/End puis Entrée permettent aussi de choisir dans la bande.
 
-**Armes.** Un appui sur l’arme ouvre une roue non modale de six raccourcis fixes. Un appui sur une icône l’équipe. Autre méthode : glisser depuis le bouton d’arme jusqu’à l’icône, puis relâcher. Le centre « 18 TOUTES » expose l’arsenal complet sans catégories intermédiaires. Relâcher ne tire jamais : le bouton FEU reste distinct. Les munitions, le nom et les commandes utiles à chaque équipement restent visibles.
+**Couleurs.** Sols plus colorés, ciel bleu plus soutenu, végétation plus saturée, accessoires moins blanchis, icônes plus franches. Les changements concernent le moteur et les éléments graphiques, pas un filtre sur une capture.
 
-**Couleurs.** Palettes des douze univers plus franches, ombres renforcées, brume réduite, sols et végétation plus contrastés. Les bandeaux des équipes et les commandes sont également plus lisibles. Ce sont les couleurs du moteur et des accessoires, pas un filtre CSS appliqué à une capture.
+**Lisibilité et cadrage.** Le cadrage prend en compte l’espace occupé par la bande d’équipements et la barre panoramique. La version s’affiche pendant le combat (`SOLO · 0.6.1` / `EN LIGNE · 0.6.1`) pour distinguer les anciennes installations. La définition maximale du canevas est bornée ; aucune mesure de fréquence d’images sur iPhone physique n’est revendiquée.
 
-**PWA.** Cache cohérent par version. Une mise à jour en attente peut être activée depuis l’accueil, pas au milieu d’un combat. Le fichier `solo.html` est maintenant régénéré à partir de la même version que `site/`.
+Les terrains adaptatifs, le choix de 1 à 8 vers par équipe, les collisions entre vers, la visée descendante, les mimiques et les séquences de mort sont conservés. Le moteur des dégâts et l’autorité du serveur n’ont pas été reconstruits.
 
-## Validation
+## Comment jouer
 
-Les résultats mesurés sont dans `reports/v060/` :
+- Un doigt sur le décor règle la visée. La variation de distance ajuste progressivement la puissance ; relever puis reposer le doigt conserve la charge.
+- Deux doigts sur le décor déplacent la caméra. Écarter/rapprocher règle le zoom. La barre panoramique permet aussi d’explorer horizontalement sans dézoomer.
+- Parcourir la bande d’armes puis toucher une icône équipe l’arme. Le bouton FEU déclenche l’action.
+- En ligne, chaque joueur ouvre le lien d’invitation sur son propre appareil.
 
-- `gate.json` : résultat des quatre étapes indépendantes.
-- `node-tests.tap` : 43 tests du moteur, des interactions, du serveur et du cache.
-- `interface.json` : 16 scénarios répartis entre WebKit et Chromium sur le vrai serveur local HTTPS.
-- `two-phones/result.json` : deux processus WebKit indépendants, invitation, état prêt, tir autorisé, cratère partagé, changement de tour et rechargement.
-- `offline-origin-stopped.json` : reprise du solo après arrêt réel du serveur d’origine, dans les deux moteurs.
-- `session/` : publication et contrôles de l’adresse publique, lorsqu’ils ont été exécutés.
+## Validation mesurée
 
-Les premiers échecs restent dans `reports/v060/history/`. La recette a notamment révélé un cadrage initial trop lent sous WebKit, corrigé avant validation. Le certificat local est explicitement approuvé par le système et par Chromium : les contrôles TLS ne sont pas désactivés.
+Les résultats de cette version sont dans `reports/v061/` :
 
-**Limites :** WebKit Linux n’est pas un iPhone physique. Les gestes multipoints WebKit sont exercés par événements Touch simulés ; Chromium utilise également des gestes tactiles natifs CDP. Cela ne prouve pas la fluidité, l’audio, les interruptions téléphoniques ou le comportement sur toutes les versions d’iOS. Aucun essai physique Wi-Fi/4G n’est annoncé.
+- `baseline-reproduction.json` : comparaison du geste défectueux en 0.6.0 et de sa correction en 0.6.1, sous Chromium tactile.
+- `node-tests.tap` : 43 contrôles unitaires du moteur, des interactions, de l’autorité et du cache.
+- `interface.json` : 15 scénarios d’interface répartis entre WebKit et Chromium sur le vrai serveur local HTTPS.
+- `two-phones/result.json` : invitation, état prêt, droits de tir, cratère partagé, changement de tour et rechargement dans deux processus WebKit indépendants.
+- `offline-origin-stopped.json` : reprise solo après arrêt réel du serveur d’origine.
+- `gate.json` : résultat global ; une étape en échec empêche la validation.
+- `session/` : résultats de publication et de vérification sur l’adresse publique, lorsqu’ils ont été exécutés.
+
+Les rapports des versions antérieures sont conservés dans leurs répertoires. `docs/v061/NOTES.md` précise les modifications et la méthode.
+
+**Limites :** les essais utilisent WebKit et Chromium sous Linux, pas des iPhone physiques. Les gestes multipoints WebKit sont injectés comme snapshots TouchEvent ; Chromium utilise les entrées tactiles natives CDP. Les boutons sont actionnés via l’interface. Cela ne valide pas la fluidité, l’audio ou les interruptions téléphoniques sur toutes les versions d’iOS. Le test hors ligne arrête réellement le serveur local, sans prétendre actionner le mode avion d’un téléphone.
 
 ## Hébergement
 
-L’adresse de la dernière publication et son statut sont consignés dans `reports/v060/session/deployment.json`. Un résultat HTTP réussi n’est pas à confondre avec l’acceptation navigateur : lire également `session/gate.json` et les rapports associés.
+Consulter `reports/v061/session/deployment.json` pour l’adresse et le statut de la publication. Un HTTP 200 ne suffit pas : consulter également `session/gate.json` et les rapports navigateur.
 
-Le workflow `publish-v060.yml` utilise un compte Cloudflare authentifié si les secrets `CLOUDFLARE_API_TOKEN` et, si nécessaire, `CLOUDFLARE_ACCOUNT_ID` sont configurés. Sinon, il crée une démonstration temporaire. Celle-ci expire sans revendication de propriété dans le délai indiqué. Une ancienne URL de démonstration n’est pas une adresse permanente.
+Le workflow `publish-v061.yml` utilise un compte Cloudflare authentifié si les secrets `CLOUDFLARE_API_TOKEN` et, au besoin, `CLOUDFLARE_ACCOUNT_ID` sont configurés. Sinon, il crée une démonstration temporaire, qui expire sans revendication dans le délai indiqué. Une ancienne URL temporaire n’est pas un lien permanent, et une ancienne icône installée ne pointe pas automatiquement vers un nouveau déploiement.
 
-Les liens de revendication sont confidentiels et ne sont pas publiés dans ce dépôt. Les journaux ne contiennent que leur copie chiffrée. Ne jamais commettre un jeton API ni une clé privée.
+Les liens de revendication ne sont pas publiés en clair dans le dépôt. Ne jamais commettre un jeton API ni une clé privée.
 
 ## Développement
 
@@ -46,4 +54,4 @@ node scripts/build-solo.mjs
 node scripts/prepare-release.mjs
 ```
 
-`site/` contient le moteur partagé, le rendu, l’audio et l’interface. `core.mjs` valide les règles des salons. `worker.mjs` fournit le serveur Cloudflare et son stockage durable. Le serveur garde l’autorité sur les tours, les dégâts et les résultats. Le HTML autonome est destiné au solo ; il ne constitue pas un serveur multijoueur.
+`site/` contient le moteur partagé, le rendu, l’audio et l’interface. `core.mjs` valide les règles des salons. `worker.mjs` fournit le serveur et son stockage Cloudflare Durable Objects. Le serveur conserve l’autorité sur les tours, les dégâts et les résultats. `solo.html` est régénéré depuis la même source mais ne fournit pas de serveur multijoueur.
