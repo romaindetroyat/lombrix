@@ -1,0 +1,269 @@
+{
+  "url": "https://127.0.0.1:8787",
+  "commit": "97b94c07dc84090423249e900de796c881b5b342",
+  "checkedAt": "2026-10-04T08:43:38.836688+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "N39VQP",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "bb9c6ab6-5002-49db-84c0-b4cc530c9dfc",
+            "you": "bb9c6ab6-5002-49db-84c0-b4cc530c9dfc",
+            "players": [
+              {
+                "id": "bb9c6ab6-5002-49db-84c0-b4cc530c9dfc",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "689a158d-0e9c-40b4-853d-61681d410041",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "N39VQP",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "bb9c6ab6-5002-49db-84c0-b4cc530c9dfc",
+            "you": "689a158d-0e9c-40b4-853d-61681d410041",
+            "players": [
+              {
+                "id": "bb9c6ab6-5002-49db-84c0-b4cc530c9dfc",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "689a158d-0e9c-40b4-853d-61681d410041",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/presence",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/N39VQP/sync",
+      "http": 200
+    }
+  ]
+}
