@@ -1,0 +1,93 @@
+{
+  "url": "https://lombrix.mature-lion.workers.dev",
+  "transport": "real HTTP/HTTPS",
+  "physicalIPhone": false,
+  "results": [
+    {
+      "engine": "webkit",
+      "name": "two-finger-horizontal-pan-no-zoom-no-shot-and-single-finger-latch",
+      "status": "pass",
+      "input": "DOM-touch-snapshot",
+      "distance": 100
+    },
+    {
+      "engine": "webkit",
+      "name": "two-finger-vertical-pan-and-pinch-preserve-shot",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "address-bar-height-change-and-cancel-leave-no-ghost-touch",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "wheel-opens-without-modal-or-pause-single-tap-equips-not-fires",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "drag-from-weapon-button-release-equips-without-firing",
+      "status": "pass",
+      "input": "mouse-pointer"
+    },
+    {
+      "engine": "webkit",
+      "name": "all-18-items-visible-no-categories-keyboard-never-fires",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "real-shot-ai-riposte-and-player-return",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "portrait-arsenal-fits-and-rotation-clears-gestures",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "two-finger-horizontal-pan-no-zoom-no-shot-and-single-finger-latch",
+      "status": "pass",
+      "input": "native-CDP",
+      "distance": 105.26
+    },
+    {
+      "engine": "chromium",
+      "name": "two-finger-vertical-pan-and-pinch-preserve-shot",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "address-bar-height-change-and-cancel-leave-no-ghost-touch",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "wheel-opens-without-modal-or-pause-single-tap-equips-not-fires",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "drag-from-weapon-button-release-equips-without-firing",
+      "status": "pass",
+      "input": "native-touch"
+    },
+    {
+      "engine": "chromium",
+      "name": "all-18-items-visible-no-categories-keyboard-never-fires",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "real-shot-ai-riposte-and-player-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "portrait-arsenal-fits-and-rotation-clears-gestures",
+      "status": "pass"
+    }
+  ]
+}

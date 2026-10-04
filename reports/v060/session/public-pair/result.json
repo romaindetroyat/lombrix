@@ -1,0 +1,269 @@
+{
+  "url": "https://lombrix.mature-lion.workers.dev",
+  "commit": "481879312678038c78788201877ff32a8fa19c11",
+  "checkedAt": "2026-10-04T07:58:14.140444+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "T572MZ",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0735bbc9-c5e8-4f59-9d4e-0605b7429557",
+            "you": "0735bbc9-c5e8-4f59-9d4e-0605b7429557",
+            "players": [
+              {
+                "id": "0735bbc9-c5e8-4f59-9d4e-0605b7429557",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "9271e0a6-0b8d-44fa-987a-3fb70572722a",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "T572MZ",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0735bbc9-c5e8-4f59-9d4e-0605b7429557",
+            "you": "9271e0a6-0b8d-44fa-987a-3fb70572722a",
+            "players": [
+              {
+                "id": "0735bbc9-c5e8-4f59-9d4e-0605b7429557",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "9271e0a6-0b8d-44fa-987a-3fb70572722a",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/presence",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/T572MZ/sync",
+      "http": 200
+    }
+  ]
+}

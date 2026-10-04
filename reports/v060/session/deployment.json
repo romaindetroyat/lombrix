@@ -1,0 +1,39 @@
+{
+  "repository": "romaindetroyat/lombrix",
+  "commit": "481879312678038c78788201877ff32a8fa19c11",
+  "version": "0.6.0",
+  "createdAt": "2026-10-04T07:56:11.684649+00:00",
+  "status": "verified-http",
+  "checks": [
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 404
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    }
+  ],
+  "hosting": "temporary-unclaimed",
+  "claimBefore": "2026-10-04T08:56:11.684649+00:00",
+  "url": "https://lombrix.mature-lion.workers.dev"
+}
