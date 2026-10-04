@@ -1,0 +1,39 @@
+{
+  "repository": "romaindetroyat/lombrix",
+  "commit": "bbc88a84976cfa28ef98f4508420cd926436bfed",
+  "version": "0.6.1",
+  "createdAt": "2026-10-04T08:28:15.942551+00:00",
+  "status": "verified-http",
+  "checks": [
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 404
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    }
+  ],
+  "hosting": "temporary-unclaimed",
+  "claimBefore": "2026-10-04T09:28:15.942551+00:00",
+  "url": "https://lombrix.puzzling-sousaphone-7db.workers.dev"
+}
