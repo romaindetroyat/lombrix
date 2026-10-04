@@ -96,7 +96,7 @@ body.fallback-modal:before{content:'';position:fixed;inset:0;background:#071421c
  .arsenal-belt #arsenal-fuse button{height:24px}
 }
 
-/* 0.6.0 — show only the controls actually used by the selected item. */
+/* 0.6.1 — show only the controls actually used by the selected item. */
 .action-help{flex:1.7;min-width:0;color:#c7d9d1;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:4px 0}
 .action-help strong{font-size:8px;letter-spacing:1px;color:#b3eacf}.action-help>span{font-size:10px;line-height:1.35}
 .fire.context-action{font-size:12px;letter-spacing:0;gap:7px;padding-left:12px;padding-right:12px}
@@ -140,3 +140,22 @@ body.fallback-modal:before{content:'';position:fixed;inset:0;background:#071421c
 
 .radial-weapons .wheel-caption{left:calc(var(--cx) + 143px);top:calc(var(--cy) - 18px);transform:none;max-width:170px;white-space:normal;line-height:1.4;font-size:11px;border-left:2px solid #20e8a0;border-radius:0 9px 9px 0;}
 @media(orientation:portrait){.radial-weapons .wheel-caption{left:var(--cx);top:calc(var(--cy) - 148px);transform:translateX(-50%);max-width:220px;text-align:center;border-left:0;}}
+
+/* 0.6.1: fixed equipment ribbon, part of the HUD rather than a floating window. */
+:root{--mint:#06efa3;--pink:#ff2558;--text:#f4f8ff;--muted:#a8bfd5}
+.battle{--loadout-height:56px;touch-action:none}
+#loadout-strip{position:absolute;z-index:12;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(var(--control-height) + env(safe-area-inset-bottom));height:var(--loadout-height);border-top:1px solid #2b6385;border-bottom:1px solid #2b6385;background:#041322;touch-action:pan-x;overflow:hidden}
+#loadout-scroll{display:flex;gap:5px;align-items:center;height:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x;-webkit-overflow-scrolling:touch;padding:2px 20px 2px 4px}
+#loadout-scroll::-webkit-scrollbar{display:none}
+.loadout-item{flex:0 0 64px;height:50px;min-height:44px;border:1px solid #32566c;border-radius:7px;background:#10283e;color:white;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;padding:2px;touch-action:pan-x;-webkit-touch-callout:none;user-select:none}
+.loadout-item svg{height:28px;width:28px;flex-shrink:0}.loadout-item span{font-size:9px;font-weight:750;line-height:14px}.loadout-item b{position:absolute;right:4px;top:3px;color:#ffcf18;font-size:10px}
+.loadout-item.selected{border:2px solid #00f5a5;background:#0a3b37;box-shadow:inset 0 -3px #00f5a5}.loadout-item:disabled{opacity:.38}.loadout-item:focus-visible{outline:2px solid white;outline-offset:-4px}
+.loadout-hint{position:absolute;right:0;top:0;font-size:7px;font-weight:800;writing-mode:vertical-rl;padding:4px 2px;background:#041322e8;color:#bdd9f1;height:100%;pointer-events:none}
+.battle .camera-strip{height:38px;bottom:calc(var(--control-height) + var(--loadout-height) + 3px + env(safe-area-inset-bottom));background:#071d2fef;border:1px solid #456781;border-radius:9px;box-shadow:none}
+.battle .spectator-bar{bottom:calc(var(--control-height) + var(--loadout-height) + 45px + env(safe-area-inset-bottom))!important}
+.battle.camera-gesture:after{content:'CAMÉRA · 2 DOIGTS';position:absolute;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translateX(-50%);border-radius:6px;color:#071522;background:#19f4ac;font-size:9px;letter-spacing:1px;font-weight:850;padding:6px 9px;pointer-events:none;z-index:10}
+.battle .weapon-button{background:#0a2136;border-color:#238f73}.battle .fire,.battle .fire:hover{background:#ffc000;color:#091225;box-shadow:0 3px #b46400}
+.mode-card.primary-mode{background:#06db92;color:#062926}.hero-copy h1 span{color:#04e9a2}
+.battle-top{background:linear-gradient(#031323e8,transparent)}
+@media(orientation:landscape) and (max-height:420px){.battle-controls{padding-top:5px;gap:8px}.battle .camera-strip{height:40px}.battle-info{top:64px}.view-controls{top:90px}.loadout-item{flex-basis:62px}.camera-caption{font-size:6px}}
+@media(orientation:portrait){.battle .camera-strip{left:12px;right:12px}.battle .portrait-tip{bottom:calc(var(--control-height) + var(--loadout-height) + 45px + env(safe-area-inset-bottom))!important}.loadout-item{flex-basis:64px}}

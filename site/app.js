@@ -1,7 +1,7 @@
-import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.6.0';
-import {Renderer,TEAM_COLORS} from './renderer.js?v=0.6.0';
-import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.6.0';
-import {Sound} from './audio.js?v=0.6.0';
+import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.6.1';
+import {Renderer,TEAM_COLORS} from './renderer.js?v=0.6.1';
+import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.6.1';
+import {Sound} from './audio.js?v=0.6.1';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const storage={get(k,d=null){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},remove(k){try{localStorage.removeItem(k);}catch{}}};
@@ -203,7 +203,7 @@ $('angle').oninput=setAim;$('power').oninput=setAim;
 function refreshHud(){if(!snapshot)return;const s=snapshot,turn=s.turn,team=myTeam();if(lastTurn!==turn){closeArsenal();cancelAimGesture({restore:false});lastTurn=turn;if(s.team===team){$('angle').value=s.worms.find(w=>w.id===s.activeId)?.dir===-1?135:45;const w=s.worms.find(w=>w.id===s.activeId);renderer.aim.targetX=clamp((w?.x||800)+(w?.dir||1)*300,20,(s.world?.w||1600)-20);renderer.aim.targetY=450;}stopMove();}
  for(let i=0;i<4;i++){const tag=['a','b','c','d'][i];const panel=$(`team-${tag}-name`).closest('.team-panel');panel.hidden=!s.teams[i];if(!s.teams[i])continue;panel.classList.toggle('active-team',s.team===i);const hp=s.worms.filter(w=>w.team===i).reduce((a,w)=>a+w.hp,0),max=s.options.hp*s.options.worms;$(`team-${tag}-name`).textContent=s.teams[i].name;$(`team-${tag}-hp`).textContent=hp;$(`team-${tag}-bar`).style.width=`${hp/max*100}%`;}
  document.querySelector('.battle-top').classList.toggle('multi-team',s.teams.length>2);
- const active=s.worms.find(w=>w.id===s.activeId);$('timer').textContent=s.phase==='flight'?'•••':s.phase==='over'?'★':Math.ceil(s.time);$('turn-label').textContent=s.frozenTurn?'GELÉ !':s.phase==='over'?'TERMINÉ':s.team===team?'À TOI':'ADVERSAIRE';$('wind').textContent=`VENT ${s.wind>=0?'→':'←'} ${Math.round(Math.abs(s.wind))}`;$('round-info').textContent=`TOUR ${s.turn+1}${s.turn>=20&&s.options.suddenDeath?' · EAUX MONTANTES':''}`;$('connection').textContent=localGame?`SOLO · ${PACES[s.options.pace]?.name.toUpperCase()||'IA'}`:connected?'EN LIGNE':'RECONNEXION';
+ const active=s.worms.find(w=>w.id===s.activeId);$('timer').textContent=s.phase==='flight'?'•••':s.phase==='over'?'★':Math.ceil(s.time);$('turn-label').textContent=s.frozenTurn?'GELÉ !':s.phase==='over'?'TERMINÉ':s.team===team?'À TOI':'ADVERSAIRE';$('wind').textContent=`VENT ${s.wind>=0?'→':'←'} ${Math.round(Math.abs(s.wind))}`;$('round-info').textContent=`TOUR ${s.turn+1}${s.turn>=20&&s.options.suddenDeath?' · EAUX MONTANTES':''}`;$('connection').textContent=localGame?`SOLO · ${VERSION}`:connected?'EN LIGNE · '+VERSION:'RECONNEXION';
  if($('battle-level'))$('battle-level').textContent=`${THEMES.find(t=>t.id===s.options.theme)?.short} · ${LAYOUTS.find(l=>l.id===s.options.layout)?.name||'Terrain classique'} · ${s.world?.w||1600} × 900`;
  let ammo=s.teams[team>=0?team:s.team]?.ammo[weapon];if(ammo===0&&s.phase==='aim'){weapon='rocket';ammo=-1;}const def=byWeapon[weapon];$('weapon-glyph').textContent=def.glyph;$('weapon-name').textContent=def.name;$('ammo-count').textContent=ammo<0?'∞':ammo;$('energy').style.width=`${(active?.energy||0)/230*100}%`;
  const play=canPlay(),fire=canFire(),profile=weaponControls(def);
@@ -215,7 +215,7 @@ function refreshHud(){if(!snapshot)return;const s=snapshot,turn=s.turn,team=myTe
  $('angle-caption').textContent=profile.direction?'CÔTÉ':'ANGLE';
  $('action-help').hidden=profile.power;$('action-help-title').textContent=def.target?'CIBLE AU DOIGT':profile.direction?'DIRECTION':profile.angle?'PORTÉE FIXE':'ACTION DIRECTE';
  $('action-help-text').textContent=profile.hint||def.desc;
- $('fuse-hint').hidden=!profile.timed;$('fuse-hint').textContent=profile.timed?' · '+fuse+' s':'';for(const id of ['move-left','move-right','jump'])$(id).disabled=!(play&&(s.phase==='aim'||s.retreat>0));$('arsenal').disabled=team<0;renderer.canAim=fire&&!arsenalOpen;setAim();refreshCameraRail();if(arsenalOpen&&!fire)closeArsenal();
+ $('fuse-hint').hidden=!profile.timed;$('fuse-hint').textContent=profile.timed?' · '+fuse+' s':'';for(const id of ['move-left','move-right','jump'])$(id).disabled=!(play&&(s.phase==='aim'||s.retreat>0));$('arsenal').disabled=team<0;renderer.canAim=fire&&!arsenalOpen;setAim();refreshCameraRail();refreshLoadout();if(arsenalOpen&&!fire)closeArsenal();
  $('spectator-bar').hidden=s.phase==='over'||(play&&s.phase==='aim');$('spectator-bar').textContent=team<0?'Tu regardes une autre manche du tournoi.':s.phase==='flight'?(s.retreat>0?'Vite, éloigne-toi du cadeau !':'On regarde les dégâts…'):localGame?'Les Fripouilles préparent leur sale coup.':`${s.teams[s.team].name} joue. Prépare ta riposte.`;
  const paused=!localGame&&(!connected||room?.pause);$('network-pause').hidden=!paused;if(paused)$('network-pause').innerHTML=!connected?'<strong>Connexion interrompue</strong>Reconnexion automatique… Le serveur conserve le terrain.':`<strong>Une petite pause réseau</strong>${esc(room.pause.names.join(', '))} doit revenir.<br>Forfait dans ${room.pause.seconds} s pour les joueurs absents.`;
 }
@@ -231,7 +231,7 @@ const gameCanvas=$('game-canvas');
 const nativeTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
 let touchSession=false,pinchZoomed=false;
 function restoreGesture(){if(gestureBackup){$('angle').value=gestureBackup.angle;$('power').value=gestureBackup.power;renderer.aim.targetX=gestureBackup.targetX;renderer.aim.targetY=gestureBackup.targetY;setAim();}}
-function markGesture(state){gameCanvas.dataset.gesture=state;}
+function markGesture(state){gameCanvas.dataset.gesture=state;$('battle').classList.toggle('camera-gesture',state==='camera'||state==='camera-latched');}
 function cancelAimGesture({restore=true}={}){
  if(restore&&!multiGesture)restoreGesture();
  const ids=[...pointers.keys()];pointers.clear();pinchStart=null;gestureBackup=null;
@@ -284,30 +284,67 @@ for(const type of ['pointerup','pointercancel','lostpointercapture'])gameCanvas.
  pointers.delete(e.pointerId);if(pointers.size<2)pinchStart=null;
  if(!pointers.size)cancelAimGesture({restore:false});
 });
+// Touches are tracked at the arena boundary, not just when both fingers happen
+// to begin on the canvas. HUD labels and a second finger over a control must not
+// break a camera gesture or send a stray shot.
+let suppressTouchClickUntil=0;
+const arena=$('battle');
+function arenaTouch(t){
+ const r=arena.getBoundingClientRect();
+ return t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom;
+}
+function isMapTouch(t){
+ const target=t.target;
+ return !target?.closest?.('button,input,select,textarea,a,#loadout-strip,#camera-strip,.view-controls');
+}
 if(nativeTouch){
  const point=t=>({x:t.clientX,y:t.clientY});
- gameCanvas.addEventListener('touchstart',e=>{
-  if(!gestureAllowed())return;if(e.cancelable)e.preventDefault();closeArsenal();
-  if(!touchSession){touchSession=true;multiGesture=false;pointers.clear();saveGesture(point(e.changedTouches[0]));}
-  for(const t of Array.from(e.changedTouches))pointers.set('t'+t.identifier,point(t));
-  // Use the complete event snapshot before computing the midpoint.
-  for(const t of Array.from(e.touches))if(pointers.has('t'+t.identifier))pointers.set('t'+t.identifier,point(t));
-  if(pointers.size>=2)startPinch();else{renderer.aimingGesture=canFire();markGesture('aim');moveGesture();}
- },{passive:false});
+ const snapshotTouches=e=>Array.from(e.touches).filter(arenaTouch);
+ const collect=touches=>{pointers.clear();for(const t of touches)pointers.set('t'+t.identifier,point(t));};
+ arena.addEventListener('touchstart',e=>{
+  if(!gestureAllowed())return;
+  const touches=snapshotTouches(e),promote=touches.length>=2&&(touchSession||touches.some(isMapTouch));
+  if(!touchSession&&!promote&&!isMapTouch(e.changedTouches[0]))return;
+  if(e.cancelable)e.preventDefault();
+  if(promote)e.stopImmediatePropagation();
+  closeArsenal();
+  if(!touchSession){touchSession=true;multiGesture=false;saveGesture(point(touches[0]));}
+  const before=[...pointers.keys()].join('|');collect(touches);
+  if(touches.length>=2){
+   stopMove();railPointer=null;suppressTouchClickUntil=performance.now()+600;
+   if(!pinchStart||before!==[...pointers.keys()].join('|'))startPinch();
+  }else if(!multiGesture){renderer.aimingGesture=canFire();markGesture('aim');}
+ },{passive:false,capture:true});
  window.addEventListener('touchmove',e=>{
-  if(!touchSession)return;if(e.cancelable)e.preventDefault();
-  for(const t of Array.from(e.touches))if(pointers.has('t'+t.identifier))pointers.set('t'+t.identifier,point(t));
+  if(!touchSession)return;
+  if(e.cancelable)e.preventDefault();
+  const touches=snapshotTouches(e);collect(touches);
+  if(touches.length>=2&&!pinchStart)startPinch();
+  if(multiGesture){e.stopImmediatePropagation();suppressTouchClickUntil=performance.now()+600;}
   moveGesture();
- },{passive:false});
+ },{passive:false,capture:true});
  for(const type of ['touchend','touchcancel'])window.addEventListener(type,e=>{
-  if(!touchSession)return;if(e.cancelable)e.preventDefault();
+  if(!touchSession)return;
+  if(e.cancelable)e.preventDefault();
+  if(multiGesture){e.stopImmediatePropagation();suppressTouchClickUntil=performance.now()+600;}
   if(type==='touchcancel'){cancelAimGesture();return;}
   if(!multiGesture&&e.changedTouches.length)aimAt(e.changedTouches[0]);
-  for(const t of Array.from(e.changedTouches))pointers.delete('t'+t.identifier);
+  collect(snapshotTouches(e));
   if(!pointers.size){cancelAimGesture({restore:false});return;}
   if(pointers.size<2){pinchStart=null;markGesture('camera-latched');}else startPinch();
- },{passive:false});
- for(const type of ['gesturestart','gesturechange','gestureend'])gameCanvas.addEventListener(type,e=>{if(gestureAllowed()&&e.cancelable)e.preventDefault();},{passive:false});
+ },{passive:false,capture:true});
+ // Cancel browser gesture defaults only while this game owns a map gesture.
+ for(const type of ['gesturestart','gesturechange','gestureend'])arena.addEventListener(type,e=>{
+  if(gestureAllowed()&&touchSession&&e.cancelable)e.preventDefault();
+ },{passive:false,capture:true});
+ arena.addEventListener('click',e=>{
+  if(performance.now()<suppressTouchClickUntil&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}
+ },true);
+ arena.addEventListener('pointerdown',e=>{
+  if(e.pointerType!=='touch')return;
+  if(!touchSession){suppressTouchClickUntil=0;return;}
+  if(e.target!==gameCanvas){e.preventDefault();e.stopImmediatePropagation();}
+ },true);
 }
 gameCanvas.addEventListener('contextmenu',e=>e.preventDefault());
 function aimAt(e){
@@ -327,119 +364,76 @@ $('zoom-out').onclick=()=>{renderer.overview=false;renderer.zoom=clamp(renderer.
 $('zoom-fit').onclick=()=>{renderer.overview=!renderer.overview;renderer.manualCamera=null;renderer.aimingGesture=false;};
 // A non-modal belt anchored to the weapon control. The world remains visible.
 function weaponIcon(id){
- const rocket='<path d="M8 27L25 10Q30 5 32 8Q35 12 29 17L12 34Z" fill="#afdac8"/><path d="M25 10L29 17L33 9Z" fill="#ffb18c"/><path d="M9 26L4 31L10 30M13 33L8 38L11 31"/><path d="M8 33L3 38" stroke="#ffd087"/>';
- const orb='<circle cx="20" cy="24" r="11" fill="#94bda2"/><path d="M16 12V8H23V13M23 8Q30 3 32 9"/><path d="M13 19L25 29M13 26L24 16" opacity=".4"/>';
+ const rocket='<path d="M8 27L25 10Q30 5 32 8Q35 12 29 17L12 34Z" fill="#26ec92"/><path d="M25 10L29 17L33 9Z" fill="#ff5932"/><path d="M9 26L4 31L10 30M13 33L8 38L11 31"/><path d="M8 33L3 38" stroke="#ffd087"/>';
+ const orb='<circle cx="20" cy="24" r="11" fill="#15a53b"/><path d="M16 12V8H23V13M23 8Q30 3 32 9"/><path d="M13 19L25 29M13 26L24 16" opacity=".4"/>';
  const paths={rocket,grenade:orb,cluster:orb+'<circle cx="6" cy="12" r="3" fill="#ffcc8e"/><circle cx="35" cy="28" r="3" fill="#ffcc8e"/>',
- banana:'<path d="M10 7Q7 26 31 28Q25 38 12 30Q0 22 10 7Z" fill="#ffe08c"/><path d="M10 7L12 3M30 28L34 26"/>',
- mortar:'<path d="M20 8L34 19L30 32L15 36L6 25L10 12Z" fill="#d6aa96"/><path d="M20 8L27 1M13 10L14 2M9 16L2 10" stroke="#ffcb7e"/>',
- bouncer:'<circle cx="20" cy="21" r="14" fill="#cda5dc"/><path d="M8 13Q28 16 31 30M6 26Q21 9 29 11" stroke="#ffe8c4"/>',
+ banana:'<path d="M10 7Q7 26 31 28Q25 38 12 30Q0 22 10 7Z" fill="#ffd408"/><path d="M10 7L12 3M30 28L34 26"/>',
+ mortar:'<path d="M20 8L34 19L30 32L15 36L6 25L10 12Z" fill="#ef7a12"/><path d="M20 8L27 1M13 10L14 2M9 16L2 10" stroke="#ffcb7e"/>',
+ bouncer:'<circle cx="20" cy="21" r="14" fill="#9948f1"/><path d="M8 13Q28 16 31 30M6 26Q21 9 29 11" stroke="#ffe8c4"/>',
  shotgun:'<path d="M6 16H35V23H17L13 34H7L10 23H6Z" fill="#abbbc7"/><path d="M26 15V24M30 15V24"/>',
- laser:'<path d="M4 16H27L32 21L27 26H4Z" fill="#a5d9d4"/><path d="M32 21H40M7 27L10 35H15L17 27" stroke="#b6ffe0"/>',
- dynamite:'<rect x="7" y="14" width="27" height="22" rx="3" fill="#e89595"/><path d="M7 23H34M20 14V36M20 14Q7 0 11 5Q17 3 20 14Q34 1 31 6Q31 11 20 14" stroke="#ffdfa6"/>',
- airstrike:'<path d="M19 3V18L4 27V31L19 27V35L14 38H26L22 34V27L37 31V27L22 18V3Z" fill="#b4d2d8"/>',
- mine:'<path d="M5 29Q5 17 20 17Q35 17 35 29Z" fill="#97afb7"/><circle cx="20" cy="15" r="5" fill="#ff958e"/><path d="M8 33H32"/>',
- drill:'<path d="M5 19L19 5L26 12L12 26Z" fill="#a6b9c9"/><path d="M12 26L35 36L26 12Z" fill="#e5d8ae"/><path d="M16 27L26 18M22 30L29 25M26 32L31 30"/>',
+ laser:'<path d="M4 16H27L32 21L27 26H4Z" fill="#00dede"/><path d="M32 21H40M7 27L10 35H15L17 27" stroke="#00ffad"/>',
+ dynamite:'<rect x="7" y="14" width="27" height="22" rx="3" fill="#eb2140"/><path d="M7 23H34M20 14V36M20 14Q7 0 11 5Q17 3 20 14Q34 1 31 6Q31 11 20 14" stroke="#ffdfa6"/>',
+ airstrike:'<path d="M19 3V18L4 27V31L19 27V35L14 38H26L22 34V27L37 31V27L22 18V3Z" fill="#2999eb"/>',
+ mine:'<path d="M5 29Q5 17 20 17Q35 17 35 29Z" fill="#677484"/><circle cx="20" cy="15" r="5" fill="#ff958e"/><path d="M8 33H32"/>',
+ drill:'<path d="M5 19L19 5L26 12L12 26Z" fill="#408cc7"/><path d="M12 26L35 36L26 12Z" fill="#e9a52b"/><path d="M16 27L26 18M22 30L29 25M26 32L31 30"/>',
  punch:'<path d="M10 28L7 21Q3 15 8 12Q11 10 13 16V9Q18 3 22 9Q26 5 29 11Q35 9 35 17V25L27 32H12Z" fill="#f2a79d"/><path d="M12 32V37H27V32" fill="#a1e6ca"/>',
  teleport:'<ellipse cx="20" cy="22" rx="14" ry="18" fill="#7c819e"/><ellipse cx="20" cy="22" rx="8" ry="13" fill="#a8ecd6"/><path d="M16 22H24M20 18V26"/>',
- heal:'<rect x="7" y="12" width="28" height="25" rx="5" fill="#c3dcce"/><path d="M15 12V7H27V12M21 19V31M15 25H27" stroke="#e67e8c" stroke-width="4"/>',
+ heal:'<rect x="7" y="12" width="28" height="25" rx="5" fill="#f4f8ff"/><path d="M15 12V7H27V12M21 19V31M15 25H27" stroke="#ff1448" stroke-width="4"/>',
  bridge:'<path d="M4 32V12M36 32V12M4 17Q20 35 36 17M4 21H36M12 22V31M20 23V34M28 22V31" stroke="#dfb88d" stroke-width="3"/>',
  freeze:'<path d="M20 3V39M4 12L36 30M4 30L36 12M14 6L20 11L26 6M14 36L20 31L26 36M5 19L12 17L11 9M29 33L28 25L35 24" stroke="#ace5ff" stroke-width="2.5"/>',
  bee:'<ellipse cx="20" cy="23" rx="14" ry="10" fill="#ffe199"/><path d="M15 15V32M24 14V32" stroke="#795969" stroke-width="4"/><ellipse cx="13" cy="11" rx="6" ry="8" fill="#d8f5ff"/><ellipse cx="24" cy="10" rx="6" ry="7" fill="#d8f5ff"/>'};
  return `<svg viewBox="0 0 42 42" aria-hidden="true" fill="none" stroke="#3c425b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[id]||rocket}</svg>`;
 }
-// Stable radial shortcuts: positions never change with health or nearby enemies.
-const quickWeapons=['rocket','grenade','shotgun','airstrike','teleport','heal'];
-const shortWeaponName={rocket:'Roquette',grenade:'Grenade',shotgun:'Fusil',airstrike:'Frappe',teleport:'Portail',heal:'Soins'};
-let wheelMode='quick',wheelCenter={x:0,y:0,r:80},wheelHover=null,wheelDrag=null;
-const wheel=document.createElement('section');wheel.id='weapon-wheel';wheel.hidden=true;
-wheel.setAttribute('aria-label','Choisir une arme');wheel.setAttribute('role','group');$('battle').append(wheel);
-function closeArsenal(){
- arsenalOpen=false;wheelDrag=null;wheelHover=null;
- $('battle')?.classList.remove('arsenal-is-open','wheel-open');
- if($('arsenal-belt'))$('arsenal-belt').hidden=true;
- const el=$('weapon-wheel');if(el)el.hidden=true;
- $('arsenal')?.setAttribute('aria-expanded','false');renderer.canAim=canFire();
+// Always-visible equipment ribbon. No window, wheel, category or second click.
+const ribbon=document.createElement('nav');ribbon.id='loadout-strip';
+ribbon.setAttribute('aria-label','Arsenal : balayer pour parcourir, toucher pour équiper');
+ribbon.innerHTML=`<div class="loadout-scroll" id="loadout-scroll" role="toolbar" aria-label="18 armes et équipements">${WEAPONS.map(def=>`<button type="button" class="loadout-item" data-loadout="${def.id}" aria-label="${esc(def.name)}">${weaponIcon(def.id)}<span>${esc(({rocket:'Roquette',grenade:'Grenade',cluster:'Grappe',banana:'Banane',mortar:'Mortier',bouncer:'Rebond',shotgun:'Fusil',laser:'Laser',dynamite:'Dynamite',airstrike:'Frappe',mine:'Mine',drill:'Foreuse',punch:'Poussée',teleport:'Portail',heal:'Soins',bridge:'Pont',freeze:'Glace',bee:'Abeille'})[def.id]||def.name)}</span><b></b></button>`).join('')}</div><span class="loadout-hint" aria-hidden="true">‹ BALAYER ›</span>`;
+$('battle').append(ribbon);
+const scrollLoadout=$('loadout-scroll');let loadoutPress=null,loadoutSwipeUntil=0;
+function closeArsenal(){arsenalOpen=false;$('battle')?.classList.remove('arsenal-is-open','wheel-open');if($('arsenal-belt'))$('arsenal-belt').hidden=true;renderer.canAim=canFire();}
+function refreshLoadout(){
+ const team=myTeam();const ammo=snapshot?.teams[team]?.ammo||{};
+ for(const b of ribbon.querySelectorAll('[data-loadout]')){
+  const id=b.dataset.loadout,n=ammo[id],selected=weapon===id;
+  b.disabled=!canFire()||!Number.isFinite(n)||n===0;
+  b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));
+  b.querySelector('b').textContent=n<0?'∞':n??'–';
+  b.setAttribute('aria-label',byWeapon[id].name+' · '+(n<0?'illimité':(n??0)+' munitions')+(selected?' · équipée':''));
+ }
 }
 function equipWeapon(id){
- if(!canFire()||!byWeapon[id]){closeArsenal();return;}
+ if(!canFire()||!byWeapon[id])return;
  const ammo=snapshot.teams[myTeam()]?.ammo;if(!ammo||ammo[id]===0)return;
- weapon=id;sound.click();closeArsenal();refreshHud();
+ cancelAimGesture();stopMove();weapon=id;sound.click();closeArsenal();refreshHud();
 }
-function wheelHighlight(id){
- wheelHover=id;
- wheel.querySelectorAll('[data-weapon]').forEach(b=>b.classList.toggle('hovered',b.dataset.weapon===id));
- const def=byWeapon[id],ammo=snapshot?.teams[myTeam()]?.ammo[id];
- const caption=wheel.querySelector('.wheel-caption');if(caption)caption.textContent=def?def.name+' · '+(ammo<0?'∞':ammo)+' munitions':'Glisse vers une arme, puis relâche';
-}
-function weaponUnderFinger(x,y){
- let best=null,dist=Infinity;
- wheel.querySelectorAll('[data-weapon]').forEach(b=>{if(b.disabled)return;const r=b.getBoundingClientRect(),d=Math.hypot(x-r.left-r.width/2,y-r.top-r.height/2);if(d<Math.max(34,r.width*.6)&&d<dist){dist=d;best=b.dataset.weapon;}});
- return best;
-}
-function renderWeaponWheel(){
- if(!snapshot)return;
- const ammo=snapshot.teams[myTeam()]?.ammo;if(!ammo){closeArsenal();return;}
- const anchor=$('arsenal').getBoundingClientRect(),bounds=$('battle').getBoundingClientRect();
- const width=bounds.width,height=bounds.height;
- // Keep all targets away from the screen edges and behind neither the notch nor FEU.
- const radius=clamp((height-186)/2,62,86),extent=radius+36;
- const cx=clamp(anchor.left+anchor.width/2,extent+12,width-extent-12);
- const cy=clamp(anchor.top-radius-42,extent+55,height-extent-28);
- wheelCenter={x:cx,y:cy,r:radius};wheel.dataset.mode=wheelMode;
- wheel.className='weapon-wheel '+(wheelMode==='all'?'all-weapons':'radial-weapons');
- wheel.style.setProperty('--cx',cx+'px');wheel.style.setProperty('--cy',cy+'px');
- const cards=(wheelMode==='all'?WEAPONS:quickWeapons.map(id=>byWeapon[id])).map((def,i)=>{
-  const a=(-90+i*60)*Math.PI/180,style=wheelMode==='quick'?`left:${cx+Math.cos(a)*radius}px;top:${cy+Math.sin(a)*radius}px`:'';
-  return `<button type="button" class="wheel-item ${weapon===def.id?'selected':''}" data-weapon="${def.id}" style="${style}" aria-label="${esc(def.name)} · ${ammo[def.id]<0?'illimité':ammo[def.id]+' munitions'}" aria-pressed="${weapon===def.id}" ${ammo[def.id]===0?'disabled':''}>${weaponIcon(def.id)}<span>${esc(wheelMode==='quick'?(shortWeaponName[def.id]||def.name):def.name)}</span><b>${ammo[def.id]<0?'∞':ammo[def.id]}</b></button>`;
- }).join('');
- wheel.innerHTML=`<div class="wheel-caption" aria-live="polite">${wheelMode==='all'?'Toutes les armes · un appui pour équiper':'Glisse vers une arme, puis relâche'}</div><button type="button" class="wheel-close" aria-label="Fermer les armes">×</button>${wheelMode==='all'?`<div class="wheel-grid">${cards}</div>`:cards+`<button type="button" class="wheel-all" aria-label="Toutes les 18 armes"><strong>18</strong><span>TOUTES</span></button>`}${wheelMode==='all'?'<button type="button" class="wheel-back">← Raccourcis</button>':''}`;
- wheel.querySelector('.wheel-close').onclick=()=>{closeArsenal();refreshHud();};
- const all=wheel.querySelector('.wheel-all');if(all)all.onclick=()=>{wheelMode='all';renderWeaponWheel();};
- const back=wheel.querySelector('.wheel-back');if(back)back.onclick=()=>{wheelMode='quick';renderWeaponWheel();};
- wheel.querySelectorAll('[data-weapon]').forEach(b=>{
-  b.onclick=()=>equipWeapon(b.dataset.weapon);
-  b.onpointerenter=()=>wheelHighlight(b.dataset.weapon);
-  b.onfocus=()=>wheelHighlight(b.dataset.weapon);
- });
- wheelHover=null;
-}
-function openWeaponWheel(){
- if(!canFire())return false;
- cancelAimGesture();stopMove();arsenalOpen=true;wheelMode='quick';wheel.hidden=false;
- $('battle').classList.add('wheel-open');$('arsenal').setAttribute('aria-expanded','true');
- $('toast').hidden=true;renderWeaponWheel();refreshHud();return true;
-}
-function arsenalDialog(){if(arsenalOpen){closeArsenal();refreshHud();}else openWeaponWheel();}
-$('arsenal').onclick=e=>{if(e.detail===0)arsenalDialog();}; // keyboard / assistive activation
-$('arsenal').setAttribute('aria-label','Armes : glisser vers une arme, ou toucher pour choisir');
-$('arsenal').addEventListener('pointerdown',e=>{
- if(e.button>0||!canFire())return;e.preventDefault();
- const wasOpen=arsenalOpen;
- if(!wasOpen&&!openWeaponWheel())return;
- wheelDrag={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false,wasOpen};
- try{$('arsenal').setPointerCapture(e.pointerId);}catch{}
+scrollLoadout.addEventListener('pointerdown',e=>{loadoutPress={id:e.pointerId,x:e.clientX,y:e.clientY};},{passive:true});
+scrollLoadout.addEventListener('pointermove',e=>{if(loadoutPress&&e.pointerId===loadoutPress.id&&Math.hypot(e.clientX-loadoutPress.x,e.clientY-loadoutPress.y)>9)loadoutSwipeUntil=performance.now()+450;},{passive:true});
+scrollLoadout.addEventListener('pointercancel',()=>{loadoutPress=null;loadoutSwipeUntil=performance.now()+450;});
+scrollLoadout.addEventListener('pointerup',()=>{loadoutPress=null;});
+scrollLoadout.addEventListener('click',e=>{
+ const b=e.target.closest('[data-loadout]');if(!b)return;
+ if(e.detail!==0&&performance.now()<loadoutSwipeUntil){e.preventDefault();return;}
+ equipWeapon(b.dataset.loadout);
 });
-$('arsenal').addEventListener('pointermove',e=>{
- if(!wheelDrag||wheelDrag.id!==e.pointerId)return;e.preventDefault();
- if(Math.hypot(e.clientX-wheelDrag.x,e.clientY-wheelDrag.y)>12)wheelDrag.moved=true;
- if(wheelDrag.moved)wheelHighlight(weaponUnderFinger(e.clientX,e.clientY));
-});
-$('arsenal').addEventListener('pointerup',e=>{
- if(!wheelDrag||wheelDrag.id!==e.pointerId)return;e.preventDefault();
- const drag=wheelDrag,id=wheelHover;wheelDrag=null;
- if(drag.moved){if(id)equipWeapon(id);else closeArsenal();}
- else if(drag.wasOpen)closeArsenal();
- refreshHud();
-});
-for(const type of ['pointercancel','lostpointercapture'])$('arsenal').addEventListener(type,()=>{if(wheelDrag){closeArsenal();refreshHud();}});
-wheel.addEventListener('keydown',e=>{
- if(e.key==='Escape'){e.preventDefault();closeArsenal();$('arsenal').focus();}
- if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
-  e.preventDefault();const items=[...wheel.querySelectorAll('button:not([disabled])')],at=items.indexOf(document.activeElement);
-  items[(at+(e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:1)+items.length)%items.length]?.focus();
+scrollLoadout.addEventListener('keydown',e=>{
+ if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){
+  e.preventDefault();const items=[...scrollLoadout.querySelectorAll('button:not(:disabled)')];
+  const at=items.indexOf(document.activeElement),index=e.key==='Home'?0:e.key==='End'?items.length-1:(at+(e.key==='ArrowLeft'?-1:1)+items.length)%items.length;
+  items[index]?.focus({preventScroll:true});items[index]?.scrollIntoView({block:'nearest',inline:'nearest'});
  }
- e.stopPropagation(); // Enter equips, it must not also fire a weapon.
+ e.stopPropagation(); // Enter equips; it cannot also shoot or move a worm.
 });
+function arsenalDialog(){
+ if(!canFire())return;
+ cancelAimGesture();stopMove();
+ const b=scrollLoadout.querySelector(`[data-loadout="${weapon}"]`);
+ b?.scrollIntoView({block:'nearest',inline:'center',behavior:renderer.reduced?'instant':'smooth'});
+ b?.focus({preventScroll:true});
+}
+$('arsenal').onclick=arsenalDialog;
+$('arsenal').setAttribute('aria-label','Recentrer la bande d’armes sur l’arme équipée');
+$('arsenal').setAttribute('aria-controls','loadout-scroll');
+$('arsenal').removeAttribute('aria-expanded');
 // Retain fuse selection in a small dedicated control, not a second inventory page.
 $('fuse-hint').setAttribute('role','button');$('fuse-hint').tabIndex=0;
 $('fuse-hint').title='Changer la mèche : 1, 3 ou 5 secondes';
@@ -481,7 +475,7 @@ $('camera-follow').onclick=()=>{cancelAimGesture();renderer.overview=false;rende
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&arsenalOpen){closeArsenal();refreshHud();$('arsenal').focus();}});
 function settingsDialog(){dialog('QUELQUES RÉGLAGES',`<h2>Chacun son petit confort.</h2><div class="setting-row"><div>Bruitages<small>Explosions, sauts et petits sons absurdes.</small></div><button id="sound-toggle" class="toggle ${sound.enabled?'on':''}">${sound.enabled?'Activés':'Coupés'}</button></div><div class="setting-row"><div>Musique légère<small>Une boucle synthétique originale, discrète.</small></div><button id="music-toggle" class="toggle ${sound.music?'on':''}">${sound.music?'Activée':'Coupée'}</button></div><p class="input-note">Le son est activé par un geste sur l’écran. Vérifie le volume de l’iPhone. Les préférences de réduction des animations sont respectées.</p><div class="dialog-actions"><button class="primary" id="settings-done">C’est parfait</button></div>`,'settings');$('sound-toggle').onclick=async()=>{sound.enabled=!sound.enabled;storage.set('lombrix-sound',sound.enabled);audioStart();settingsDialog();sound.click();};$('music-toggle').onclick=async()=>{audioStart();sound.setMusic(!sound.music);storage.set('lombrix-music',sound.music);settingsDialog();};const q=document.createElement('div');q.className='form-field';q.innerHTML=selectField('render-quality','QUALITÉ GRAPHIQUE', [['hd','Haute définition'],['balanced','Équilibrée · effets réduits']],renderer.quality);$('settings-done').parentElement.before(q);$('render-quality').onchange=()=>{renderer.quality=$('render-quality').value;renderer.resize();storage.set('lombrix-quality',renderer.quality);};$('settings-done').onclick=closeDialog;}
 $('settings').onclick=settingsDialog;
-function helpDialog(){dialog('UNE BATAILLE, PAS UN MODE D’EMPLOI',`<h2>Le mauvais esprit en 4 gestes.</h2><div class="rules-grid"><div class="rule"><strong>01 · Bouge un peu.</strong><p>◀ et ▶ pour marcher, ↟ pour sauter. La petite barre verte représente ta réserve de mouvement.</p></div><div class="rule"><strong>02 · Choisis ton arme.</strong><p>Glisse depuis le bouton de l’arme vers un des six raccourcis, puis relâche pour équiper. Un simple appui ouvre la roue ; « 18 TOUTES » donne accès à tout l’arsenal sans catégories. Le jeu ne se met pas en pause.</p></div><div class="rule"><strong>03 · Trouve le bon angle.</strong><p>La direction règle l’angle sur 360°, même vers le bas. Poser le doigt conserve la puissance ; éloigne-le pour charger, rapproche-le pour réduire. Au bord de l’écran, relève et reprends le geste : la charge reste acquise. La barre graduée parcourt le terrain sans dézoomer ; ses points colorés repèrent les vers. ◎ recentre. Deux doigts déplacent et zooment la vue.</p></div><div class="rule"><strong>04 · FEU !</strong><p>Relâcher le doigt ne tire pas : confirme avec FEU. La réserve haute puissance porte loin. Les vers se bousculent, même entre alliés : attention aux chutes en chaîne.</p></div></div><p>Après un piège, tu as 3 secondes pour t’éloigner. Le tir ami est actif. À partir du 21e tour, l’eau monte si l’option est activée.</p><p class="input-note">Sur ordinateur : flèches gauche/droite = marcher · Espace = sauter · Entrée = tirer · E = arsenal. En ligne, chacun utilise son propre appareil ; le chronomètre continue pendant l’ouverture des menus.</p><div class="dialog-actions"><button class="primary" id="help-done">Même pas peur →</button></div>`,'help');$('help-done').onclick=closeDialog;}
+function helpDialog(){dialog('UNE BATAILLE, PAS UN MODE D’EMPLOI',`<h2>Le mauvais esprit en 4 gestes.</h2><div class="rules-grid"><div class="rule"><strong>01 · Bouge un peu.</strong><p>◀ et ▶ pour marcher, ↟ pour sauter. La petite barre verte représente ta réserve de mouvement.</p></div><div class="rule"><strong>02 · Choisis ton arme.</strong><p>La bande d’armes reste visible en bas du terrain. Balaye horizontalement pour parcourir les 18 équipements, puis touche celui que tu veux. Aucune fenêtre, aucune catégorie : un appui équipe, seul FEU déclenche le tir.</p></div><div class="rule"><strong>03 · Trouve le bon angle.</strong><p>La direction règle l’angle sur 360°, même vers le bas. Poser le doigt conserve la puissance ; éloigne-le pour charger, rapproche-le pour réduire. Au bord de l’écran, relève et reprends le geste : la charge reste acquise. La barre graduée parcourt le terrain sans dézoomer ; ses points colorés repèrent les vers. ◎ recentre. Deux doigts déplacent et zooment la vue.</p></div><div class="rule"><strong>04 · FEU !</strong><p>Relâcher le doigt ne tire pas : confirme avec FEU. La réserve haute puissance porte loin. Les vers se bousculent, même entre alliés : attention aux chutes en chaîne.</p></div></div><p>Après un piège, tu as 3 secondes pour t’éloigner. Le tir ami est actif. À partir du 21e tour, l’eau monte si l’option est activée.</p><p class="input-note">Sur ordinateur : flèches gauche/droite = marcher · Espace = sauter · Entrée = tirer · E = arsenal. En ligne, chacun utilise son propre appareil ; le chronomètre continue pendant l’ouverture des menus.</p><div class="dialog-actions"><button class="primary" id="help-done">Même pas peur →</button></div>`,'help');$('help-done').onclick=closeDialog;}
 $('help').onclick=helpDialog;
 function installDialog(){dialog('UN VRAI RACCOURCI SUR TON IPHONE',`<h2>Les vers prennent leurs quartiers.</h2><p>Ouvre l’adresse du jeu dans <strong>Safari</strong>, puis le menu <strong>Partager</strong> et <strong>Sur l’écran d’accueil</strong>. Laisse « Ouvrir comme app web » activé lorsque cette option est proposée.</p><div class="rules-grid"><div class="rule"><strong>Pour le solo</strong><p>Après un premier chargement complet en HTTPS, le jeu met ses fichiers en cache pour jouer sans réseau.</p></div><div class="rule"><strong>Pour les amis</strong><p>Une connexion internet reste nécessaire. Chaque joueur ouvre le même lien de salon, depuis son iPhone.</p></div></div><p class="input-note">En version de développement, une adresse locale du Mac n’est pas accessible à un ami à distance. Le serveur doit être hébergé sur une adresse HTTPS publique.</p><div class="dialog-actions"><button class="primary" id="install-done">Compris</button></div>`,'install');$('install-done').onclick=closeDialog;}
 $('install-help').onclick=installDialog;

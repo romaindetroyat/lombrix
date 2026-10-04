@@ -1,6 +1,6 @@
 /** Simulation partagée. Aucun DOM et aucune dépendance. Le serveur décide en ligne. */
 export const WORLD = { w: 1600, h: 900, water: 825 };
-export const VERSION = '0.6.0';
+export const VERSION = '0.6.1';
 export const THEMES = [
   { id:'lagoon', name:'Les îles du grabuge', short:'Lagon pirate', tagline:'Palmiers, coffres et mauvaises intentions.', sky:['#0c3152','#64ccdd'], dirt:['#d8914f','#633c45'], top:'#e8dc9a', water:'#22b8c5', accent:'#77ffe0', gravity:1, icon:'◈' },
   { id:'candy', name:'Sucre & représailles', short:'Confiserie', tagline:'Un peu de douceur. Beaucoup de cratères.', sky:['#51396d','#f5a3b2'], dirt:['#b26d94','#633554'], top:'#fff0d7', water:'#c564ba', accent:'#ffd289', gravity:0.88, icon:'✿' },
@@ -20,15 +20,15 @@ THEMES.push(
 );
 // Vivid, inked art direction. These are rendering colors only; no physics values change.
 const VIVID_SCENES={
- lagoon:[['#032754','#028ab6'],['#bd6b23','#43261e'],'#eeba43','#0076bc','#26edae'],
- candy:[['#301047','#b32071'],['#822956','#341533'],'#ffba28','#bb0860','#fadb3c'],
- moon:[['#020718','#1b255d'],['#576c85','#162238'],'#92adbc','#322681','#c0d6ff'],
- jungle:[['#031f22','#0c4a40'],['#4e6224','#14280f'],'#6cd836','#006f86','#b5ef19'],
- ice:[['#032451','#167bbb'],['#399acb','#133d78'],'#e2fcff','#0754a4','#47e7ff'],
- volcano:[['#1a0b22','#7a201b'],['#704024','#261719'],'#f17b24','#fb3818','#ffbd25'],
+ lagoon:[['#032754','#0069b4'],['#cf6810','#35170a'],'#ffc52a','#008de8','#26edae'],
+ candy:[['#301047','#b5005a'],['#981245','#300921'],'#ffba28','#bb0860','#fadb3c'],
+ moon:[['#020718','#1b255d'],['#375c88','#162238'],'#92adbc','#322681','#c0d6ff'],
+ jungle:[['#031f22','#00482c'],['#804409','#221103'],'#48ea08','#006f86','#b5ef19'],
+ ice:[['#032451','#167bbb'],['#128eda','#133d78'],'#e2fcff','#0754a4','#47e7ff'],
+ volcano:[['#1a0b22','#9e2305'],['#90400e','#201019'],'#f17b24','#fb3818','#ffbd25'],
  desert:[['#05345d','#dd862d'],['#ba5b20','#4c281b'],'#ffd04a','#016c96','#ffcc29'],
  alpine:[['#014876','#178da3'],['#755625','#2b2c14'],'#6bb623','#07718e','#c4e931'],
- sakura:[['#180c35','#7b2957'],['#68402c','#271b23'],'#51a733','#243ca0','#ff507b'],
+ sakura:[['#180c35','#650e48'],['#8b3e11','#290d13'],'#40d014','#243ca0','#ff2366'],
  ruins:[['#092e29','#236b55'],['#7d7732','#253423'],'#82b72b','#08797e','#ffd04a'],
  neon:[['#03071d','#3c145a'],['#293352','#101726'],'#11d99b','#861dde','#15f4c3'],
  reef:[['#061437','#183d87'],['#694193','#212257'],'#2ee0b3','#0664bb','#ff69cb']

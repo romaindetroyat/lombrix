@@ -1,7 +1,7 @@
-import {cacheSprite} from './render-cache.js?v=0.6.0';
-import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.6.0';
-import {pullFromPower,wormActing} from './interaction.js?v=0.6.0';
-import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.6.0';
+import {cacheSprite} from './render-cache.js?v=0.6.1';
+import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.6.1';
+import {pullFromPower,wormActing} from './interaction.js?v=0.6.1';
+import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.6.1';
 const TAU=Math.PI*2;
 export const TEAM_COLORS=['#20e8a0','#ff4e70','#ffcc27','#9876ff'];
 function ellipse(c,x,y,rx,ry,color){c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,TAU);c.fill();}
@@ -10,7 +10,7 @@ function label(c,text,x,y,size=16,color='#fff',weight=800){c.fillStyle=color;c.f
 function round(c,x,y,w,h,r,color){c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill();}
 const hex=h=>h.match(/\w\w/g).map(x=>parseInt(x,16));
 export class Renderer{
- constructor(canvas){this.canvas=canvas;this.c=canvas.getContext('2d',{alpha:false});if(!this.c)throw new Error('Le navigateur ne peut pas ouvrir le rendu Canvas. Ferme les autres onglets puis réessaie.');this.zoom=1.6;this.world={...WORLD};this.overview=false;this.manualCamera=null;this.aimingGesture=false;this.aimRadius=115;this.powerDragSpan=540;this.deathRituals=new Map();this.responses=new Map();this.quality='hd';this.trails=new Map();this.recoils=new Map();this.camera={x:800,y:450};this.aim={angle:-.7,power:.5,weapon:'rocket',targetX:900,targetY:400};this.effects=[];this.particles=[];this.texts=[];this.display=new Map();this.key=null;this.lastEvent=0;this.ops=0;this.shake=0;this.reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;this.resize=()=>{this.w=canvas.clientWidth||800;this.h=canvas.clientHeight||450;const d=Math.min(devicePixelRatio||1,this.quality==='hd'?2.75:1.75,Math.sqrt(5000000/(this.w*this.h)));canvas.width=Math.round(this.w*d);canvas.height=Math.round(this.h*d);this.dpr=d;};if(typeof ResizeObserver==='function'){this.observer=new ResizeObserver(this.resize);this.observer.observe(canvas);}else{this.observer=null;window.addEventListener('resize',this.resize);}this.resize();}
+ constructor(canvas){this.canvas=canvas;this.c=canvas.getContext('2d',{alpha:false});if(!this.c)throw new Error('Le navigateur ne peut pas ouvrir le rendu Canvas. Ferme les autres onglets puis réessaie.');this.zoom=1.6;this.world={...WORLD};this.overview=false;this.manualCamera=null;this.aimingGesture=false;this.aimRadius=115;this.powerDragSpan=540;this.deathRituals=new Map();this.responses=new Map();this.quality='hd';this.trails=new Map();this.recoils=new Map();this.camera={x:800,y:450};this.aim={angle:-.7,power:.5,weapon:'rocket',targetX:900,targetY:400};this.effects=[];this.particles=[];this.texts=[];this.display=new Map();this.key=null;this.lastEvent=0;this.ops=0;this.shake=0;this.reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;this.resize=()=>{this.w=canvas.clientWidth||800;this.h=canvas.clientHeight||450;const d=Math.min(devicePixelRatio||1,this.quality==='hd'?2.25:1.5,Math.sqrt(5000000/(this.w*this.h)));canvas.width=Math.round(this.w*d);canvas.height=Math.round(this.h*d);this.dpr=d;};if(typeof ResizeObserver==='function'){this.observer=new ResizeObserver(this.resize);this.observer.observe(canvas);}else{this.observer=null;window.addEventListener('resize',this.resize);}this.resize();}
  cacheMetrics(){return {props:this.props?.length||0,sourcePixels:this.propSourcePixels||0,cachedPixels:this.propPixels||0,
   rawBytes:((this.land?.width||0)*(this.land?.height||0)+(this.back?.width||0)*(this.back?.height||0)+(this.propPixels||0))*4};}
  hasDeathRituals(){return this.deathRituals.size>0;}
@@ -66,7 +66,8 @@ if(e.type==='bump'){this.texts.push({x:e.x,y:e.y-24,text:'POC !',life:.65,max:.6
   const active=s.worms.find(w=>w.id===s.activeId);let gx=W/2,gy=H/2;
   if(!this.overview&&active){
     // Keep the selected worm in the uncovered play area, not behind the rail.
-    const reserved=this.h>this.w?278:(this.h<500?114:138),focusY=(80+this.h-reserved)/2;
+    const rail=document.getElementById('camera-strip'),occupied=rail&&!rail.closest('[hidden]')?this.h-rail.getBoundingClientRect().top:0;
+    const reserved=occupied|| (this.h>this.w?334:(this.h<500?170:194)),focusY=(64+this.h-reserved)/2;
     gx=active.x;gy=active.y+(this.h/2-focusY)/this.scale;
     if(s.projectiles.length){const p=s.projectiles[0];gx=p.x;gy=p.y+35;}
   }

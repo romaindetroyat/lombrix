@@ -1,0 +1,16 @@
+[
+  {
+    "version": "baseline-0.6.0",
+    "panWorldUnits": 0.454089453980032,
+    "aimPreserved": false,
+    "turnBefore": "TOUR 1",
+    "turnAfter": "TOUR 1"
+  },
+  {
+    "version": "correctif-0.6.1",
+    "panWorldUnits": 92.17891520346302,
+    "aimPreserved": true,
+    "turnBefore": "TOUR 1",
+    "turnAfter": "TOUR 1"
+  }
+]

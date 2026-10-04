@@ -1,5 +1,5 @@
 /** Direction artistique procédurale originale. Calques fixes pré-rendus pour le mobile. */
-import {rng,clamp,WORLD} from './engine.js?v=0.6.0';
+import {rng,clamp,WORLD} from './engine.js?v=0.6.1';
 const ART_TAU=Math.PI*2;
 function artOval(c,x,y,rx,ry,col){c.fillStyle=col;c.beginPath();c.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,ART_TAU);c.fill();}
 function artPath(c,points,fill,stroke=null,width=2){c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fillStyle=fill;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.stroke();}}
@@ -45,8 +45,8 @@ function canopy(c,r,x,y,w,h,palette,blossoms=false){
 }
 function grownTree(c,r,height,id,far=false){
  const blossom=id==='sakura',reef=id==='reef',pine=id==='alpine',jungle=['jungle','ruins'].includes(id);
- const bark=far?'#213e532b':blossom?'#6c465e':reef?'#b680a9':'#655748';
- const highlight=far?'#61888130':blossom?'#b48b90':reef?'#e4b3ce':'#a39767';
+ const bark=far?'#213e532b':blossom?'#6c465e':reef?'#b680a9':'#653411';
+ const highlight=far?'#61888130':blossom?'#b48b90':reef?'#e4b3ce':'#ce7a21';
  const lean=(r()-.5)*height*.35,endX=lean,endY=-height*.92;
  const branches=[];
  twig(c,0,0,endX,endY,far?7:13,bark,height*.06);twig(c,-3,-3,endX-2,endY,far?1.3:2,highlight,height*.06);
@@ -55,7 +55,7 @@ function grownTree(c,r,height,id,far=false){
   twig(c,bx,by,ex,ey,(far?3:5.8)*(1-j*.08),bark,dir*12);twig(c,bx-1,by,ex-1,ey,1,highlight,dir*12);
   for(let k=0;k<2;k++){const xx=ex+(r()-.5)*height*.28,yy=ey-height*.12*(k+1);twig(c,ex,ey,xx,yy,far?1.3:2.5,bark,7);branches.push([xx,yy]);}
  }
- const pal=blossom?['#75183c','#cc2857','#f55582','#ffacb8']:reef?['#413570','#6354ae','#ae6dcc','#7cdeef']:['#063d32','#0b8245','#32b74f','#95d735'];
+ const pal=blossom?['#5d0325','#dc073e','#ff1554','#ff6295']:reef?['#413570','#6354ae','#ae6dcc','#7cdeef']:['#063d32','#0b8245','#32b74f','#7ef10c'];
  if(far){for(const [x,y]of branches)organicBlob(c,r,x,y,height*.16,height*.09,id==='sakura'?'#b99aaa88':'#365e7399');}
  else if(pine){
   for(let j=0;j<13;j++){const y=-height+j*height/15,w=height*(j+2)/25;twig(c,0,y,-w,y+17,3,bark);twig(c,0,y,w,y+21,3,bark);
@@ -82,7 +82,7 @@ function naturalRidge(c,r,theme,y,amp,freq,phase,layer){
  const colors=theme.id==='sakura'?['#653b737f','#392759bb','#221a49d9']:theme.id==='desert'?['#c1713970','#ac5827a0','#713b24c8']:theme.id==='ice'?['#62afca88','#2076aacc','#12538bcc']:['#17646d78','#0d4c52b0','#093b43dd'];
  const g=c.createLinearGradient(0,y-amp,0,850);g.addColorStop(0,colors[layer]);g.addColorStop(1,theme.sky[1]+'10');artPath(c,pts,g);
  // Erosion paths avoid the broad flat triangular facets of the previous backdrop.
- for(let k=0;k<40;k++){const n=Math.floor(r()*contour.length),[x,yy]=contour[n];twig(c,x,yy+8,x+(r()-.5)*80,yy+70+r()*180,.5+r()*3,theme.id==='ice'?'#e4faf329':'#e0decc13',r()*40);}
+ for(let k=0;k<40;k++){const n=Math.floor(r()*contour.length),[x,yy]=contour[n];twig(c,x,yy+8,x+(r()-.5)*80,yy+70+r()*180,.5+r()*3,theme.id==='ice'?'#e4faf329':'#558fa10e',r()*40);}
  if(theme.id==='ice'||theme.id==='alpine')for(let k=0;k<contour.length;k+=4){const [x,yy]=contour[k];if(yy<y-amp*.58)twig(c,x,yy+1,x+7,yy+12,3,'#eef4e760',4);}
 }
 export function paintBackdrop(c,theme,seed){
@@ -92,7 +92,7 @@ export function paintBackdrop(c,theme,seed){
  artGlow(c,sx,sy,230,night?'#bba3e32a':'#ffe9b247');artOval(c,sx,sy,night?46:42,night?46:42,night?'#d0d5e2a0':'#fff0c0cb');
  if(night)for(let i=0;i<180;i++){c.globalAlpha=.2+r()*.6;artOval(c,r()*1600,r()*500,.3+r()*1.1,.3+r()*1.1,'#eef3dd');}c.globalAlpha=1;
  if(id==='moon'||id==='reef'){for(let k=0;k<12;k++)organicBlob(c,r,sx+(r()-.5)*55,sy+(r()-.5)*55,2+r()*11,2+r()*7,'#575c8749');c.save();c.translate(sx,sy);c.rotate(-.3);c.strokeStyle='#c2cfea55';c.lineWidth=5;c.beginPath();c.ellipse(0,0,97,14,0,0,ART_TAU);c.stroke();c.restore();}
- for(let k=0;k<6;k++)cloudWash(c,r,r()*1600,140+r()*270,.4+r()*.7,night?'#bbd7e00b':'#fff6e41a');
+ for(let k=0;k<6;k++)cloudWash(c,r,r()*1600,140+r()*270,.4+r()*.7,night?'#bbd7e00b':'#1b80b912');
  if(id==='neon'){
   for(let layer=0;layer<2;layer++)for(let i=0;i<19;i++){
    const x=i*96-50+r()*35,w=38+r()*70,y=270+r()*260+layer*100;artBox(c,x,y,w,900-y,3,layer?'#243451':'#494461');
@@ -133,7 +133,7 @@ export function paintTerrain(c,terrain,theme,seed){
  }
  c.putImageData(img,0,0);c.save();c.globalCompositeOperation='source-atop';const r=rng(seed+0x919);
  for(let i=0;i<Math.round(W*.3625);i++){
-  const x=r()*W,y=200+r()*700,s=2+r()*9;artOval(c,x,y,s*1.3,s*.65,i%3?'#101e3026':'#fff6dc13');if(i%3===0)artLine(c,[[x-s,y],[x+s*.5,y-s*.45]],'#fff0cd19',1);
+  const x=r()*W,y=200+r()*700,s=2+r()*9;artOval(c,x,y,s*1.3,s*.65,i%3?'#101e3026':'#ffb9200c');if(i%3===0)artLine(c,[[x-s,y],[x+s*.5,y-s*.45]],'#fff0cd19',1);
  }
  // Root networks, shell impressions and small erosion marks, clipped to terrain.
  for(let k=0;k<Math.floor(W/55);k++){
@@ -142,17 +142,17 @@ export function paintTerrain(c,terrain,theme,seed){
   if(['jungle','lagoon','ruins','sakura','alpine'].includes(id)){
    for(let j=0;j<2;j++){const sx=x+(r()-.5)*17,ey=y+20+r()*100,ex=sx+(r()-.5)*75;
     twig(c,sx,y+3,ex,ey,1+r()*1.4,'#192d374b',(r()-.5)*40);
-    twig(c,sx-1,y+3,ex-1,ey,.5,'#dfd5a94a',(r()-.5)*30);
-    for(let n=1;n<4;n++){const u=n/4;twig(c,sx+(ex-sx)*u,y+(ey-y)*u,ex+(r()-.5)*28,y+(ey-y)*u+12,.6,'#c4c39b41',8);}
+    twig(c,sx-1,y+3,ex-1,ey,.5,'#c4873028',(r()-.5)*30);
+    for(let n=1;n<4;n++){const u=n/4;twig(c,sx+(ex-sx)*u,y+(ey-y)*u,ex+(r()-.5)*28,y+(ey-y)*u+12,.6,'#77430c42',8);}
    }
   }
-  for(let n=0;n<8;n++){const xx=x+(r()-.5)*80,yy=y+14+r()*115;organicBlob(c,r,xx,yy,2+r()*7,2+r()*4,n%3?'#172a3726':'#fff0d828');}
+  for(let n=0;n<8;n++){const xx=x+(r()-.5)*80,yy=y+14+r()*115;organicBlob(c,r,xx,yy,2+r()*7,2+r()*4,n%3?'#172a3726':'#f7a5171c');}
   if(k%7===0){const yy=y+85+r()*90;c.strokeStyle='#e8dab330';c.lineWidth=1.4;c.beginPath();for(let a=0;a<12;a+=.14){const xx=x+Math.cos(a)*a,py=yy+Math.sin(a)*a*.7;a?c.lineTo(xx,py):c.moveTo(xx,py);}c.stroke();}
  }
  // Veines minérales ou strates courbes, avec ombre sous la couche supérieure.
  for(let k=0;k<12;k++){
   const pts=[];for(let x=0;x<=W;x+=12)pts.push([x,270+k*52+17*Math.sin(x/160+k)+7*Math.sin(x/46)]);
-  artLine(c,pts,theme.id==='neon'?'#a1eee01b':theme.id==='volcano'?'#f58a742d':'#edd8b415',2);
+  artLine(c,pts,theme.id==='neon'?'#a1eee01b':theme.id==='volcano'?'#f58a742d':'#ed940f12',2);
  }
  c.restore();
 }

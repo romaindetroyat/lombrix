@@ -1,6 +1,6 @@
 import {readFile,writeFile,readdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-const version='0.6.0';
+const version='0.6.1';
 for(const f of await readdir('site'))if(/\.(js|html|css|webmanifest)$/.test(f)){
  const p='site/'+f;await writeFile(p,(await readFile(p,'utf8')).replaceAll('0.5.2',version).replaceAll('0.5.1',version));
 }
