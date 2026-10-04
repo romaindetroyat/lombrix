@@ -1,0 +1,17 @@
+{
+  "version": "0.6.1",
+  "repository": "romaindetroyat/lombrix",
+  "sourceCommit": "57d1f7828434cdeb6380990126a308bb9e9830d9",
+  "run": "37188756730",
+  "checkedAt": "2026-10-04T08:25:19.820885+00:00",
+  "physicalIPhone": false,
+  "steps": {
+    "PREPARE": "success",
+    "UNIT": "success",
+    "RUNTIME": "success",
+    "INTERFACE": "success",
+    "NETWORK": "success",
+    "OFFLINE": "success"
+  },
+  "allPassed": true
+}

@@ -1,0 +1,84 @@
+{
+  "version": "0.6.1",
+  "url": "https://127.0.0.1:8787",
+  "physicalIPhone": false,
+  "records": [
+    {
+      "engine": "webkit",
+      "name": "current-version-visible-18-weapons-permanent-no-window",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "two-finger-pan-crosses-controls-no-shot-no-aim-change",
+      "status": "pass",
+      "moved": 108.35256410256409
+    },
+    {
+      "engine": "webkit",
+      "name": "map-two-finger-pinch-anchored-and-camera-safe",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "one-tap-equips-without-modal-pause-or-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "utilities-and-keyboard-selection-never-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "real-shot-AI-riposte-player-return",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "name": "portrait-rotation-cancellation-and-equipment-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "current-version-visible-18-weapons-permanent-no-window",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "two-finger-pan-crosses-controls-no-shot-no-aim-change",
+      "status": "pass",
+      "moved": 92.17012041977944
+    },
+    {
+      "engine": "chromium",
+      "name": "map-two-finger-pinch-anchored-and-camera-safe",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "one-tap-equips-without-modal-pause-or-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "native-ribbon-swipe-scrolls-without-equipping",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "utilities-and-keyboard-selection-never-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "real-shot-AI-riposte-player-return",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "name": "portrait-rotation-cancellation-and-equipment-accessible",
+      "status": "pass"
+    }
+  ]
+}

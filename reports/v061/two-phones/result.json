@@ -1,0 +1,269 @@
+{
+  "url": "https://127.0.0.1:8787",
+  "commit": "9d61670ff2f73cf9dbdc99ba50b8e9ba45fd4c09",
+  "checkedAt": "2026-10-04T08:24:55.511619+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "985SEW",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0ed6418e-bc59-475d-9dbe-fefb60673d46",
+            "you": "0ed6418e-bc59-475d-9dbe-fefb60673d46",
+            "players": [
+              {
+                "id": "0ed6418e-bc59-475d-9dbe-fefb60673d46",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "1de04248-41fc-4704-8a7d-1fec8b2128ac",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "985SEW",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "0ed6418e-bc59-475d-9dbe-fefb60673d46",
+            "you": "1de04248-41fc-4704-8a7d-1fec8b2128ac",
+            "players": [
+              {
+                "id": "0ed6418e-bc59-475d-9dbe-fefb60673d46",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "1de04248-41fc-4704-8a7d-1fec8b2128ac",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/presence",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/985SEW/sync",
+      "http": 200
+    }
+  ]
+}
