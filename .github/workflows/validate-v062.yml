@@ -1,0 +1,116 @@
+name: LOMBRIX 0.6.2 first-frame acceptance
+on:
+  push:
+    branches: ['fix/ios-first-frame-v062']
+    paths: ['.github/workflows/validate-v062.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-v062-review
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/ios-first-frame-v062
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply minimal measured rendering fix
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          python3 scripts/apply-first-frame-v062.py
+          mkdir -p reports/v062
+          for file in site/*.js *.mjs; do node --check "$file"; done
+          node scripts/build-solo.mjs
+          node scripts/prepare-release.mjs
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site scripts docs/v062 solo.html BUILD.json package.json package-lock.json
+          git diff --cached --quiet || git commit -m 'Paint the first visible battle immediately and avoid clearing an unchanged canvas'
+          git push origin HEAD:fix/ios-first-frame-v062
+      - name: Unit regression
+        id: unit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test | tee reports/v062/node-tests.tap
+      - name: Prepare real Worker and trusted local HTTPS
+        id: runtime
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+          sudo apt-get install -y libnss3-tools > /tmp/nss-install.log 2>&1
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout /tmp/lombrix-local.key -out /tmp/lombrix-local.crt -subj '/CN=LOMBRIX loopback acceptance' -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' -addext 'extendedKeyUsage=serverAuth' > /tmp/local-tls.log 2>&1
+          sudo cp /tmp/lombrix-local.crt /usr/local/share/ca-certificates/lombrix-local.crt
+          sudo update-ca-certificates > /tmp/local-ca.log 2>&1
+          mkdir -p "$HOME/.pki/nssdb"
+          test -f "$HOME/.pki/nssdb/cert9.db" || certutil -N -d sql:"$HOME/.pki/nssdb" --empty-password
+          certutil -A -d sql:"$HOME/.pki/nssdb" -n 'LOMBRIX loopback acceptance' -t 'C,,' -i /tmp/lombrix-local.crt
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https --https-key-path /tmp/lombrix-local.key --https-cert-path /tmp/lombrix-local.crt > /tmp/worker.log 2>&1 &
+          for i in $(seq 1 40); do
+            curl --silent --fail https://127.0.0.1:8787/health > /tmp/health.json && break
+            sleep 1
+          done
+          test -s /tmp/health.json
+      - name: Eight actual first-frame pixel samples
+        id: pixels
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 timeout 150 python3 scripts/check-first-frame-v062.py
+      - name: Touch and ribbon interactions
+        id: interface
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v062 timeout 300 python3 scripts/check-v062.py
+      - name: Two independent WebKit players
+        id: network
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v062/two-phones timeout 180 python3 scripts/check-two-phones.py
+      - name: Offline with origin actually stopped
+        id: offline
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: timeout 180 python3 scripts/check-offline-v062.py
+      - name: Preserve every outcome
+        if: always()
+        env:
+          UNIT: ${{ steps.unit.outcome }}
+          PIXELS: ${{ steps.pixels.outcome }}
+          INTERFACE: ${{ steps.interface.outcome }}
+          NETWORK: ${{ steps.network.outcome }}
+          OFFLINE: ${{ steps.offline.outcome }}
+        run: |
+          mkdir -p reports/v062
+          python3 - <<'PY'
+          import os,json,datetime,subprocess
+          from pathlib import Path
+          d={'version':'0.6.2','run':os.environ['GITHUB_RUN_ID'],'sourceCommit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'physicalIPhone':False,'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'steps':{k:os.environ[k] for k in ['UNIT','PIXELS','INTERFACE','NETWORK','OFFLINE']}}
+          d['allPassed']=all(v=='success' for v in d['steps'].values())
+          Path('reports/v062/gate.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/v062
+          git diff --cached --quiet || git commit -m 'Record pixel-first 0.6.2 acceptance; preserve original 0.6.1 failures'
+          git pull --rebase origin fix/ios-first-frame-v062
+          git push origin HEAD:fix/ios-first-frame-v062
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6.2_REVIEW.zip HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v062-reviewed-game
+          path: /tmp/LOMBRIX_v0.6.2_REVIEW.zip
+          retention-days: 3
+      - name: Require all measured gates
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("reports/v062/gate.json"))["allPassed"] is True'
