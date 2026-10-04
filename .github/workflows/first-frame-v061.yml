@@ -9,24 +9,46 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
     steps:
       - uses: actions/checkout@v4
-      - name: Install browser engines
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preserve prior report and prepare unchanged Worker
         run: |
+          mkdir -p reports/v061/first-frame/history
+          test ! -f reports/v061/first-frame/result.json || cp reports/v061/first-frame/result.json reports/v061/first-frame/history/public-before-$GITHUB_RUN_ID.json
+          npm ci --ignore-scripts --no-audit --no-fund
           python3 -m pip install playwright --quiet
           python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+          sudo apt-get install -y libnss3-tools > /tmp/nss-install.log 2>&1
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout /tmp/lombrix-local.key -out /tmp/lombrix-local.crt -subj '/CN=LOMBRIX loopback acceptance' -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' -addext 'extendedKeyUsage=serverAuth' > /tmp/tls.log 2>&1
+          sudo cp /tmp/lombrix-local.crt /usr/local/share/ca-certificates/lombrix-local.crt
+          sudo update-ca-certificates > /tmp/ca.log 2>&1
+          mkdir -p "$HOME/.pki/nssdb"
+          test -f "$HOME/.pki/nssdb/cert9.db" || certutil -N -d sql:"$HOME/.pki/nssdb" --empty-password
+          certutil -A -d sql:"$HOME/.pki/nssdb" -n 'LOMBRIX loopback acceptance' -t 'C,,' -i /tmp/lombrix-local.crt
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https --https-key-path /tmp/lombrix-local.key --https-cert-path /tmp/lombrix-local.crt > /tmp/worker.log 2>&1 &
+          for i in $(seq 1 40); do
+            curl --silent --fail https://127.0.0.1:8787/health > /tmp/health.json && break
+            sleep 1
+          done
+          test -s /tmp/health.json
       - name: Sample decoded canvas pixels and real screenshots
         id: render
         continue-on-error: true
-        run: timeout 150 python3 scripts/check-first-frame-v061.py
+        run: LOMBRIX_URL=https://127.0.0.1:8787 timeout 150 python3 scripts/check-first-frame-v061.py
       - name: Preserve all visual diagnostics
         if: always()
         run: |
           git config user.name 'LOMBRIX build'
           git config user.email 'lombrix-build@users.noreply.github.com'
           git add reports/v061/first-frame
-          git diff --cached --quiet || git commit -m 'Record unmodified public release first-frame rendering diagnostics'
+          git diff --cached --quiet || git commit -m 'Record unmodified Worker first-frame pixels separately from public hosting rejection'
           git pull --rebase origin main
           git push origin HEAD:main
           cd reports/v061
