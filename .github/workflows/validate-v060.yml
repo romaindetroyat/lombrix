@@ -1,0 +1,125 @@
+name: LOMBRIX 0.6 iOS and visual acceptance
+on:
+  push:
+    branches: ['fix/ios-controls-v060']
+    paths: ['.github/workflows/validate-v060.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-v060-review
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/ios-controls-v060
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply exact reviewed source patch
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          if [ ! -f scripts/check-v060.py ]; then
+            curl --fail --location --retry 2 --max-time 60 'https://at.adobe.com/oj1kiBSWB5nCe4sK' -o /tmp/lombrix-fix.zip
+            echo '0c530d6b8ec216b59204515501b41bab90a7dc9ceeb4d11cf14a8559a1e3e2f8  /tmp/lombrix-fix.zip' | sha256sum -c -
+            unzip -p /tmp/lombrix-fix.zip lombrix-v060.patch > /tmp/lombrix-v060.patch
+            echo '9ee25f42bcd344ec45317e6af13fc9de13987b710710d971c31fdaefe74d61fc  /tmp/lombrix-v060.patch' | sha256sum -c -
+            git apply --check /tmp/lombrix-v060.patch
+            git apply /tmp/lombrix-v060.patch
+          fi
+          mkdir -p reports/v060
+          for file in site/*.js *.mjs; do node --check "$file"; done
+          node scripts/build-solo.mjs
+          node scripts/prepare-release.mjs
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site scripts/build-solo.mjs scripts/check-v060.py scripts/prepare-release.mjs '*test.mjs' package.json package-lock.json solo.html BUILD.json wrangler.jsonc
+          git diff --cached --quiet || git commit -m 'LOMBRIX 0.6: native two-finger camera, direct weapon wheel and stronger scene palette'
+          git push origin HEAD:fix/ios-controls-v060
+      - name: Engine and offline-shell regression tests
+        id: unit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test | tee reports/v060/node-tests.tap
+      - name: Prepare actual Worker runtime and browser engines
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout /tmp/lombrix-local.key -out /tmp/lombrix-local.crt -subj '/CN=LOMBRIX loopback acceptance' -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' -addext 'extendedKeyUsage=serverAuth' > /tmp/local-tls.log 2>&1
+          sudo cp /tmp/lombrix-local.crt /usr/local/share/ca-certificates/lombrix-local.crt
+          sudo update-ca-certificates > /tmp/local-ca.log 2>&1
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https --https-key-path /tmp/lombrix-local.key --https-cert-path /tmp/lombrix-local.crt > /tmp/local-worker.log 2>&1 &
+          echo $! > /tmp/lombrix-worker.pid
+          for i in $(seq 1 40); do
+            curl --silent --fail https://127.0.0.1:8787/health > /tmp/local-health.json && break
+            sleep 1
+          done
+          test -s /tmp/local-health.json
+          cat /tmp/local-health.json
+      - name: Two-finger gestures and weapon wheel in WebKit and Chromium
+        id: interface
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v060 timeout 300 python3 scripts/check-v060.py
+      - name: Two independent WebKit online players
+        id: network
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v060/two-phones timeout 180 python3 scripts/check-two-phones.py
+      - name: Offline solo with the origin actually stopped
+        id: offline
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('scripts/check-origin-offline.py').read_text().replace('0.5.2','0.6.0').replace('reports/offline-origin-stopped.json','reports/v060/offline-origin-stopped.json')
+          old="await page.locator('[data-category=\"Utilitaires\"]').tap();await page.locator('[data-weapon=\"heal\"]').tap()"
+          assert old in s
+          s=s.replace(old,"await page.locator('#weapon-wheel [data-weapon=\"heal\"]').tap()")
+          Path('scripts/check-offline-v060.py').write_text(s)
+          PY
+          timeout 180 python3 scripts/check-offline-v060.py
+      - name: Preserve all outcomes on the dedicated review branch
+        if: always()
+        env:
+          UNIT: ${{ steps.unit.outcome }}
+          INTERFACE: ${{ steps.interface.outcome }}
+          NETWORK: ${{ steps.network.outcome }}
+          OFFLINE: ${{ steps.offline.outcome }}
+        run: |
+          mkdir -p reports/v060
+          python3 - <<'PY'
+          import os,json,datetime,subprocess
+          from pathlib import Path
+          result={'version':'0.6.0','repository':os.environ['GITHUB_REPOSITORY'],'sourceCommit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'run':os.environ['GITHUB_RUN_ID'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'steps':{k:os.environ[k] for k in ['UNIT','INTERFACE','NETWORK','OFFLINE']}}
+          result['allPassed']=all(v=='success' for v in result['steps'].values())
+          Path('reports/v060/gate.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/v060
+          test ! -f scripts/check-offline-v060.py || git add scripts/check-offline-v060.py
+          git diff --cached --quiet || git commit -m 'Preserve measured iOS gesture, wheel and online acceptance results'
+          git pull --rebase origin fix/ios-controls-v060
+          git push origin HEAD:fix/ios-controls-v060
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6_REVIEW.zip HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v060-reviewed-game
+          path: /tmp/LOMBRIX_v0.6_REVIEW.zip
+          retention-days: 3
+      - name: Require every independent gate to pass
+        if: always()
+        run: |
+          test '${{ steps.unit.outcome }}' = success
+          test '${{ steps.interface.outcome }}' = success
+          test '${{ steps.network.outcome }}' = success
+          test '${{ steps.offline.outcome }}' = success
