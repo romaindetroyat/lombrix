@@ -6,259 +6,259 @@ TAP version 13
 # Subtest: 18 armes distinctes et 12 mondes disponibles
 ok 1 - 18 armes distinctes et 12 mondes disponibles
   ---
-  duration_ms: 0.875122
+  duration_ms: 1.631363
   type: 'test'
   ...
 # Subtest: terrain déterministe et opérations rejouables à la reconnexion
 ok 2 - terrain déterministe et opérations rejouables à la reconnexion
   ---
-  duration_ms: 69.708898
+  duration_ms: 82.861048
   type: 'test'
   ...
 # Subtest: cercle hors terrain ne corrompt pas les autres lignes
 ok 3 - cercle hors terrain ne corrompt pas les autres lignes
   ---
-  duration_ms: 13.663833
+  duration_ms: 20.502938
   type: 'test'
   ...
 # Subtest: options invalides normalisées
 ok 4 - options invalides normalisées
   ---
-  duration_ms: 0.272272
+  duration_ms: 0.530493
   type: 'test'
   ...
 # Subtest: un joueur ne contrôle que son tour et une seule attaque
 ok 5 - un joueur ne contrôle que son tour et une seule attaque
   ---
-  duration_ms: 27.093019
+  duration_ms: 43.96788
   type: 'test'
   ...
 # Subtest: le déplacement cesse automatiquement sans nouvelles commandes
 ok 6 - le déplacement cesse automatiquement sans nouvelles commandes
   ---
-  duration_ms: 29.971176
+  duration_ms: 56.282994
   type: 'test'
   ...
 # Subtest: soin borné et munitions partagées
 ok 7 - soin borné et munitions partagées
   ---
-  duration_ms: 31.250742
+  duration_ms: 29.926158
   type: 'test'
   ...
 # Subtest: explosion : cratère, dégâts, recul et tir ami
 ok 8 - explosion : cratère, dégâts, recul et tir ami
   ---
-  duration_ms: 10.816233
+  duration_ms: 12.433403
   type: 'test'
   ...
 # Subtest: eau et victoire serveur
 ok 9 - eau et victoire serveur
   ---
-  duration_ms: 10.723788
+  duration_ms: 10.459771
   type: 'test'
   ...
 # Subtest: toutes les armes se déclenchent sans état non numérique
 ok 10 - toutes les armes se déclenchent sans état non numérique
   ---
-  duration_ms: 323.890484
+  duration_ms: 565.335591
   type: 'test'
   ...
 # Subtest: IA : une commande balistique valide dans tous les mondes
 ok 11 - IA : une commande balistique valide dans tous les mondes
   ---
-  duration_ms: 236.273821
+  duration_ms: 384.523135
   type: 'test'
   ...
 # Subtest: partie simulée longue : la montée des eaux force une issue
 ok 12 - partie simulée longue : la montée des eaux force une issue
   ---
-  duration_ms: 85.64261
+  duration_ms: 147.560979
   type: 'test'
   ...
 # Subtest: charge tactile : poser le doigt loin ne saute jamais à 100 %
 ok 13 - charge tactile : poser le doigt loin ne saute jamais à 100 %
   ---
-  duration_ms: 0.844966
+  duration_ms: 1.216266
   type: 'test'
   ...
 # Subtest: charge tactile : davantage de course utile, 120 pixels depuis 50 % restent sous 85 %
 ok 14 - charge tactile : davantage de course utile, 120 pixels depuis 50 % restent sous 85 %
   ---
-  duration_ms: 0.155915
+  duration_ms: 0.193933
   type: 'test'
   ...
 # Subtest: charge tactile : courbe monotone et bornée, aller-retour précis
 ok 15 - charge tactile : courbe monotone et bornée, aller-retour précis
   ---
-  duration_ms: 0.346644
+  duration_ms: 0.454851
   type: 'test'
   ...
 # Subtest: charge tactile : plusieurs reprises du geste atteignent la pleine puissance
 ok 16 - charge tactile : plusieurs reprises du geste atteignent la pleine puissance
   ---
-  duration_ms: 0.108194
+  duration_ms: 0.244257
   type: 'test'
   ...
 # Subtest: rail de caméra : les extrémités correspondent aux bornes visibles sans zoom
 ok 17 - rail de caméra : les extrémités correspondent aux bornes visibles sans zoom
   ---
-  duration_ms: 0.19859
+  duration_ms: 0.429955
   type: 'test'
   ...
 # Subtest: mimiques : personnalités indépendantes, pas de modification de l’état partagé
 ok 18 - mimiques : personnalités indépendantes, pas de modification de l’état partagé
   ---
-  duration_ms: 1.488558
+  duration_ms: 1.797974
   type: 'test'
   ...
 # Subtest: mimiques : chute et dommage prioritaires, mouvements réduits respectés
 ok 19 - mimiques : chute et dommage prioritaires, mouvements réduits respectés
   ---
-  duration_ms: 0.201154
+  duration_ms: 1.317545
   type: 'test'
   ...
 # Subtest: décès : identifiant, équipe et heure serveur, émission unique même après redégât
 ok 20 - décès : identifiant, équipe et heure serveur, émission unique même après redégât
   ---
-  duration_ms: 32.669717
+  duration_ms: 59.237506
   type: 'test'
   ...
 # Subtest: noyade : animation distincte et état de mort reproductible après restauration
 ok 21 - noyade : animation distincte et état de mort reproductible après restauration
   ---
-  duration_ms: 58.518037
+  duration_ms: 71.959468
   type: 'test'
   ...
 # Subtest: pincement : le point du décor entre les doigts reste ancré hors centre
 ok 22 - pincement : le point du décor entre les doigts reste ancré hors centre
   ---
-  duration_ms: 0.792707
+  duration_ms: 1.51217
   type: 'test'
   ...
 # Subtest: pincement : translation et zoom combinés ne dérivent pas
 ok 23 - pincement : translation et zoom combinés ne dérivent pas
   ---
-  duration_ms: 1.000911
+  duration_ms: 1.724577
   type: 'test'
   ...
 # Subtest: pincement : aucune variation et limites de zoom stables
 ok 24 - pincement : aucune variation et limites de zoom stables
   ---
-  duration_ms: 0.134503
+  duration_ms: 0.261279
   type: 'test'
   ...
 # Subtest: pincement : bornes de caméra aux extrémités et terrain entièrement visible
 ok 25 - pincement : bornes de caméra aux extrémités et terrain entièrement visible
   ---
-  duration_ms: 0.186011
+  duration_ms: 0.310441
   type: 'test'
   ...
 # Subtest: commandes contextuelles : toutes les armes ont un verbe et des capacités explicites
 ok 26 - commandes contextuelles : toutes les armes ont un verbe et des capacités explicites
   ---
-  duration_ms: 0.305531
+  duration_ms: 0.600374
   type: 'test'
   ...
 # Subtest: commandes contextuelles : soin, mine et cibles ne prétendent pas régler une puissance
 ok 27 - commandes contextuelles : soin, mine et cibles ne prétendent pas régler une puissance
   ---
-  duration_ms: 0.1254
+  duration_ms: 0.220012
   type: 'test'
   ...
 # Subtest: commandes contextuelles : précision et directions gardent leur angle sans fausse charge
 ok 28 - commandes contextuelles : précision et directions gardent leur angle sans fausse charge
   ---
-  duration_ms: 0.152881
+  duration_ms: 0.3314
   type: 'test'
   ...
 # Subtest: cache graphique : surface vide libérée au lieu de stocker du transparent
 ok 29 - cache graphique : surface vide libérée au lieu de stocker du transparent
   ---
-  duration_ms: 0.263988
+  duration_ms: 0.431637
   type: 'test'
   ...
 # Subtest: cache graphique : rognage conservatif, antialias alpha faible conservé
 ok 30 - cache graphique : rognage conservatif, antialias alpha faible conservé
   ---
-  duration_ms: 0.291831
+  duration_ms: 0.537456
   type: 'test'
   ...
 # Subtest: cache graphique : bordures clampées et surface opaque intacte
 ok 31 - cache graphique : bordures clampées et surface opaque intacte
   ---
-  duration_ms: 0.984497
+  duration_ms: 0.621904
   type: 'test'
   ...
 # Subtest: cache graphique : dimensions incohérentes refusées
 ok 32 - cache graphique : dimensions incohérentes refusées
   ---
-  duration_ms: 0.41054
+  duration_ms: 0.650978
   type: 'test'
   ...
 # Subtest: Safari navigation uses decoded non-redirected HTML
 ok 33 - Safari navigation uses decoded non-redirected HTML
   ---
-  duration_ms: 51.02565
+  duration_ms: 54.278706
   type: 'test'
   ...
 # Subtest: Offline reload and invitation query keep the game shell available
 ok 34 - Offline reload and invitation query keep the game shell available
   ---
-  duration_ms: 5.734951
+  duration_ms: 10.759483
   type: 'test'
   ...
 # Subtest: API calls never enter the game cache
 ok 35 - API calls never enter the game cache
   ---
-  duration_ms: 4.312863
+  duration_ms: 7.164399
   type: 'test'
   ...
 # Subtest: Failed precache rejects incomplete release
 ok 36 - Failed precache rejects incomplete release
   ---
-  duration_ms: 10.058825
+  duration_ms: 5.891879
   type: 'test'
   ...
 # Subtest: Activation removes only obsolete LOMBRIX caches
 ok 37 - Activation removes only obsolete LOMBRIX caches
   ---
-  duration_ms: 10.215272
+  duration_ms: 12.703017
   type: 'test'
   ...
 # Subtest: Updates activate only after the explicit idle UI request
 ok 38 - Updates activate only after the explicit idle UI request
   ---
-  duration_ms: 3.835732
+  duration_ms: 4.839151
   type: 'test'
   ...
 # Subtest: public Fetch authority: two guests, shared terrain, secure cookie, no opponent command
 ok 39 - public Fetch authority: two guests, shared terrain, secure cookie, no opponent command
   ---
-  duration_ms: 67.295505
+  duration_ms: 110.074549
   type: 'test'
   ...
 # Subtest: durable room restoration preserves membership and match
 ok 40 - durable room restoration preserves membership and match
   ---
-  duration_ms: 31.680602
+  duration_ms: 73.586193
   type: 'test'
   ...
 # Subtest: four-team match and tournament create separate authoritative games
 ok 41 - four-team match and tournament create separate authoritative games
   ---
-  duration_ms: 37.203019
+  duration_ms: 73.478099
   type: 'test'
   ...
 # Subtest: unknown membership rejected; no auth cookie visible in room JSON
 ok 42 - unknown membership rejected; no auth cookie visible in room JSON
   ---
-  duration_ms: 8.050177
+  duration_ms: 19.694463
   type: 'test'
   ...
 # Subtest: origin and malformed payload rejected
 ok 43 - origin and malformed payload rejected
   ---
-  duration_ms: 0.793889
+  duration_ms: 1.168125
   type: 'test'
   ...
 1..43
@@ -269,4 +269,4 @@ ok 43 - origin and malformed payload rejected
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 917.697566
+# duration_ms 1465.999296
