@@ -1,0 +1,78 @@
+{
+  "repository": "romaindetroyat/lombrix",
+  "commit": "ede8f5e08b1203eaa293282123570881fdee2ded",
+  "version": "0.6.2",
+  "createdAt": "2026-10-04T08:46:25.159111+00:00",
+  "status": "verified-http",
+  "checks": [
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 404
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 404
+    },
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/health",
+      "http": 404
+    },
+    {
+      "path": "/",
+      "http": 404
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/health",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/",
+      "http": 200,
+      "verified": true
+    },
+    {
+      "path": "/sw.js",
+      "http": 200,
+      "verified": true
+    }
+  ],
+  "hosting": "temporary-unclaimed",
+  "claimBefore": "2026-10-04T09:46:25.159111+00:00",
+  "url": "https://lombrix.brash-temper.workers.dev"
+}

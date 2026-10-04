@@ -1,0 +1,269 @@
+{
+  "url": "https://lombrix.brash-temper.workers.dev",
+  "commit": "ede8f5e08b1203eaa293282123570881fdee2ded",
+  "checkedAt": "2026-10-04T08:48:10.528247+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "LGQE7K",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "99449087-6f80-4dd4-b7c7-ea1c61594a26",
+            "you": "99449087-6f80-4dd4-b7c7-ea1c61594a26",
+            "players": [
+              {
+                "id": "99449087-6f80-4dd4-b7c7-ea1c61594a26",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "b24c9866-4332-40a4-a9b1-bdc00ec53a64",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "LGQE7K",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "99449087-6f80-4dd4-b7c7-ea1c61594a26",
+            "you": "b24c9866-4332-40a4-a9b1-bdc00ec53a64",
+            "players": [
+              {
+                "id": "99449087-6f80-4dd4-b7c7-ea1c61594a26",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "b24c9866-4332-40a4-a9b1-bdc00ec53a64",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/presence",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/LGQE7K/sync",
+      "http": 200
+    }
+  ]
+}
