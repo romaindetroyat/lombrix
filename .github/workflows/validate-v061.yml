@@ -1,0 +1,123 @@
+name: LOMBRIX 0.6.1 tactile acceptance
+on:
+  push:
+    branches: ['fix/ios-ribbon-v061']
+    paths: ['.github/workflows/validate-v061.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-v061-review
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/ios-ribbon-v061
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply exact reviewed source and save checkpoint
+        id: prepare
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          curl --fail --location --retry 2 --max-time 90 'https://at.adobe.com/wJJAUVR5v4lvJA4f' -o /tmp/lombrix-v061.zip
+          echo 'eab242d00ea47712cfcf51d9f803ea05b58e1b51de3e074e09e297b89d3450ef  /tmp/lombrix-v061.zip' | sha256sum -c -
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          allow={'package-lock.json','package.json','scripts/prepare-release.mjs','site/app.js','site/art.js','site/boot.js','site/engine.js','site/index.html','site/renderer.js','site/style.css','site/sw.js','scripts/check-v061.py','scripts/check-offline-v061.py','docs/v061/NOTES.md','BUILD.json','solo.html','reports/v061/baseline-reproduction.json'}
+          with zipfile.ZipFile('/tmp/lombrix-v061.zip') as z:
+            assert set(z.namelist())==allow
+            for name in z.namelist():
+              p=Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(z.read(name))
+          PY
+          for file in site/*.js *.mjs; do node --check "$file"; done
+          node scripts/build-solo.mjs
+          node scripts/prepare-release.mjs
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site scripts package.json package-lock.json solo.html BUILD.json docs/v061 reports/v061/baseline-reproduction.json
+          git diff --cached --quiet || git commit -m 'Checkpoint 0.6.1 touch promotion, persistent equipment ribbon and stronger palettes'
+          git push origin HEAD:fix/ios-ribbon-v061
+      - name: Engine and offline-shell regression tests
+        id: unit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test | tee reports/v061/node-tests.tap
+      - name: Prepare browsers and trust ephemeral loopback TLS
+        id: runtime
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+          sudo apt-get install -y libnss3-tools > /tmp/nss-install.log 2>&1
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout /tmp/lombrix-local.key -out /tmp/lombrix-local.crt -subj '/CN=LOMBRIX loopback acceptance' -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' -addext 'extendedKeyUsage=serverAuth' > /tmp/local-tls.log 2>&1
+          sudo cp /tmp/lombrix-local.crt /usr/local/share/ca-certificates/lombrix-local.crt
+          sudo update-ca-certificates > /tmp/local-ca.log 2>&1
+          mkdir -p "$HOME/.pki/nssdb"
+          test -f "$HOME/.pki/nssdb/cert9.db" || certutil -N -d sql:"$HOME/.pki/nssdb" --empty-password
+          certutil -A -d sql:"$HOME/.pki/nssdb" -n 'LOMBRIX loopback acceptance' -t 'C,,' -i /tmp/lombrix-local.crt
+          npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https --https-key-path /tmp/lombrix-local.key --https-cert-path /tmp/lombrix-local.crt > /tmp/local-worker.log 2>&1 &
+          echo $! > /tmp/lombrix-worker.pid
+          for i in $(seq 1 40); do
+            curl --silent --fail https://127.0.0.1:8787/health > /tmp/local-health.json && break
+            sleep 1
+          done
+          test -s /tmp/local-health.json
+      - name: Mixed map-control gestures and ribbon in both browser engines
+        id: interface
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v061 timeout 300 python3 scripts/check-v061.py
+      - name: Independent WebKit multiplayer with Secure cookies
+        id: network
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v061/two-phones timeout 180 python3 scripts/check-two-phones.py
+      - name: Offline solo with origin really stopped
+        id: offline
+        if: always() && steps.runtime.outcome == 'success'
+        continue-on-error: true
+        run: timeout 180 python3 scripts/check-offline-v061.py
+      - name: Record independent outcomes and preserve source
+        if: always()
+        env:
+          PREPARE: ${{ steps.prepare.outcome }}
+          UNIT: ${{ steps.unit.outcome }}
+          RUNTIME: ${{ steps.runtime.outcome }}
+          INTERFACE: ${{ steps.interface.outcome }}
+          NETWORK: ${{ steps.network.outcome }}
+          OFFLINE: ${{ steps.offline.outcome }}
+        run: |
+          mkdir -p reports/v061
+          python3 - <<'PY'
+          import os,json,datetime,subprocess
+          from pathlib import Path
+          result={'version':'0.6.1','repository':os.environ['GITHUB_REPOSITORY'],'sourceCommit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'run':os.environ['GITHUB_RUN_ID'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'steps':{k:os.environ[k] for k in ['PREPARE','UNIT','RUNTIME','INTERFACE','NETWORK','OFFLINE']}}
+          result['allPassed']=all(v=='success' for v in result['steps'].values())
+          Path('reports/v061/gate.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/v061
+          git diff --cached --quiet || git commit -m 'Record 0.6.1 measured WebKit, Chromium, network and offline outcomes'
+          git pull --rebase origin fix/ios-ribbon-v061
+          git push origin HEAD:fix/ios-ribbon-v061
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6.1_REVIEW.zip HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v061-reviewed-game
+          path: /tmp/LOMBRIX_v0.6.1_REVIEW.zip
+          retention-days: 3
+      - name: Require all measured acceptance gates
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("reports/v061/gate.json"))["allPassed"] is True'
