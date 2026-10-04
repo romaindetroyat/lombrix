@@ -23,25 +23,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply exact reviewed source patch
+      - name: Preserve diagnostics and prepare corrected source
         run: |
           test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
-          if [ ! -f scripts/check-v060.py ]; then
-            curl --fail --location --retry 2 --max-time 60 'https://at.adobe.com/oj1kiBSWB5nCe4sK' -o /tmp/lombrix-fix.zip
-            echo '0c530d6b8ec216b59204515501b41bab90a7dc9ceeb4d11cf14a8559a1e3e2f8  /tmp/lombrix-fix.zip' | sha256sum -c -
-            unzip -p /tmp/lombrix-fix.zip lombrix-v060.patch > /tmp/lombrix-v060.patch
-            echo '9ee25f42bcd344ec45317e6af13fc9de13987b710710d971c31fdaefe74d61fc  /tmp/lombrix-v060.patch' | sha256sum -c -
-            git apply --check /tmp/lombrix-v060.patch
-            git apply /tmp/lombrix-v060.patch
-          fi
-          mkdir -p reports/v060
+          mkdir -p reports/v060/history
+          test ! -f reports/v060/gate.json || cp reports/v060/gate.json reports/v060/history/gate-before-$GITHUB_RUN_ID.json
+          test ! -f reports/v060/interface.json || cp reports/v060/interface.json reports/v060/history/interface-before-$GITHUB_RUN_ID.json
+          python3 scripts/fix-v060-framing.py
           for file in site/*.js *.mjs; do node --check "$file"; done
           node scripts/build-solo.mjs
           node scripts/prepare-release.mjs
           git config user.name 'LOMBRIX build'
           git config user.email 'lombrix-build@users.noreply.github.com'
-          git add site scripts/build-solo.mjs scripts/check-v060.py scripts/prepare-release.mjs '*test.mjs' package.json package-lock.json solo.html BUILD.json wrangler.jsonc
-          git diff --cached --quiet || git commit -m 'LOMBRIX 0.6: native two-finger camera, direct weapon wheel and stronger scene palette'
+          git add site scripts package.json package-lock.json solo.html BUILD.json wrangler.jsonc reports/v060/history
+          git diff --cached --quiet || git commit -m 'Snap initial view to active worm before input; preserve prior failed acceptance evidence'
           git push origin HEAD:fix/ios-controls-v060
       - name: Engine and offline-shell regression tests
         id: unit
@@ -49,14 +44,18 @@ jobs:
         run: |
           set -o pipefail
           npm test | tee reports/v060/node-tests.tap
-      - name: Prepare actual Worker runtime and browser engines
+      - name: Prepare browsers and trust the ephemeral local certificate
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           python3 -m pip install playwright --quiet
           python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+          sudo apt-get install -y libnss3-tools > /tmp/nss-install.log 2>&1
           openssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout /tmp/lombrix-local.key -out /tmp/lombrix-local.crt -subj '/CN=LOMBRIX loopback acceptance' -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' -addext 'extendedKeyUsage=serverAuth' > /tmp/local-tls.log 2>&1
           sudo cp /tmp/lombrix-local.crt /usr/local/share/ca-certificates/lombrix-local.crt
           sudo update-ca-certificates > /tmp/local-ca.log 2>&1
+          mkdir -p "$HOME/.pki/nssdb"
+          test -f "$HOME/.pki/nssdb/cert9.db" || certutil -N -d sql:"$HOME/.pki/nssdb" --empty-password
+          certutil -A -d sql:"$HOME/.pki/nssdb" -n 'LOMBRIX loopback acceptance' -t 'C,,' -i /tmp/lombrix-local.crt
           npx --no-install wrangler dev --local --ip 127.0.0.1 --port 8787 --local-protocol https --https-key-path /tmp/lombrix-local.key --https-cert-path /tmp/lombrix-local.crt > /tmp/local-worker.log 2>&1 &
           echo $! > /tmp/lombrix-worker.pid
           for i in $(seq 1 40); do
@@ -64,8 +63,7 @@ jobs:
             sleep 1
           done
           test -s /tmp/local-health.json
-          cat /tmp/local-health.json
-      - name: Two-finger gestures and weapon wheel in WebKit and Chromium
+      - name: Two-finger gestures and wheel over HTTPS in both engines
         id: interface
         continue-on-error: true
         run: LOMBRIX_URL=https://127.0.0.1:8787 LOMBRIX_REPORT_DIR=reports/v060 timeout 300 python3 scripts/check-v060.py
@@ -76,17 +74,8 @@ jobs:
       - name: Offline solo with the origin actually stopped
         id: offline
         continue-on-error: true
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          s=Path('scripts/check-origin-offline.py').read_text().replace('0.5.2','0.6.0').replace('reports/offline-origin-stopped.json','reports/v060/offline-origin-stopped.json')
-          old="await page.locator('[data-category=\"Utilitaires\"]').tap();await page.locator('[data-weapon=\"heal\"]').tap()"
-          assert old in s
-          s=s.replace(old,"await page.locator('#weapon-wheel [data-weapon=\"heal\"]').tap()")
-          Path('scripts/check-offline-v060.py').write_text(s)
-          PY
-          timeout 180 python3 scripts/check-offline-v060.py
-      - name: Preserve all outcomes on the dedicated review branch
+        run: timeout 180 python3 scripts/check-offline-v060.py
+      - name: Preserve all outcomes on the dedicated branch
         if: always()
         env:
           UNIT: ${{ steps.unit.outcome }}
@@ -105,8 +94,7 @@ jobs:
           git config user.name 'LOMBRIX build'
           git config user.email 'lombrix-build@users.noreply.github.com'
           git add reports/v060
-          test ! -f scripts/check-offline-v060.py || git add scripts/check-offline-v060.py
-          git diff --cached --quiet || git commit -m 'Preserve measured iOS gesture, wheel and online acceptance results'
+          git diff --cached --quiet || git commit -m 'Record strict two-engine and two-player acceptance outcomes'
           git pull --rebase origin fix/ios-controls-v060
           git push origin HEAD:fix/ios-controls-v060
           git archive --format=zip -o /tmp/LOMBRIX_v0.6_REVIEW.zip HEAD
