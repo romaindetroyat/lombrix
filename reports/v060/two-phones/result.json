@@ -1,0 +1,269 @@
+{
+  "url": "https://127.0.0.1:8787",
+  "commit": "15c54f7e0bca6c03b9d50ce1755fd973b6244b70",
+  "checkedAt": "2026-10-04T07:48:11.316591+00:00",
+  "deviceModel": "two independent WebKit processes; not physical iPhones",
+  "results": [
+    {
+      "step": "invitation-readiness-shot-authority-shared-crater-turn-reload",
+      "status": "pass"
+    }
+  ],
+  "lobby": [
+    {
+      "phone": 0,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "VEZVEP",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "63236161-57c4-4ee0-9eff-2f6aeafb8b2f",
+            "you": "63236161-57c4-4ee0-9eff-2f6aeafb8b2f",
+            "players": [
+              {
+                "id": "63236161-57c4-4ee0-9eff-2f6aeafb8b2f",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "4786c9ce-faf2-467e-b15e-742e7c3e1c63",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    },
+    {
+      "phone": 1,
+      "visibility": "visible",
+      "state": {
+        "http": 200,
+        "data": {
+          "room": {
+            "code": "VEZVEP",
+            "kind": "duel",
+            "capacity": 2,
+            "status": "lobby",
+            "options": {
+              "theme": "sakura",
+              "layout": "ridge",
+              "generation": 4,
+              "sizeMode": "auto",
+              "pace": "lively",
+              "worms": 2,
+              "hp": 100,
+              "turnSeconds": 60,
+              "difficulty": "normal",
+              "seed": 31415,
+              "suddenDeath": true
+            },
+            "hostId": "63236161-57c4-4ee0-9eff-2f6aeafb8b2f",
+            "you": "4786c9ce-faf2-467e-b15e-742e7c3e1c63",
+            "players": [
+              {
+                "id": "63236161-57c4-4ee0-9eff-2f6aeafb8b2f",
+                "name": "Alice validation",
+                "ready": true,
+                "online": true
+              },
+              {
+                "id": "4786c9ce-faf2-467e-b15e-742e7c3e1c63",
+                "name": "Bob validation",
+                "ready": true,
+                "online": true
+              }
+            ],
+            "rounds": [],
+            "matches": [],
+            "champion": null,
+            "matchId": null,
+            "myTeam": -1,
+            "pause": null,
+            "nextRoundAt": null
+          }
+        }
+      }
+    }
+  ],
+  "pageErrors": [],
+  "lastRequests": [
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/presence",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 1,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    },
+    {
+      "phone": 0,
+      "path": "/api/rooms/VEZVEP/sync",
+      "http": 200
+    }
+  ]
+}

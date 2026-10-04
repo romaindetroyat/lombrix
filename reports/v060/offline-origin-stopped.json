@@ -1,0 +1,22 @@
+{
+  "version": "0.6.0",
+  "checkedAt": "2026-10-04T07:48:38.536145+00:00",
+  "method": "Actual local HTTP origin stopped; identical site code; no browser offline emulation",
+  "physicalIPhone": false,
+  "results": [
+    {
+      "engine": "webkit",
+      "status": "pass",
+      "negativeNetworkControl": true,
+      "fromServiceWorker": true,
+      "actionAndAIReturn": true
+    },
+    {
+      "engine": "chromium",
+      "status": "pass",
+      "negativeNetworkControl": true,
+      "fromServiceWorker": true,
+      "actionAndAIReturn": true
+    }
+  ]
+}
