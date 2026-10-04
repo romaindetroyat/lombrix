@@ -1,8 +1,5 @@
 name: LOMBRIX 0.6.2 public release
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/publish-v062.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -90,7 +87,7 @@ jobs:
           git diff --cached --quiet || git commit -m 'Record public 0.6.2 pixels, interaction and multiplayer validation'
           git pull --rebase origin main
           git push origin HEAD:main
-          git archive --format=zip -o /tmp/LOMBRIX_v0.6.2_PUBLIC.zip HEAD site core.mjs worker.mjs worker.test.mjs service-worker.test.mjs interaction.test.mjs package.json package-lock.json wrangler.jsonc solo.html BUILD.json README.md REPRISE.md docs scripts reports/v062
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6.2_PUBLIC.zip HEAD
       - uses: actions/upload-artifact@v4
         if: always()
         with:
