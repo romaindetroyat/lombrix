@@ -1,58 +1,49 @@
-# LOMBRIX — jeu PWA pour iPhone
+# LOMBRIX — version 0.6.0
 
-Dépôt **exclusivement consacré à LOMBRIX**, indépendant de Culture Gé et des autres applications. La migration est terminée : aucun historique Git des autres projets n’a été importé. `MIGRATION.json` conserve les empreintes des fichiers transférés.
+Jeu d’artillerie PWA : équipes de vers, terrains destructibles, solo et salons privés entre appareils distincts. Ce dépôt est exclusivement consacré à LOMBRIX. Il ne contient pas l’historique Git de Culture Gé ni des autres applications.
 
-## Version
+## Changements 0.6
 
-**0.5.2** : jeu issu de la 0.5.1, avec correction de la navigation/cache iPhone. Solo contre l’ordinateur, terrains destructibles, commandes tactiles, ceinture d’armes, caméra panoramique, et serveur autoritaire pour les salons privés. Le fichier historique `solo.html` reste l’export autonome 0.5.1 ; l’application publiée provient de `site/`.
+**Caméra tactile.** Deux doigts déplacent le décor horizontalement et verticalement. Le pincement règle le zoom autour du milieu des doigts. Une faible variation d’écartement pendant un panoramique ne déclenche pas de zoom parasite. La visée et la puissance préparées sont conservées. Après avoir retiré un des deux doigts, le doigt restant ne reprend pas la visée : il faut terminer le geste. La barre panoramique reste disponible.
 
-## Ouvrir le jeu
+**Cadrage initial.** Le combat démarre au zoom 1,6 et directement sur le ver actif, au lieu de dériver depuis le centre de la carte. Cela donne une marge de déplacement même sur les terrains modestes et évite de commencer hors champ lorsque les premières images sont lentes.
 
-La dernière session demandée et son URL sont enregistrées dans [`reports/session/deployment.json`](reports/session/deployment.json). Ne pas confondre l’adresse GitHub du code avec l’adresse du jeu.
+**Armes.** Un appui sur l’arme ouvre une roue non modale de six raccourcis fixes. Un appui sur une icône l’équipe. Autre méthode : glisser depuis le bouton d’arme jusqu’à l’icône, puis relâcher. Le centre « 18 TOUTES » expose l’arsenal complet sans catégories intermédiaires. Relâcher ne tire jamais : le bouton FEU reste distinct. Les munitions, le nom et les commandes utiles à chaque équipement restent visibles.
 
-Une publication Cloudflare temporaire expire après 60 minutes si son propriétaire ne termine pas la revendication dans Cloudflare. Son lien de revendication est privé : il est transmis au propriétaire hors du dépôt. Seule sa version chiffrée peut figurer dans les rapports. Aucun jeton d’administration ni clé privée ne doit être ajouté à Git.
+**Couleurs.** Palettes des douze univers plus franches, ombres renforcées, brume réduite, sols et végétation plus contrastés. Les bandeaux des équipes et les commandes sont également plus lisibles. Ce sont les couleurs du moteur et des accessoires, pas un filtre CSS appliqué à une capture.
 
-Sur iPhone : ouvrir l’URL du jeu dans Safari, utiliser le paysage, puis « Jouer en solo ». Pour un duel : « Défier un ami », partager l’invitation, attendre que chaque joueur soit prêt, puis lancer la bataille. Chaque personne utilise son propre appareil.
+**PWA.** Cache cohérent par version. Une mise à jour en attente peut être activée depuis l’accueil, pas au milieu d’un combat. Le fichier `solo.html` est maintenant régénéré à partir de la même version que `site/`.
 
-## Validation réellement effectuée
+## Validation
 
-- **10 tests de l’adaptateur serveur et du cache PWA réussis** (`npm test`). Ce nombre ne désigne pas la totalité des tests historiques des anciennes archives.
-- Solo, tir, riposte IA et rechargement avec service worker : exécutés sous WebKit et Chromium, voir `reports/local/browser.json`.
-- **Duel complet d’acceptation sous deux processus WebKit indépendants, en HTTPS local : réussi.** Invitation, préparation des joueurs, identités distinctes, refus d’une commande adverse, tir, cratère partagé, passage du tour et rechargement sans perdre sa place. Voir `reports/two-phones-https/result.json`.
-- Le premier essai local HTTP échouait avec des réponses 401 : les cookies de session `Secure` n’étaient pas renvoyés par WebKit. La recette utilise désormais un vrai HTTPS local avec certificat de test approuvé, sans supprimer `Secure`, sans changer les règles du jeu et sans simuler l’authentification. L’échec initial reste dans `reports/two-phones/`.
-- La validation de l’adresse publique est **distincte** de la recette locale : consulter `reports/session/public-two-phones/result.json`. Une réponse HTTP 200 ne suffit pas à déclarer le parcours navigateur réussi. Des protections Cloudflare peuvent bloquer le navigateur automatisé ; elles ne sont pas contournées.
+Les résultats mesurés sont dans `reports/v060/` :
 
-**Aucun de ces essais ne remplace une recette sur iPhone physique.** L’ergonomie réelle, les interruptions iOS et les performances prolongées restent à mesurer.
+- `gate.json` : résultat des quatre étapes indépendantes.
+- `node-tests.tap` : 43 tests du moteur, des interactions, du serveur et du cache.
+- `interface.json` : 16 scénarios répartis entre WebKit et Chromium sur le vrai serveur local HTTPS.
+- `two-phones/result.json` : deux processus WebKit indépendants, invitation, état prêt, tir autorisé, cratère partagé, changement de tour et rechargement.
+- `offline-origin-stopped.json` : reprise du solo après arrêt réel du serveur d’origine, dans les deux moteurs.
+- `session/` : publication et contrôles de l’adresse publique, lorsqu’ils ont été exécutés.
 
-## Structure
+Les premiers échecs restent dans `reports/v060/history/`. La recette a notamment révélé un cadrage initial trop lent sous WebKit, corrigé avant validation. Le certificat local est explicitement approuvé par le système et par Chromium : les contrôles TLS ne sont pas désactivés.
 
-- `site/` : interface, moteur partagé, rendu, audio, manifeste et service worker.
-- `core.mjs` : règles des salons et validation des actions.
-- `worker.mjs` : hébergement Cloudflare et persistance via Durable Object.
-- `*.test.mjs` : tests serveur et service worker.
-- `scripts/` : vérification, préparation et publication.
-- `.github/workflows/` : étapes indépendantes ; les erreurs restent visibles et les rapports sont sauvegardés.
-- `reports/` : résultats mesurés, avec contexte et limites.
+**Limites :** WebKit Linux n’est pas un iPhone physique. Les gestes multipoints WebKit sont exercés par événements Touch simulés ; Chromium utilise également des gestes tactiles natifs CDP. Cela ne prouve pas la fluidité, l’audio, les interruptions téléphoniques ou le comportement sur toutes les versions d’iOS. Aucun essai physique Wi-Fi/4G n’est annoncé.
 
-## Développement et publication durable
+## Hébergement
+
+L’adresse de la dernière publication et son statut sont consignés dans `reports/v060/session/deployment.json`. Un résultat HTTP réussi n’est pas à confondre avec l’acceptation navigateur : lire également `session/gate.json` et les rapports associés.
+
+Le workflow `publish-v060.yml` utilise un compte Cloudflare authentifié si les secrets `CLOUDFLARE_API_TOKEN` et, si nécessaire, `CLOUDFLARE_ACCOUNT_ID` sont configurés. Sinon, il crée une démonstration temporaire. Celle-ci expire sans revendication de propriété dans le délai indiqué. Une ancienne URL de démonstration n’est pas une adresse permanente.
+
+Les liens de revendication sont confidentiels et ne sont pas publiés dans ce dépôt. Les journaux ne contiennent que leur copie chiffrée. Ne jamais commettre un jeton API ni une clé privée.
+
+## Développement
 
 ```sh
 npm ci
 npm test
-npx wrangler dev --local --local-protocol https
+node scripts/build-solo.mjs
+node scripts/prepare-release.mjs
 ```
 
-Le développement local HTTPS nécessite d’approuver un certificat local. En production, utiliser le certificat public de l’hébergeur. Ne pas désactiver les protections du cookie pour faire passer un test HTTP.
-
-Après rattachement du compte Cloudflare par le propriétaire :
-
-```sh
-npx wrangler login
-npx wrangler deploy
-```
-
-Le déploiement durable utilise un compte autorisé, sans `--temporary`. Les actions permanentes devront utiliser un secret limité à ce déploiement, jamais un secret inclus dans les fichiers du jeu.
-
-## Limites actuelles
-
-Le serveur vise les essais privés, avec 20 salons au maximum dans une autorité sérialisée. Ce n’est pas une architecture validée pour une exploitation à grande échelle. Les versions temporaires ne constituent pas un engagement de disponibilité. Les autres dépôts ne doivent jamais servir de destination de publication pour LOMBRIX.
+`site/` contient le moteur partagé, le rendu, l’audio et l’interface. `core.mjs` valide les règles des salons. `worker.mjs` fournit le serveur Cloudflare et son stockage durable. Le serveur garde l’autorité sur les tours, les dégâts et les résultats. Le HTML autonome est destiné au solo ; il ne constitue pas un serveur multijoueur.
