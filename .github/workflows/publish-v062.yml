@@ -1,0 +1,102 @@
+name: LOMBRIX 0.6.2 public release
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-v062.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-v062-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check previously validated sources
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p reports/v062/session
+          npm test > reports/v062/session/node-tests.tap
+      - name: Publish and inspect actual responses
+        id: deployment
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || unset CLOUDFLARE_API_TOKEN
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || unset CLOUDFLARE_ACCOUNT_ID
+          python3 scripts/publish-v062.py
+          python3 - <<'PY'
+          import os,json
+          from pathlib import Path
+          url=json.loads(Path('reports/v062/session/deployment.json').read_text())['url']
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('LOMBRIX_URL='+url+'\n')
+          PY
+      - name: Install browsers
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browsers.log 2>&1
+      - name: Require visible public first frames
+        id: pixels
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('scripts/check-first-frame-v062.py').read_text()
+          old="OUT=Path('reports/v062/first-frame')"
+          assert old in s
+          Path('/tmp/check-public-first-frame.py').write_text(s.replace(old,"OUT=Path('reports/v062/session/public-first-frame')"))
+          PY
+          timeout 150 python3 /tmp/check-public-first-frame.py
+      - name: Public gestures and direct equipment
+        id: ui
+        if: always() && steps.deployment.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v062/session/public-ui timeout 300 python3 scripts/check-v062.py
+      - name: Two independent public WebKit players
+        id: online
+        if: always() && steps.deployment.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v062/session/public-two-phones timeout 180 python3 scripts/check-two-phones.py
+      - name: Preserve outcomes and exact release
+        if: always()
+        env:
+          DEPLOYMENT: ${{ steps.deployment.outcome }}
+          PIXELS: ${{ steps.pixels.outcome }}
+          UI: ${{ steps.ui.outcome }}
+          ONLINE: ${{ steps.online.outcome }}
+        run: |
+          mkdir -p reports/v062/session
+          python3 - <<'PY'
+          import os,json,datetime
+          from pathlib import Path
+          d={'version':'0.6.2','run':os.environ['GITHUB_RUN_ID'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'checks':{k:os.environ[k] for k in ['DEPLOYMENT','PIXELS','UI','ONLINE']}}
+          d['allPassed']=all(v=='success' for v in d['checks'].values())
+          Path('reports/v062/session/gate.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/v062/session
+          git diff --cached --quiet || git commit -m 'Record public 0.6.2 pixels, interaction and multiplayer validation'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6.2_PUBLIC.zip HEAD site core.mjs worker.mjs worker.test.mjs service-worker.test.mjs interaction.test.mjs package.json package-lock.json wrangler.jsonc solo.html BUILD.json README.md REPRISE.md docs scripts reports/v062
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v062-public-release
+          path: /tmp/LOMBRIX_v0.6.2_PUBLIC.zip
+          retention-days: 3
+      - name: Require every public acceptance gate
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("reports/v062/session/gate.json"))["allPassed"] is True'
