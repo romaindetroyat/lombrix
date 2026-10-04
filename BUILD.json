@@ -11,11 +11,11 @@
     "site/interaction.js": "ae1240db2108a9cf2626f8669455ae43dfa551c3d6e5a0e236f11ecd0dfccf10",
     "site/manifest.webmanifest": "af396210520378bb981762f909914e2ac408c22c18f1f2f51fb406fd52b5d851",
     "site/render-cache.js": "99c01e8e18efc0c2bbfd029d2221d6141cfb1b0f0e59e743da25ec271d4b8df8",
-    "site/renderer.js": "33049f4cac8414c8dc1b902565128d5fd9b284e350ff027b2760828892dfe20d",
+    "site/renderer.js": "ee5cd894736c12159a7a8097882bd6b6401f64185df688a682f43df953a94aa5",
     "site/style.css": "f2c29a503e22f635e6241fa6c761b4eec98c05ddce8b57f2a22f43cedadcbd73",
     "site/sw.js": "24cd069d2763dd0e69ac4183e7982312b1040f7944a639b67a25acb38f766316",
     "core.mjs": "73c16b2dfedf075d1c8d5dba9d257e024c23031d8ef84a79d0555b2ff714e615",
     "worker.mjs": "ce055d263d27ec3554a72f514f20c989426714e52d415f1db52b2b98f5f5f1fa",
-    "solo.html": "e15b5190975f527f4ba45ed2214c277eb773d0b69ff53a4fa2a285dafe93a9bc"
+    "solo.html": "a5ca5dba1691e29bc25c5fcd65afd69b1c8e40cbc393c7a6c9cfed0a001e5cc2"
   }
 }

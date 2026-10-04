@@ -1223,7 +1223,7 @@ class Renderer{
  destroy(){this.observer?.disconnect();window.removeEventListener('resize',this.resize);this.releaseLayers();this.trails.clear();this.display.clear();this.deathRituals.clear();this.responses.clear();this.canvas.width=1;this.canvas.height=1;this.state=null;this.key=null;this.terrain=null;}
  setState(s,key='solo'){
   if(!s)return;this.state=s;this.world={...WORLD,...s.world};
-  if(this.key!==key||this.seed!==s.seed||this.land?.width!==this.world.w){this.releaseLayers();this.key=key;this.seed=s.seed;this.theme=THEMES.find(t=>t.id===s.options.theme);this.terrain=new Terrain(s.seed,s.options.theme,s.options.layout,s.options.generation,this.world);this.land=document.createElement('canvas');this.land.width=this.world.w;this.land.height=this.world.h;this.lc=this.land.getContext('2d');this.ops=0;this.lastEvent=s.elapsed>5?(s.events.at(-1)?.id||0):0;this.effects=[];this.particles=[];this.texts=[];this.display.clear();this.trails.clear();this.recoils.clear();this.deathRituals.clear();this.responses.clear();this.camera={x:this.world.w/2,y:this.world.h/2};this.manualCamera=null;this.aimingGesture=false;this.makeTerrain();this.makeProps();}
+  if(this.key!==key||this.seed!==s.seed||this.land?.width!==this.world.w){this.releaseLayers();this.key=key;this.seed=s.seed;this.theme=THEMES.find(t=>t.id===s.options.theme);this.terrain=new Terrain(s.seed,s.options.theme,s.options.layout,s.options.generation,this.world);this.land=document.createElement('canvas');this.land.width=this.world.w;this.land.height=this.world.h;this.lc=this.land.getContext('2d');this.ops=0;this.lastEvent=s.elapsed>5?(s.events.at(-1)?.id||0):0;this.effects=[];this.particles=[];this.texts=[];this.display.clear();this.trails.clear();this.recoils.clear();this.deathRituals.clear();this.responses.clear();this.camera={x:this.world.w/2,y:this.world.h/2};this.snapCamera=true;this.manualCamera=null;this.aimingGesture=false;this.makeTerrain();this.makeProps();}
   for(let i=this.ops;i<s.ops.length;i++){const op=s.ops[i];this.terrain.apply(op);const c=this.lc;if(op.type==='circle'){c.save();c.globalCompositeOperation='source-atop';c.strokeStyle=this.theme.dirt[1]+'a0';c.lineWidth=7;c.beginPath();c.arc(op.x,op.y,op.r+1,0,TAU);c.stroke();c.globalCompositeOperation='destination-out';c.fillStyle='#000';c.beginPath();c.arc(op.x,op.y,op.r,0,TAU);c.fill();c.restore();}else{round(c,op.x,op.y,op.w,op.h,3,'#ecc18c');for(let x=op.x+3;x<op.x+op.w;x+=16)line(c,[[x,op.y+1],[x,op.y+op.h-1]],'#865e60',2);}}
   this.ops=s.ops.length;
   for(const e of s.events){if(e.id>this.lastEvent){if(e.at===undefined||s.elapsed-e.at<4){this.effect(e);this.onEvent?.(e);}this.lastEvent=e.id;}}
@@ -1279,6 +1279,8 @@ if(e.type==='bump'){this.texts.push({x:e.x,y:e.y-24,text:'POC !',life:.65,max:.6
   gx=clamp(gx,Math.min(hw,W/2),Math.max(W-hw,W/2));gy=clamp(gy,-4500,H+hh*.35);
   if(this.overview){gx=W/2;gy=H/2;}
   if(this.aimingGesture){gx=this.camera.x;gy=this.camera.y;}
+  // A freshly generated level must start on its active worm, not drift from the map centre.
+  if(this.snapCamera){this.camera={x:gx,y:gy};this.snapCamera=false;}
   const follow=this.overview?1:Math.min(1,dt*(s.projectiles.length?13:6));
   this.camera.x+=(gx-this.camera.x)*follow;this.camera.y+=(gy-this.camera.y)*follow;
   c.setTransform(this.dpr,0,0,this.dpr,0,0);const grad=c.createLinearGradient(0,0,0,this.h);grad.addColorStop(0,this.theme.sky[0]);grad.addColorStop(1,this.theme.sky[1]);c.fillStyle=grad;c.fillRect(0,0,this.w,this.h);
