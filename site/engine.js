@@ -1,6 +1,6 @@
 /** Simulation partagée. Aucun DOM et aucune dépendance. Le serveur décide en ligne. */
 export const WORLD = { w: 1600, h: 900, water: 825 };
-export const VERSION = '0.6.1';
+export const VERSION = '0.6.2';
 export const THEMES = [
   { id:'lagoon', name:'Les îles du grabuge', short:'Lagon pirate', tagline:'Palmiers, coffres et mauvaises intentions.', sky:['#0c3152','#64ccdd'], dirt:['#d8914f','#633c45'], top:'#e8dc9a', water:'#22b8c5', accent:'#77ffe0', gravity:1, icon:'◈' },
   { id:'candy', name:'Sucre & représailles', short:'Confiserie', tagline:'Un peu de douceur. Beaucoup de cratères.', sky:['#51396d','#f5a3b2'], dirt:['#b26d94','#633554'], top:'#fff0d7', water:'#c564ba', accent:'#ffd289', gravity:0.88, icon:'✿' },

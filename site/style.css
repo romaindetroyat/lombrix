@@ -96,7 +96,7 @@ body.fallback-modal:before{content:'';position:fixed;inset:0;background:#071421c
  .arsenal-belt #arsenal-fuse button{height:24px}
 }
 
-/* 0.6.1 — show only the controls actually used by the selected item. */
+/* 0.6.2 — show only the controls actually used by the selected item. */
 .action-help{flex:1.7;min-width:0;color:#c7d9d1;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:4px 0}
 .action-help strong{font-size:8px;letter-spacing:1px;color:#b3eacf}.action-help>span{font-size:10px;line-height:1.35}
 .fire.context-action{font-size:12px;letter-spacing:0;gap:7px;padding-left:12px;padding-right:12px}
@@ -141,7 +141,7 @@ body.fallback-modal:before{content:'';position:fixed;inset:0;background:#071421c
 .radial-weapons .wheel-caption{left:calc(var(--cx) + 143px);top:calc(var(--cy) - 18px);transform:none;max-width:170px;white-space:normal;line-height:1.4;font-size:11px;border-left:2px solid #20e8a0;border-radius:0 9px 9px 0;}
 @media(orientation:portrait){.radial-weapons .wheel-caption{left:var(--cx);top:calc(var(--cy) - 148px);transform:translateX(-50%);max-width:220px;text-align:center;border-left:0;}}
 
-/* 0.6.1: fixed equipment ribbon, part of the HUD rather than a floating window. */
+/* 0.6.2: fixed equipment ribbon, part of the HUD rather than a floating window. */
 :root{--mint:#06efa3;--pink:#ff2558;--text:#f4f8ff;--muted:#a8bfd5}
 .battle{--loadout-height:56px;touch-action:none}
 #loadout-strip{position:absolute;z-index:12;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(var(--control-height) + env(safe-area-inset-bottom));height:var(--loadout-height);border-top:1px solid #2b6385;border-bottom:1px solid #2b6385;background:#041322;touch-action:pan-x;overflow:hidden}

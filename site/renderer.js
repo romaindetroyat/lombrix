@@ -1,7 +1,7 @@
-import {cacheSprite} from './render-cache.js?v=0.6.1';
-import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.6.1';
-import {pullFromPower,wormActing} from './interaction.js?v=0.6.1';
-import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.6.1';
+import {cacheSprite} from './render-cache.js?v=0.6.2';
+import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.6.2';
+import {pullFromPower,wormActing} from './interaction.js?v=0.6.2';
+import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.6.2';
 const TAU=Math.PI*2;
 export const TEAM_COLORS=['#20e8a0','#ff4e70','#ffcc27','#9876ff'];
 function ellipse(c,x,y,rx,ry,color){c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,TAU);c.fill();}
@@ -10,7 +10,7 @@ function label(c,text,x,y,size=16,color='#fff',weight=800){c.fillStyle=color;c.f
 function round(c,x,y,w,h,r,color){c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill();}
 const hex=h=>h.match(/\w\w/g).map(x=>parseInt(x,16));
 export class Renderer{
- constructor(canvas){this.canvas=canvas;this.c=canvas.getContext('2d',{alpha:false});if(!this.c)throw new Error('Le navigateur ne peut pas ouvrir le rendu Canvas. Ferme les autres onglets puis réessaie.');this.zoom=1.6;this.world={...WORLD};this.overview=false;this.manualCamera=null;this.aimingGesture=false;this.aimRadius=115;this.powerDragSpan=540;this.deathRituals=new Map();this.responses=new Map();this.quality='hd';this.trails=new Map();this.recoils=new Map();this.camera={x:800,y:450};this.aim={angle:-.7,power:.5,weapon:'rocket',targetX:900,targetY:400};this.effects=[];this.particles=[];this.texts=[];this.display=new Map();this.key=null;this.lastEvent=0;this.ops=0;this.shake=0;this.reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;this.resize=()=>{this.w=canvas.clientWidth||800;this.h=canvas.clientHeight||450;const d=Math.min(devicePixelRatio||1,this.quality==='hd'?2.25:1.5,Math.sqrt(5000000/(this.w*this.h)));canvas.width=Math.round(this.w*d);canvas.height=Math.round(this.h*d);this.dpr=d;};if(typeof ResizeObserver==='function'){this.observer=new ResizeObserver(this.resize);this.observer.observe(canvas);}else{this.observer=null;window.addEventListener('resize',this.resize);}this.resize();}
+ constructor(canvas){this.canvas=canvas;this.c=canvas.getContext('2d',{alpha:false});if(!this.c)throw new Error('Le navigateur ne peut pas ouvrir le rendu Canvas. Ferme les autres onglets puis réessaie.');this.zoom=1.6;this.world={...WORLD};this.overview=false;this.manualCamera=null;this.aimingGesture=false;this.aimRadius=115;this.powerDragSpan=540;this.deathRituals=new Map();this.responses=new Map();this.quality='hd';this.trails=new Map();this.recoils=new Map();this.camera={x:800,y:450};this.aim={angle:-.7,power:.5,weapon:'rocket',targetX:900,targetY:400};this.effects=[];this.particles=[];this.texts=[];this.display=new Map();this.key=null;this.lastEvent=0;this.ops=0;this.shake=0;this.reduced=typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;this.resize=()=>{this.w=canvas.clientWidth||800;this.h=canvas.clientHeight||450;const d=Math.min(devicePixelRatio||1,this.quality==='hd'?2.25:1.5,Math.sqrt(5000000/(this.w*this.h)));const width=Math.round(this.w*d),height=Math.round(this.h*d),changed=canvas.width!==width||canvas.height!==height;this.dpr=d;if(changed){canvas.width=width;canvas.height=height;if(this.state&&this.land)this.draw(performance.now(),.001);}};if(typeof ResizeObserver==='function'){this.observer=new ResizeObserver(this.resize);this.observer.observe(canvas);}else{this.observer=null;window.addEventListener('resize',this.resize);}this.resize();}
  cacheMetrics(){return {props:this.props?.length||0,sourcePixels:this.propSourcePixels||0,cachedPixels:this.propPixels||0,
   rawBytes:((this.land?.width||0)*(this.land?.height||0)+(this.back?.width||0)*(this.back?.height||0)+(this.propPixels||0))*4};}
  hasDeathRituals(){return this.deathRituals.size>0;}

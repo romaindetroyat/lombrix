@@ -1,5 +1,5 @@
 /** Direction artistique procédurale originale. Calques fixes pré-rendus pour le mobile. */
-import {rng,clamp,WORLD} from './engine.js?v=0.6.1';
+import {rng,clamp,WORLD} from './engine.js?v=0.6.2';
 const ART_TAU=Math.PI*2;
 function artOval(c,x,y,rx,ry,col){c.fillStyle=col;c.beginPath();c.ellipse(x,y,Math.max(.1,rx),Math.max(.1,ry),0,0,ART_TAU);c.fill();}
 function artPath(c,points,fill,stroke=null,width=2){c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fillStyle=fill;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.stroke();}}

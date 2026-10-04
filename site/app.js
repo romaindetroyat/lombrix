@@ -1,7 +1,7 @@
-import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.6.1';
-import {Renderer,TEAM_COLORS} from './renderer.js?v=0.6.1';
-import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.6.1';
-import {Sound} from './audio.js?v=0.6.1';
+import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.6.2';
+import {Renderer,TEAM_COLORS} from './renderer.js?v=0.6.2';
+import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.6.2';
+import {Sound} from './audio.js?v=0.6.2';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const storage={get(k,d=null){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},remove(k){try{localStorage.removeItem(k);}catch{}}};
@@ -28,7 +28,7 @@ $('nickname').addEventListener('change',()=>storage.set('lombrix-name',name()));
 function safeHistory(path){try{if(location.protocol==='https:'||location.protocol==='http:')history.replaceState(null,'',path);}catch{}}
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4300);}
 function banner(message){$('turn-banner').textContent=message;$('turn-banner').hidden=false;clearTimeout(bannerTimer);bannerTimer=setTimeout(()=>$('turn-banner').hidden=true,1150);}
-function setScreen(which){if(screen===which)return;screen=which;for(const id of ['home','lobby','battle'])$(id).hidden=id!==which;document.body.classList.toggle('in-game',which==='battle');if(which==='battle'){requestAnimationFrame(()=>renderer.resize());keepAwake();}else{stopMove();wakeLock?.release().catch(()=>{});wakeLock=null;window.scrollTo(0,0);if(which==='home'){refreshSoloResume();drawHero();window.lombrixCheckUpdate?.();}}}
+function setScreen(which){if(screen===which)return;screen=which;for(const id of ['home','lobby','battle'])$(id).hidden=id!==which;document.body.classList.toggle('in-game',which==='battle');if(which==='battle'){renderer.resize();renderer.draw(performance.now(),.001);requestAnimationFrame(()=>{renderer.resize();renderer.draw(performance.now(),.001);});keepAwake();}else{stopMove();wakeLock?.release().catch(()=>{});wakeLock=null;window.scrollTo(0,0);if(which==='home'){refreshSoloResume();drawHero();window.lombrixCheckUpdate?.();}}}
 async function keepAwake(){try{if('wakeLock'in navigator&&document.visibilityState==='visible'&&!wakeLock)wakeLock=await navigator.wakeLock.request('screen');}catch{}}
 async function audioStart(){try{await sound.unlock();if(sound.music&&!sound.timer)sound.setMusic(true);}catch(error){console.warn('Son indisponible, le jeu continue.',error);}}
 function disposeMapPreview(){if(mapPreview){mapPreview.destroy();mapPreview=null;}}
