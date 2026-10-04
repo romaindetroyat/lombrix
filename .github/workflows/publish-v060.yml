@@ -1,0 +1,90 @@
+name: LOMBRIX 0.6 public release
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-v060.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-v060-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CI: 'true'
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require previously validated application sources
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          npm ci --ignore-scripts --no-audit --no-fund
+          mkdir -p reports/v060/session
+          npm test > reports/v060/session/node-tests.tap
+      - name: Publish and verify actual HTTP responses
+        id: deployment
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || unset CLOUDFLARE_API_TOKEN
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || unset CLOUDFLARE_ACCOUNT_ID
+          python3 scripts/publish-v060.py
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          url=json.loads(Path('reports/v060/session/deployment.json').read_text())['url']
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('LOMBRIX_URL='+url+'\n')
+          PY
+      - name: Install browser engines
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+      - name: Real public gestures and weapon interactions
+        id: ui
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v060/session/public-ui timeout 300 python3 scripts/check-v060.py
+      - name: Real public multiplayer across two WebKit processes
+        id: online
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v060/session/public-pair timeout 180 python3 scripts/check-two-phones.py
+      - name: Preserve public results without exposing claim tokens
+        if: always()
+        env:
+          DEPLOYMENT: ${{ steps.deployment.outcome }}
+          UI: ${{ steps.ui.outcome }}
+          ONLINE: ${{ steps.online.outcome }}
+        run: |
+          mkdir -p reports/v060/session
+          python3 - <<'PY'
+          import json,os,datetime
+          from pathlib import Path
+          d={'version':'0.6.0','run':os.environ['GITHUB_RUN_ID'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'checks':{k:os.environ[k] for k in ['DEPLOYMENT','UI','ONLINE']}}
+          d['allPassed']=all(v=='success' for v in d['checks'].values())
+          Path('reports/v060/session/gate.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add reports/v060/session
+          git diff --cached --quiet || git commit -m 'Record LOMBRIX 0.6 public deployment and measured browser outcomes'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          git archive --format=zip -o /tmp/LOMBRIX_v0.6_PUBLIC.zip HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v060-public-release
+          path: /tmp/LOMBRIX_v0.6_PUBLIC.zip
+          retention-days: 3
+      - name: Require successful public browser acceptance
+        if: always()
+        run: |
+          test '${{ steps.deployment.outcome }}' = success
+          test '${{ steps.ui.outcome }}' = success
+          test '${{ steps.online.outcome }}' = success
