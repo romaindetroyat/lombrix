@@ -1,0 +1,25 @@
+name: LOMBRIX source checkpoint
+on:
+  push:
+    branches: ['fix/ios-controls-v060']
+    paths: ['.github/workflows/export-review-source.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Bundle only tracked application sources
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          git archive --format=zip -o /tmp/lombrix-current-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lombrix-current-source
+          path: /tmp/lombrix-current-source.zip
+          retention-days: 2
