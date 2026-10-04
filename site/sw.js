@@ -1,7 +1,7 @@
 /* One coherent shell per release. Never replace the engine mid-match. */
-const CACHE = 'lombrix-v0.5.2-r1';
+const CACHE = 'lombrix-v0.6.0-r1';
 const HTML_KEY = '/index.html';
-const ASSETS = ['/style.css?v=0.5.2','/boot.js?v=0.5.2','/app.js?v=0.5.2','/engine.js?v=0.5.2','/interaction.js?v=0.5.2','/render-cache.js?v=0.5.2','/art.js?v=0.5.2','/renderer.js?v=0.5.2','/audio.js?v=0.5.2','/manifest.webmanifest','/assets/mascots.svg','/assets/icon.svg','/assets/icon-192.png','/assets/icon-512.png'];
+const ASSETS = ['/style.css?v=0.6.0','/boot.js?v=0.6.0','/app.js?v=0.6.0','/engine.js?v=0.6.0','/interaction.js?v=0.6.0','/render-cache.js?v=0.6.0','/art.js?v=0.6.0','/renderer.js?v=0.6.0','/audio.js?v=0.6.0','/manifest.webmanifest','/assets/mascots.svg','/assets/icon.svg','/assets/icon-192.png','/assets/icon-512.png'];
 async function cleanResponse(response) {
   if (!response.ok || response.type === 'opaque' || response.type === 'opaqueredirect') throw new Error('Invalid offline shell response');
   // Static hosts redirect /index.html to /. A redirected cached Response
@@ -40,3 +40,5 @@ self.addEventListener('fetch', event => {
   }
   if (ASSETS.includes(u.pathname + u.search) || ASSETS.includes(u.pathname)) event.respondWith(caches.open(CACHE).then(async cache => (await cache.match(event.request)) || fetch(event.request)));
 });
+
+self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_WHEN_IDLE')self.skipWaiting();});

@@ -1,10 +1,10 @@
 import {readFile,writeFile,readdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-const version='0.5.2';
+const version='0.6.0';
 for(const f of await readdir('site'))if(/\.(js|html|css|webmanifest)$/.test(f)){
- const p='site/'+f;await writeFile(p,(await readFile(p,'utf8')).replaceAll('0.5.1',version));
+ const p='site/'+f;await writeFile(p,(await readFile(p,'utf8')).replaceAll('0.5.2',version).replaceAll('0.5.1',version));
 }
-await writeFile('solo.html',(await readFile('solo.html','utf8')).replaceAll('0.5.1',version));
+await writeFile('solo.html',(await readFile('solo.html','utf8')).replaceAll('0.5.2',version).replaceAll('0.5.1',version));
 const p=JSON.parse(await readFile('package.json','utf8'));p.name='lombrix';p.version=version;p.private=true;p.type='module';
 p.scripts={test:'node --test *.test.mjs',dev:'wrangler dev',deploy:'wrangler deploy','test:live':'python3 check-live.py'};
 await writeFile('package.json',JSON.stringify(p,null,2)+'\n');

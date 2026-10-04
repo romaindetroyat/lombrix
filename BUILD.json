@@ -1,21 +1,21 @@
 {
-  "version": "0.5.2",
+  "version": "0.6.0",
   "repository": "romaindetroyat/lombrix",
   "files": {
-    "site/app.js": "8d0ddcb101b38629267f1ea888b06366ad5f70c671f49347058eea378f730eac",
-    "site/art.js": "1c235b361765fe5c0db19cb860a414c6718cf3553201ff8a3b76f21720bafe73",
+    "site/app.js": "75ec3b5d094c2bf2600854e732a791eb2db9c1f84fa4b8e974917a167afb36dc",
+    "site/art.js": "4c5dd676a47b3882f7a38779cf1525a8afac4ba5e879905cd4fdab0402741876",
     "site/audio.js": "e79b858a51d2dbd8aff05ed7c5904840a165c67ac83627d7fbfd3c3b5e019d70",
-    "site/boot.js": "5e41c9c8b39bae96aad707502bd1674e1c6b2a267aeb739df0d4e04fcea2af68",
-    "site/engine.js": "f828daf02694e12de6c2897d846f628fd5623b8a089417f8c33632ca0d28afdf",
-    "site/index.html": "9f57baeb75e1223cd3042cc66b2c3a5ef2e40c5401a5472a2e5bbfcd83ed7da8",
+    "site/boot.js": "862cff2eb4805066c3555060e3512afe844c23625974d647fed3d2df8ef2c9db",
+    "site/engine.js": "64f2aaa3bb7183f30da380e0891302854d4b2071e29264c55bb82bf236d38d3b",
+    "site/index.html": "ed1c6c569f8101f672bb0e27571b0e13f93f04278ed2ed62bee06ec89b177d88",
     "site/interaction.js": "ae1240db2108a9cf2626f8669455ae43dfa551c3d6e5a0e236f11ecd0dfccf10",
     "site/manifest.webmanifest": "af396210520378bb981762f909914e2ac408c22c18f1f2f51fb406fd52b5d851",
     "site/render-cache.js": "99c01e8e18efc0c2bbfd029d2221d6141cfb1b0f0e59e743da25ec271d4b8df8",
-    "site/renderer.js": "c9bc93d82b4d06b69c52044611fcc02dd2b0fdaf922bb5c3d656e017836e9cf7",
-    "site/style.css": "aef19f49b0d74d3ed8a3939213690f326a75c7359e191644681abd6a46b1bdb3",
-    "site/sw.js": "ea99efc8882d8dace5e56458a9fb711f38b8a70874cd48e3e6552ef585fa56f4",
+    "site/renderer.js": "33049f4cac8414c8dc1b902565128d5fd9b284e350ff027b2760828892dfe20d",
+    "site/style.css": "f2c29a503e22f635e6241fa6c761b4eec98c05ddce8b57f2a22f43cedadcbd73",
+    "site/sw.js": "24cd069d2763dd0e69ac4183e7982312b1040f7944a639b67a25acb38f766316",
     "core.mjs": "73c16b2dfedf075d1c8d5dba9d257e024c23031d8ef84a79d0555b2ff714e615",
     "worker.mjs": "ce055d263d27ec3554a72f514f20c989426714e52d415f1db52b2b98f5f5f1fa",
-    "solo.html": "c6840516fdb2be74513120fe43136ee621f44fb42e4879c50001c0aa0d2568aa"
+    "solo.html": "e15b5190975f527f4ba45ed2214c277eb773d0b69ff53a4fa2a285dafe93a9bc"
   }
 }
