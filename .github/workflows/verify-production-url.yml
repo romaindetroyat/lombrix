@@ -1,0 +1,91 @@
+name: Verify LOMBRIX production address
+on:
+  push:
+    branches: ['verify/production-url-20261004']
+    paths: ['.github/workflows/verify-production-url.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lombrix-production-url-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      LOMBRIX_URL: https://lombrix.romaindetroyat.workers.dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e6ca143d926ed05f74e07c0b3ec8768155be0d2b
+          persist-credentials: false
+      - name: Check public HTML, version and PWA manifest
+        id: http
+        run: |
+          mkdir -p production-check
+          python3 - <<'PY'
+          import datetime,json,os,urllib.request
+          from pathlib import Path
+          base=os.environ['LOMBRIX_URL']
+          report={'url':base,'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'checks':[]}
+          for path in ['/','/health','/manifest.webmanifest']:
+            try:
+              request=urllib.request.Request(base+path,headers={'User-Agent':'LOMBRIX-production-verification'})
+              with urllib.request.urlopen(request,timeout=20) as response:
+                text=response.read().decode()
+                data=json.loads(text) if path!='/' else None
+                valid=response.status==200 and (('id="solo"' in text and '0.6.2' in text) if path=='/' else (data.get('ok') is True and data.get('version')=='0.6.2') if path=='/health' else bool(data.get('name') and data.get('icons')))
+                item={'path':path,'http':response.status,'valid':valid}
+                if path=='/health':item['body']=data
+                report['checks'].append(item)
+            except Exception as error:
+              report['checks'].append({'path':path,'valid':False,'error':str(error)})
+          report['passed']=all(item['valid'] for item in report['checks'])
+          Path('production-check/http.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          if not report['passed']:raise SystemExit(1)
+          PY
+      - name: Install browser engines
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/lombrix-browser-install.log 2>&1
+      - name: Verify solo, two-finger camera and direct equipment
+        id: ui
+        continue-on-error: true
+        env:
+          LOMBRIX_REPORT_DIR: production-check/interface
+        run: timeout 210 python3 scripts/check-v062.py
+      - name: Verify two independent guest sessions and cleanup their test room
+        id: online
+        if: always() && steps.http.outcome == 'success'
+        continue-on-error: true
+        env:
+          LOMBRIX_REPORT_DIR: production-check/multiplayer
+        run: timeout 150 python3 scripts/check-two-phones.py
+      - name: Summarize measured results
+        if: always()
+        env:
+          HTTP_RESULT: ${{ steps.http.outcome }}
+          UI_RESULT: ${{ steps.ui.outcome }}
+          ONLINE_RESULT: ${{ steps.online.outcome }}
+        run: |
+          python3 - <<'PY'
+          import datetime,json,os
+          from pathlib import Path
+          out=Path('production-check');out.mkdir(exist_ok=True)
+          checks={key:os.environ[key+'_RESULT'] for key in ['HTTP','UI','ONLINE']}
+          report={'url':os.environ['LOMBRIX_URL'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'checks':checks,'allPassed':all(value=='success' for value in checks.values())}
+          (out/'summary.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write('## LOMBRIX production verification\n\n```json\n'+json.dumps(report,indent=2)+'\n```\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-production-verification
+          path: production-check/
+          retention-days: 7
+      - name: Require all checks to succeed
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("production-check/summary.json"))["allPassed"] is True'
