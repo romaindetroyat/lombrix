@@ -1,0 +1,76 @@
+name: LOMBRIX readable HUD acceptance
+on:
+  push:
+    branches: [ui/comfort-v070]
+    paths: [.github/workflows/comfort-v070.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-comfort-review
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare isolated source checkpoint
+        id: prepare
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          test "$GITHUB_REF_NAME" = 'ui/comfort-v070'
+          mkdir -p reports/v070
+          python3 scripts/apply-comfort-v070.py
+          for file in site/*.js; do node --check "$file"; done
+      - name: Gameplay and server regressions
+        id: unit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm test | tee reports/v070/node-tests.tap
+      - name: Install both actual browser engines
+        id: browsers
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/lombrix-browser-install.log 2>&1
+      - name: Readability gestures drawers and real solo turns
+        id: ui
+        continue-on-error: true
+        run: timeout 360 python3 scripts/check-comfort-v070.py
+      - name: Preserve source and measured outcomes on review branch only
+        if: always()
+        env:
+          PREPARE: ${{ steps.prepare.outcome }}
+          UNIT: ${{ steps.unit.outcome }}
+          BROWSERS: ${{ steps.browsers.outcome }}
+          UI: ${{ steps.ui.outcome }}
+        run: |
+          mkdir -p reports/v070
+          python3 - <<'PY'
+          import os,json,hashlib,datetime
+          from pathlib import Path
+          result={'version':'0.7.0','repository':os.environ['GITHUB_REPOSITORY'],'run':os.environ['GITHUB_RUN_ID'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'transport':'self-contained HTML, not public HTTPS','steps':{k:os.environ[k] for k in ['PREPARE','UNIT','BROWSERS','UI']}}
+          result['allPassed']=all(v=='success' for v in result['steps'].values())
+          result['buildSha256']=hashlib.sha256(Path('BUILD.json').read_bytes()).hexdigest()
+          Path('reports/v070/gate.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site scripts package.json package-lock.json BUILD.json solo.html docs/v070
+          find reports/v070 -maxdepth 1 -type f \( -name '*.json' -o -name '*.tap' \) -print0 | xargs -0 -r git add --
+          git diff --cached --quiet || git commit -m 'Integrate 0.7 readable HUD and preserve measured acceptance results'
+          git pull --rebase origin ui/comfort-v070
+          git push origin HEAD:ui/comfort-v070
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-ui070-acceptance
+          path: reports/v070/
+          retention-days: 7
+      - name: Require every gate
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("reports/v070/gate.json"))["allPassed"] is True'
