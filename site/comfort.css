@@ -1,0 +1,81 @@
+/* 0.7 — A few large controls; occasional tools are disclosed on demand. */
+:root{--readable:17px;--hud-safe-left:max(12px,env(safe-area-inset-left));--hud-safe-right:max(12px,env(safe-area-inset-right))}
+.large-game-text{--readable:20px}
+.comfort-hud{--control-height:86px;--loadout-height:0px}
+.comfort-hud .battle-controls{position:absolute;inset:auto 0 0;display:flex;align-items:center;gap:12px;height:calc(86px + env(safe-area-inset-bottom));padding:8px var(--hud-safe-right) calc(14px + env(safe-area-inset-bottom)) var(--hud-safe-left);background:linear-gradient(0deg,#071322d9,transparent);z-index:12;pointer-events:none}
+.comfort-hud .battle-controls>*,.comfort-hud .movement button{pointer-events:auto}
+.comfort-hud .movement{display:flex;position:relative;gap:6px;flex:0 0 auto;margin:0 auto 0 0;order:0}
+.comfort-hud .movement button{width:56px;height:60px;min-width:48px;border:1px solid #43637b;border-radius:16px;background:#081d30f5;color:#f5f8ff;font-size:24px;box-shadow:0 3px 9px #0005}
+.comfort-hud .movement #jump{background:#173749}
+.comfort-hud .energy-track{position:absolute;left:8px;right:8px;bottom:-7px;height:3px;opacity:.85}
+.comfort-hud #arsenal{width:210px;flex:0 1 210px;min-width:144px;height:60px;order:1;border:1px solid #26c8a1;border-radius:16px;display:flex;align-items:center;gap:10px;padding:7px 12px;background:#082a31fa;box-shadow:0 3px 10px #0005;touch-action:manipulation;overflow:hidden}
+.comfort-hud #arsenal>span:nth-child(2){flex:1;min-width:0;text-align:left;display:flex;flex-direction:column;gap:2px}
+.comfort-hud #arsenal>span:last-child{display:none}
+.comfort-hud #arsenal small{font-size:14px;letter-spacing:0;line-height:17px;color:#c5e8dc;font-weight:500}
+.comfort-hud #arsenal strong{font-size:var(--readable);line-height:1.1;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:750;max-height:2.2em}
+.comfort-hud #weapon-glyph{width:32px;height:38px;flex:0 0 32px;display:block}
+.comfort-hud #weapon-glyph svg{width:100%;height:100%}
+.comfort-hud #fuse-hint{display:none!important}
+.comfort-hud #fire{order:3;width:106px;min-width:86px;flex:0 0 auto;height:60px;display:flex;justify-content:center;align-items:center;border-radius:16px;padding:6px 8px;gap:0;font-size:var(--readable);font-weight:850;letter-spacing:0;box-shadow:0 3px #925109,0 4px 12px #0003}
+.comfort-hud #fire-label{line-height:1.1;overflow-wrap:anywhere}
+.comfort-hud #precision-toggle{order:2;flex:0 0 82px;height:60px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;border-radius:16px;border:1px solid #536a7a;background:#102638f5}
+#precision-toggle>span{font-size:14px;color:#ccdceb}#precision-toggle>strong{font-size:var(--readable);color:#fff;line-height:1.1}
+.comfort-hud .battle-info,.comfort-hud .battle-level,.comfort-hud .portrait-tip,.comfort-hud .spectator-bar{display:none!important}
+.comfort-hud .battle-top,.comfort-hud .battle-top.multi-team{position:absolute;left:0;right:0;top:0;transform:none;width:100%;max-width:none;display:grid;grid-template-columns:minmax(80px,1fr) 76px minmax(80px,1fr) 48px 48px;gap:10px;align-items:center;padding:8px var(--hud-safe-right) 0 var(--hud-safe-left);background:linear-gradient(#041426a8,transparent);z-index:12}
+.comfort-hud .battle-top .team-panel{width:100%;min-width:0;padding:7px 10px;background:#071c30e8;border:1px solid #364f66;border-radius:12px;max-width:none;box-shadow:none}
+.comfort-hud .team-line{display:flex;gap:7px;min-width:0;font-size:var(--readable);line-height:22px}
+.comfort-hud .team-line strong{max-width:none;min-width:0;flex:1;font-size:var(--readable);line-height:22px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comfort-hud .team-line>span:last-child{font-size:var(--readable);font-weight:750}
+.comfort-hud .team-dot{display:none}.comfort-hud .health-track{height:4px;margin-top:4px}
+.comfort-hud .team-panel.active-team{border-color:#cbe1ed;box-shadow:none}
+.comfort-hud .turn-clock{min-width:0;text-align:center;display:flex;flex-direction:column;gap:0;align-items:center;justify-content:center;padding:0;background:#05182cea;border-radius:12px}
+.comfort-hud #timer{font-size:26px;font-weight:850;line-height:28px;letter-spacing:0}
+.comfort-hud #turn-label{font-size:13px;line-height:16px;letter-spacing:0;white-space:nowrap}
+.comfort-hud #wind{padding:0 2px;min-height:16px;border:none;background:none;font-size:13px;line-height:16px;letter-spacing:0;font-weight:700;color:#ffd74a;backdrop-filter:none}
+.comfort-hud .battle-top .icon-btn{position:static;top:auto;right:auto;margin:0;height:48px;width:48px;border-radius:13px;background:#081d30f5;border:1px solid #4b657a;font-size:24px;pointer-events:auto}
+.comfort-hud .battle-top.multi-team{grid-template-columns:repeat(2,minmax(68px,1fr)) 76px repeat(2,minmax(68px,1fr)) 48px 48px;gap:6px}
+.comfort-hud .multi-team .team-a{grid-column:1;grid-row:1}.comfort-hud .multi-team .team-b{grid-column:2;grid-row:1}.comfort-hud .multi-team .turn-clock{grid-column:3;grid-row:1}.comfort-hud .multi-team .team-c{grid-column:4;grid-row:1}.comfort-hud .multi-team .team-d{grid-column:5;grid-row:1}.comfort-hud .multi-team #comfort-camera{grid-column:6;grid-row:1}.comfort-hud .multi-team #game-menu{grid-column:7;grid-row:1}
+.comfort-hud .turn-banner{font-size:20px;line-height:1.3;top:28%;padding:10px 16px;max-width:75%;white-space:normal}
+.comfort-hud.watching-action .battle-controls{visibility:hidden;pointer-events:none}
+.comfort-hud.camera-gesture:after{font-size:14px;letter-spacing:0;top:80px;padding:6px 12px}
+.comfort-hud #hud-dismiss{position:absolute;inset:0;width:100%;height:100%;background:#05132328;z-index:30;border:0;cursor:default;border-radius:0;touch-action:none}
+.comfort-hud .hud-sheet,.comfort-hud #loadout-strip{position:absolute;z-index:31;left:var(--hud-safe-left);right:var(--hud-safe-right);bottom:max(8px,env(safe-area-inset-bottom));width:auto;max-width:900px;margin:0 auto;height:auto;max-height:calc(100% - 84px);border:1px solid #536d86;border-radius:22px;background:#081c2b;box-shadow:0 -10px 30px #0005;overflow:hidden;touch-action:pan-y;animation:sheet-in .12s ease-out}
+@keyframes sheet-in{from{transform:translateY(16px);opacity:.6}to{transform:none;opacity:1}}
+.hud-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px 0 18px;min-height:52px}
+.hud-sheet-head h2{font-size:22px;line-height:1.2;margin:0;font-weight:750;letter-spacing:-.5px}
+.hud-sheet-head .sheet-close{flex:0 0 48px;width:48px;height:48px;border:1px solid #4c6478;border-radius:14px;background:#163447;color:#fff;font-size:30px;line-height:1}
+.sheet-note{font-size:15px;color:#c5d8e8;line-height:1.4;margin:3px 18px 10px}
+.comfort-hud #loadout-scroll{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;height:auto;max-height:min(174px,calc(100dvh - 180px));overflow-y:auto;overflow-x:hidden;padding:0 12px 12px;touch-action:pan-y;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#57bfa4 #102f42}
+.comfort-hud #loadout-scroll::-webkit-scrollbar{display:block;width:5px}.comfort-hud #loadout-scroll::-webkit-scrollbar-thumb{background:#58bda4;border-radius:4px}
+.comfort-hud .loadout-item{width:auto;min-width:0;min-height:76px;height:auto;display:grid;grid-template-columns:40px minmax(0,1fr) 28px;align-items:center;gap:8px;padding:10px;border:1px solid #44657c;border-radius:14px;background:#142e43;touch-action:pan-y;text-align:left}
+.comfort-hud .loadout-item svg{width:40px;height:40px;margin:0}
+.comfort-hud .loadout-item span{font-size:var(--readable);line-height:1.2;font-weight:700;white-space:normal;overflow-wrap:normal;min-height:0}
+.comfort-hud .loadout-item b{position:static;text-align:center;font-size:17px;color:#ffd857;font-weight:800}
+.comfort-hud .loadout-item.selected{border:2px solid #30ebad;background:#0a473e;box-shadow:none}
+.comfort-hud .loadout-item:disabled{opacity:.45}
+.comfort-hud #precision-sheet,.comfort-hud #camera-sheet{max-width:650px;padding-bottom:14px}
+.comfort-hud .hud-sheet .aim-controls{display:flex;flex-wrap:wrap;gap:16px;max-width:none;width:auto;margin:6px 18px 0;padding:0;min-width:0}
+.comfort-hud .hud-sheet .aim-controls label{flex:1 1 200px;min-width:0;max-width:none;margin:0}
+.comfort-hud .aim-controls label>span{font-size:var(--readable);line-height:24px;letter-spacing:0;display:flex;justify-content:space-between;color:#ecf5ff}
+.comfort-hud input[type=range]{height:44px;min-height:44px;width:100%;margin:0;touch-action:pan-x}
+.comfort-hud input[type=range]::-webkit-slider-thumb{width:28px;height:28px}
+.comfort-hud input[type=range]::-moz-range-thumb{width:28px;height:28px}
+.comfort-hud .action-help{flex:1 1 100%;gap:6px;margin:0;padding:0}.comfort-hud .action-help strong{font-size:16px;letter-spacing:0}.comfort-hud .action-help>span{font-size:var(--readable)}
+#comfort-fuse{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 18px 0;font-size:var(--readable)}#comfort-fuse>div{display:flex;gap:8px}#comfort-fuse button{min-width:52px;height:44px;border-radius:12px;border:1px solid #4e7086;background:#142e43;font-size:17px}#comfort-fuse button[aria-pressed=true]{background:#15b986;color:#042221;font-weight:800}
+.comfort-hud #camera-sheet .camera-strip{position:relative;inset:auto;height:64px;width:auto;margin:6px 18px;transform:none;background:#122d43;border:0;display:flex;gap:10px;padding:0}
+.comfort-hud .camera-caption{display:none}.comfort-hud .camera-track{position:relative;flex:1;height:44px}
+.comfort-hud #camera-follow{width:100px;min-width:100px;height:48px;font-size:17px;border:1px solid #557088;border-radius:12px;color:#fff;background:#173d50}
+.comfort-hud #camera-sheet .view-controls{position:relative;inset:auto;display:flex;flex-direction:row;transform:none;gap:12px;margin:0 18px;background:none;border:0;overflow:visible}
+.comfort-hud #camera-sheet .view-controls button{height:48px;min-width:64px;width:64px;font-size:24px;border-radius:12px;border:1px solid #496a80}
+.comfort-hud .hud-sheet-open{pointer-events:auto}
+body.in-game #toast{bottom:calc(100px + env(safe-area-inset-bottom));font-size:16px;max-width:85%;pointer-events:none}
+/* The menus and setup pages also need readable defaults, not miniature labels. */
+dialog .form-field label{font-size:15px;line-height:1.35;letter-spacing:.3px}dialog .form-field select,dialog .form-field input,dialog input:not([type=range]){font-size:17px;min-height:48px;padding:11px}
+dialog .menu-list button,dialog .primary,dialog .secondary-button,dialog .setting-row,dialog .toggle{font-size:var(--readable);min-height:48px}
+dialog p,dialog .input-note,dialog .setting-row small,dialog .rules-grid p{font-size:16px;line-height:1.5}
+dialog .dialog-head{font-size:15px;letter-spacing:.4px}#close-dialog{width:48px;height:48px;font-size:26px}
+dialog .level-share summary{font-size:16px;min-height:44px;line-height:1.5}.world-card .world-name,.mode-card p,.secondary-actions button,.quiet,#help,.solo-setup-row>span{font-size:16px}.nickname label{font-size:14px}.nickname input{font-size:17px}.mode-tag,.eyebrow{font-size:12px;letter-spacing:1px}
+@media(max-width:780px){.comfort-hud .battle-controls{gap:8px}.comfort-hud .movement button{width:48px;height:56px}.comfort-hud #arsenal{flex-basis:174px;width:174px;min-width:144px;height:56px;gap:6px;padding:5px 8px}.comfort-hud #precision-toggle{flex-basis:72px;height:56px}.comfort-hud #fire{width:92px;height:56px}.comfort-hud .battle-top{gap:6px}.comfort-hud .loadout-item{grid-template-columns:32px minmax(0,1fr) 20px;gap:6px;padding:8px}.comfort-hud .loadout-item svg{width:32px;height:32px}}
+@media(orientation:portrait){.comfort-hud{--control-height:148px}.comfort-hud .battle-controls{height:calc(148px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 76px 100px;grid-template-rows:60px 56px;gap:10px;padding:6px var(--hud-safe-right) calc(12px + env(safe-area-inset-bottom)) var(--hud-safe-left)}.comfort-hud .movement{grid-column:1/-1;grid-row:1;justify-content:flex-start;margin-right:0}.comfort-hud .movement button{width:58px;height:54px}.comfort-hud #arsenal{grid-column:1;grid-row:2;width:100%;min-width:0;height:56px}.comfort-hud #precision-toggle{grid-column:2;grid-row:2;height:56px}.comfort-hud #fire{grid-column:3;grid-row:2;width:100%;height:56px}.comfort-hud .battle-top{grid-template-columns:1fr 66px 1fr 44px;gap:5px}.comfort-hud .battle-top #comfort-camera{grid-column:4;grid-row:2}.comfort-hud .battle-top #game-menu{grid-column:4;grid-row:1}.comfort-hud .battle-top .team-a{grid-column:1;grid-row:1}.comfort-hud .battle-top .team-b{grid-column:3;grid-row:1}.comfort-hud .battle-top .turn-clock{grid-column:2;grid-row:1}.comfort-hud .battle-top .icon-btn{width:44px;height:44px}.comfort-hud .team-panel{padding:6px!important}.comfort-hud .team-line{gap:3px;flex-wrap:wrap}.comfort-hud .team-line strong{flex-basis:100%;line-height:20px}.comfort-hud .team-line>span:last-child{line-height:20px}.comfort-hud .battle-top.multi-team{grid-template-columns:1fr 1fr 66px 44px}.comfort-hud .multi-team .team-a{grid-column:1;grid-row:1}.comfort-hud .multi-team .team-b{grid-column:2;grid-row:1}.comfort-hud .multi-team .team-c{grid-column:1;grid-row:2}.comfort-hud .multi-team .team-d{grid-column:2;grid-row:2}.comfort-hud .multi-team .turn-clock{grid-column:3;grid-row:1}.comfort-hud #loadout-scroll{grid-template-columns:repeat(2,minmax(0,1fr));max-height:min(55dvh,450px)}.comfort-hud .loadout-item{grid-template-columns:32px minmax(0,1fr);min-height:90px;gap:7px}.comfort-hud .loadout-item b{grid-column:1;grid-row:2;text-align:center}.comfort-hud .loadout-item span{grid-row:1/3;grid-column:2}.comfort-hud #loadout-strip{max-height:75%}.comfort-hud .hud-sheet .aim-controls label{flex-basis:100%}.sheet-note{font-size:15px}.comfort-hud.camera-gesture:after{top:120px}.comfort-hud .turn-banner{top:25%}.world-card .world-name{font-size:15px;padding:8px}.hero-facts,.lobby-main .muted{font-size:15px}.secondary-actions small{font-size:13px}}
+@media(max-height:360px) and (orientation:landscape){.comfort-hud .battle-controls{height:calc(78px + env(safe-area-inset-bottom));gap:6px}.comfort-hud .movement button{width:46px;height:54px}.comfort-hud #arsenal{flex-basis:154px;min-width:138px;height:54px}.comfort-hud #precision-toggle{flex-basis:68px;height:54px}.comfort-hud #fire{height:54px;width:90px}.comfort-hud .hud-sheet-head{padding-top:4px;min-height:48px}.comfort-hud .hud-sheet-head h2{font-size:20px}.comfort-hud #loadout-scroll{max-height:calc(100dvh - 156px)}.comfort-hud .sheet-note{margin-bottom:6px}.comfort-hud .hud-sheet{max-height:calc(100% - 66px)}}
+@media(prefers-reduced-motion:reduce){.comfort-hud .hud-sheet{animation:none}}
