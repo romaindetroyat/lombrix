@@ -1,11 +1,13 @@
-import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.6.2';
-import {Renderer,TEAM_COLORS} from './renderer.js?v=0.6.2';
-import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.6.2';
-import {Sound} from './audio.js?v=0.6.2';
+import {installComfortUI} from './comfort.js?v=0.7.0';
+import {Game,THEMES,WEAPONS,byWeapon,chooseAI,clamp,VERSION,LAYOUTS,PACES,resolveLevel,levelCode,parseLevelCode,cleanOptions,worldFor,radialAim} from './engine.js?v=0.7.0';
+import {Renderer,TEAM_COLORS} from './renderer.js?v=0.7.0';
+import {dragPower,cameraRailMetrics,pinchView,weaponControls} from './interaction.js?v=0.7.0';
+import {Sound} from './audio.js?v=0.7.0';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const storage={get(k,d=null){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}},remove(k){try{localStorage.removeItem(k);}catch{}}};
 const sound=new Sound(),renderer=new Renderer($('game-canvas'));
+let comfortUI=null;
 let options=storage.get('lombrix-options',{theme:'lagoon',layout:'auto',worms:3,hp:100,turnSeconds:30,pace:'lively',difficulty:'normal',suddenDeath:true});
 if(!options||typeof options!=='object'||Array.isArray(options))options={};
 if(!options.pace){options.pace='lively';options.turnSeconds=30;}
@@ -215,7 +217,7 @@ function refreshHud(){if(!snapshot)return;const s=snapshot,turn=s.turn,team=myTe
  $('angle-caption').textContent=profile.direction?'CÔTÉ':'ANGLE';
  $('action-help').hidden=profile.power;$('action-help-title').textContent=def.target?'CIBLE AU DOIGT':profile.direction?'DIRECTION':profile.angle?'PORTÉE FIXE':'ACTION DIRECTE';
  $('action-help-text').textContent=profile.hint||def.desc;
- $('fuse-hint').hidden=!profile.timed;$('fuse-hint').textContent=profile.timed?' · '+fuse+' s':'';for(const id of ['move-left','move-right','jump'])$(id).disabled=!(play&&(s.phase==='aim'||s.retreat>0));$('arsenal').disabled=team<0;renderer.canAim=fire&&!arsenalOpen;setAim();refreshCameraRail();refreshLoadout();if(arsenalOpen&&!fire)closeArsenal();
+ $('fuse-hint').hidden=!profile.timed;$('fuse-hint').textContent=profile.timed?' · '+fuse+' s':'';for(const id of ['move-left','move-right','jump'])$(id).disabled=!(play&&(s.phase==='aim'||s.retreat>0));$('arsenal').disabled=team<0;renderer.canAim=fire&&!arsenalOpen;setAim();refreshCameraRail();refreshLoadout();comfortUI?.refresh();if(arsenalOpen&&!fire)closeArsenal();
  $('spectator-bar').hidden=s.phase==='over'||(play&&s.phase==='aim');$('spectator-bar').textContent=team<0?'Tu regardes une autre manche du tournoi.':s.phase==='flight'?(s.retreat>0?'Vite, éloigne-toi du cadeau !':'On regarde les dégâts…'):localGame?'Les Fripouilles préparent leur sale coup.':`${s.teams[s.team].name} joue. Prépare ta riposte.`;
  const paused=!localGame&&(!connected||room?.pause);$('network-pause').hidden=!paused;if(paused)$('network-pause').innerHTML=!connected?'<strong>Connexion interrompue</strong>Reconnexion automatique… Le serveur conserve le terrain.':`<strong>Une petite pause réseau</strong>${esc(room.pause.names.join(', '))} doit revenir.<br>Forfait dans ${room.pause.seconds} s pour les joueurs absents.`;
 }
@@ -264,7 +266,7 @@ function moveGesture(){
   renderer.zoom=next.zoom;renderer.scale=next.scale;renderer.manualCamera={...next.camera};renderer.camera={...next.camera};refreshCameraRail();
  }else if(p.length===1&&!multiGesture)aimAt({clientX:p[0].x,clientY:p[0].y});
 }
-function gestureAllowed(){return screen==='battle'&&snapshot&&!$('dialog').open;}
+function gestureAllowed(){return screen==='battle'&&snapshot&&!$('dialog').open&&!comfortUI?.isOpen();}
 function beginPointer(e){
  if((nativeTouch&&e.pointerType==='touch')||!gestureAllowed()||e.button>0)return;
  e.preventDefault();closeArsenal();if(!pointers.size){multiGesture=false;saveGesture({x:e.clientX,y:e.clientY});}
@@ -348,7 +350,7 @@ if(nativeTouch){
 }
 gameCanvas.addEventListener('contextmenu',e=>e.preventDefault());
 function aimAt(e){
- if(!canFire()||$('dialog').open||pointers.size>1||multiGesture)return;
+ if(!canFire()||$('dialog').open||comfortUI?.isOpen()||pointers.size>1||multiGesture)return;
  const p=renderer.screenToWorld(e.clientX,e.clientY),W=snapshot.world?.w||1600;
  renderer.aim.targetX=clamp(p.x,30,W-30);renderer.aim.targetY=clamp(p.y,0,snapshot.water-30);
  const def=byWeapon[weapon],profile=weaponControls(def);
@@ -390,7 +392,7 @@ ribbon.setAttribute('aria-label','Arsenal : balayer pour parcourir, toucher pour
 ribbon.innerHTML=`<div class="loadout-scroll" id="loadout-scroll" role="toolbar" aria-label="18 armes et équipements">${WEAPONS.map(def=>`<button type="button" class="loadout-item" data-loadout="${def.id}" aria-label="${esc(def.name)}">${weaponIcon(def.id)}<span>${esc(({rocket:'Roquette',grenade:'Grenade',cluster:'Grappe',banana:'Banane',mortar:'Mortier',bouncer:'Rebond',shotgun:'Fusil',laser:'Laser',dynamite:'Dynamite',airstrike:'Frappe',mine:'Mine',drill:'Foreuse',punch:'Poussée',teleport:'Portail',heal:'Soins',bridge:'Pont',freeze:'Glace',bee:'Abeille'})[def.id]||def.name)}</span><b></b></button>`).join('')}</div><span class="loadout-hint" aria-hidden="true">‹ BALAYER ›</span>`;
 $('battle').append(ribbon);
 const scrollLoadout=$('loadout-scroll');let loadoutPress=null,loadoutSwipeUntil=0;
-function closeArsenal(){arsenalOpen=false;$('battle')?.classList.remove('arsenal-is-open','wheel-open');if($('arsenal-belt'))$('arsenal-belt').hidden=true;renderer.canAim=canFire();}
+function closeArsenal(){comfortUI?.close();arsenalOpen=false;$('battle')?.classList.remove('arsenal-is-open','wheel-open');if($('arsenal-belt'))$('arsenal-belt').hidden=true;renderer.canAim=canFire();}
 function refreshLoadout(){
  const team=myTeam();const ammo=snapshot?.teams[team]?.ammo||{};
  for(const b of ribbon.querySelectorAll('[data-loadout]')){
@@ -424,6 +426,7 @@ scrollLoadout.addEventListener('keydown',e=>{
  e.stopPropagation(); // Enter equips; it cannot also shoot or move a worm.
 });
 function arsenalDialog(){
+ if(comfortUI){comfortUI.open('weapons');return;}
  if(!canFire())return;
  cancelAimGesture();stopMove();
  const b=scrollLoadout.querySelector(`[data-loadout="${weapon}"]`);
@@ -488,7 +491,7 @@ function selectWormDialog(){
 $('game-menu').onclick=()=>{dialog('PETITE PAUSE ENTRE DEUX CRATÈRES',`<h2>${localGame?'Partie en pause.':'La bataille continue.'}</h2><p>${localGame?'Prends ton temps, les Fripouilles aussi.':'En ligne, le tour continue pendant les menus. Chacun reste maître de son équipe.'}</p><div class="menu-list"><button id="menu-resume">↗ Reprendre la bataille</button><button id="menu-select">◎ Choisir mon ver</button>${localGame?'<button id="menu-new-level">↻ Nouveau terrain et règles</button>':''}<button id="menu-level-code">◇ Code de ce terrain</button><button id="menu-skip">→ Passer mon tour</button>${room?'<button id="menu-bracket">♜ Voir le tableau du salon</button>':''}<button id="menu-help">? Comment jouer</button><button id="menu-sound">♫ Son et musique</button><button id="menu-quit" class="danger">Quitter la partie</button></div>`,'menu');$('menu-resume').onclick=closeDialog;if($('menu-new-level'))$('menu-new-level').onclick=()=>configure('solo');$('menu-level-code').onclick=()=>{dialog('TERRAIN REPRODUCTIBLE',`<h2>Le même champ de bataille.</h2><p>Copie ce code et charge-le dans la fabrique à batailles.</p><input class="level-code-readonly" id="current-level-code" readonly value="${esc(levelCode(snapshot.options))}">`,'code');$('current-level-code').select();};$('menu-select').onclick=selectWormDialog;$('menu-skip').onclick=()=>{if(!canFire()){toast('Tu pourras passer quand ce sera ton tour.');return;}command({type:'skip'});closeDialog();};if($('menu-bracket'))$('menu-bracket').onclick=showBracket;$('menu-help').onclick=helpDialog;$('menu-sound').onclick=settingsDialog;$('menu-quit').onclick=leaveDialog;};
 function handleEnd(){if(!snapshot||snapshot.phase!=='over'||renderer.hasDeathRituals()||ended.has(gameKey))return;ended.add(gameKey);stopMove();if(localGame)storage.remove('lombrix-saved-solo');const s=snapshot,won=s.winner===myTeam(),draw=s.winner===-1,champion=room?.status==='finished'&&room.champion?room.players.find(p=>p.id===room.champion)?.name:null;dialog('LES POUSSIÈRES RETOMBENT',`<div class="winner-art">${draw?'☯':won?'♜':'✦'}</div><h2 class="center">${champion?`${esc(champion)} remporte ${room.kind==='tournament'?'le tournoi':'le duel'} !`:draw?'Tout le monde a perdu.':won?'Victoire sans modestie !':'Une défaite très injuste.'}</h2><p class="center">${draw?'C’est une autre façon de faire la paix.':won?'Tes vers réclament une statue. Et un goûter.':'Le vent, sûrement. Ou la gravité. Absolument pas toi.'}</p><div class="result-score">${s.teams.map((t,i)=>`<div style="color:${TEAM_COLORS[i]}">${esc(t.name)}<b>${s.worms.filter(w=>w.team===i).reduce((n,w)=>n+w.hp,0)} PV</b></div>`).join('')}</div>${room&&room.status!=='finished'?'<p>Le tournoi continue. La prochaine manche sera ouverte automatiquement quand les duels de ce tour seront terminés.</p>':''}<div class="dialog-actions"><button class="primary" id="result-action">${localGame?'Nouveau terrain !':room?.status==='finished'?'Retour au salon':'Voir le tableau'} →</button>${localGame?'<button class="secondary-button" id="same-level">Rejouer ce terrain</button>':''}</div>`,'result');$('result-action').onclick=()=>{closeDialog();if(localGame){options.seed=newSeed();startSolo();}else if(room.status==='finished'){setScreen('lobby');lastLobby='';renderLobby();}else showBracket();};if($('same-level'))$('same-level').onclick=()=>{closeDialog();startSolo();};if(won){sound.tone(523,.2,'sine',.2);sound.tone(659,.2,'sine',.2,null,.18);sound.tone(784,.4,'sine',.2,null,.36);}}
 renderer.onEvent=e=>{sound.play(e);if(e.type==='turn'&&screen==='battle')banner(e.frozen?`${e.name} a oublié sa polaire.`:e.team===myTeam()?`À toi, ${e.name} !`:`${e.name} prépare un sale coup.`);if(e.type==='sudden')toast('L’eau monte. Il va falloir conclure.');};
-document.addEventListener('keydown',e=>{if(screen!=='battle'||$('dialog').open||e.repeat||e.target.matches('input,select,textarea'))return;if(arsenalOpen&&e.key.toLowerCase()!=='e'){if(['ArrowLeft','ArrowRight',' ','Enter'].includes(e.key))e.preventDefault();return;}if(['ArrowLeft','ArrowRight',' ','Enter'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft')startMove(-1);if(e.key==='ArrowRight')startMove(1);if(e.key===' ')command({type:'jump'});if(e.key==='Enter')$('fire').click();if(e.key.toLowerCase()==='e')arsenalDialog();});
+document.addEventListener('keydown',e=>{if(screen!=='battle'||$('dialog').open||e.repeat||e.target.matches('input,select,textarea')||comfortUI?.isOpen())return;if(arsenalOpen&&e.key.toLowerCase()!=='e'){if(['ArrowLeft','ArrowRight',' ','Enter'].includes(e.key))e.preventDefault();return;}if(['ArrowLeft','ArrowRight',' ','Enter'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft')startMove(-1);if(e.key==='ArrowRight')startMove(1);if(e.key===' ')command({type:'jump'});if(e.key==='Enter')$('fire').click();if(e.key.toLowerCase()==='e')arsenalDialog();});
 document.addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight')stopMove();});
 window.addEventListener('blur',()=>{closeArsenal();railPointer=null;cancelAimGesture();stopMove();saveSolo();if(localGame)soloPaused=true;});window.addEventListener('focus',()=>{if(localGame&&!$('dialog').open)soloPaused=false;});
 let canvasViewportWidth=innerWidth;
@@ -528,6 +531,12 @@ function refreshSoloResume(){
  };
 }
 refreshSoloResume();
+comfortUI=installComfortUI({$,renderer,byWeapon,storage,closeDialog,
+ getState:()=>({snapshot,screen,team:myTeam(),weapon,fuse,canFire:canFire(),profile:weaponControls(byWeapon[weapon]),icon:weaponIcon}),
+ beforeOpen:()=>{cancelAimGesture();stopMove();},
+ setArsenalOpen:value=>{arsenalOpen=value;renderer.canAim=canFire()&&!value;},
+ setFuse:value=>{fuse=value;refreshHud();}
+});
 window.addEventListener('pagehide',saveSolo);
 requestAnimationFrame(animate);
 window.LombrixBoot?.ready();

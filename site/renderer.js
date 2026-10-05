@@ -1,7 +1,7 @@
-import {cacheSprite} from './render-cache.js?v=0.6.2';
-import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.6.2';
-import {pullFromPower,wormActing} from './interaction.js?v=0.6.2';
-import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.6.2';
+import {cacheSprite} from './render-cache.js?v=0.7.0';
+import {WORLD,THEMES,Terrain,rng,clamp,byWeapon,PACES,launchSpeed,muzzle} from './engine.js?v=0.7.0';
+import {pullFromPower,wormActing} from './interaction.js?v=0.7.0';
+import {paintBackdrop,paintTerrain,paintProp,paintWorm,paintDeparture,paintGrave} from './art.js?v=0.7.0';
 const TAU=Math.PI*2;
 export const TEAM_COLORS=['#20e8a0','#ff4e70','#ffcc27','#9876ff'];
 function ellipse(c,x,y,rx,ry,color){c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,TAU);c.fill();}
@@ -67,7 +67,7 @@ if(e.type==='bump'){this.texts.push({x:e.x,y:e.y-24,text:'POC !',life:.65,max:.6
   if(!this.overview&&active){
     // Keep the selected worm in the uncovered play area, not behind the rail.
     const rail=document.getElementById('camera-strip'),occupied=rail&&!rail.closest('[hidden]')?this.h-rail.getBoundingClientRect().top:0;
-    const reserved=occupied|| (this.h>this.w?334:(this.h<500?170:194)),focusY=(64+this.h-reserved)/2;
+    const reserved=this.hudInsets?.bottom??(occupied|| (this.h>this.w?334:(this.h<500?170:194))),focusY=((this.hudInsets?.top??64)+this.h-reserved)/2;
     gx=active.x;gy=active.y+(this.h/2-focusY)/this.scale;
     if(s.projectiles.length){const p=s.projectiles[0];gx=p.x;gy=p.y+35;}
   }
@@ -174,7 +174,7 @@ c.restore();}
     c.save();c.strokeStyle=this.aimingGesture?'#fff6d64f':'#fff6d621';c.lineWidth=1.2/this.scale;c.setLineDash([3/this.scale,5/this.scale]);c.beginPath();c.arc(ox,oy,R,0,TAU);c.stroke();c.setLineDash([]);
     line(c,[[ox,oy],[hx,hy]],this.aim.power>.83?'#ffb587c0':'#a9ffe2b0',2/this.scale);
     ellipse(c,hx,hy,5/this.scale,5/this.scale,this.aim.power>.83?'#ffb587':'#bbffe9');
-    if(this.aimingGesture)label(c,Math.round(this.aim.power*100)+' %',hx,hy-14/this.scale,12/this.scale,'#fff9e8');
+    if(this.aimingGesture)label(c,Math.round(this.aim.power*100)+' %',hx,hy-14/this.scale,17*(this.uiTextScale||1)/this.scale,'#fff9e8');
     c.restore();
   }
   if(def.type==='laser'||def.type==='shotgun'){c.setLineDash([6,9]);line(c,[[w.x,w.y-22],[w.x+Math.cos(a)*140,w.y-22+Math.sin(a)*140]],'#fff7de99',2);c.setLineDash([]);return;}if(!def.speed)return;

@@ -1,4 +1,4 @@
-/* LOMBRIX 0.6.2 — lightweight bootstrap; no gameplay or network dependency. */
+/* LOMBRIX 0.7.0 — lightweight bootstrap; no gameplay or network dependency. */
 (function () {
  'use strict';
  var notice=document.getElementById('runtime-notice');
@@ -7,7 +7,7 @@
  var details='';
  function report(error) {
   var message=error && error.message ? error.message : String(error || 'Erreur non précisée');
-  details='LOMBRIX 0.6.2\n'+message.slice(0,1500)+'\nNavigateur : '+navigator.userAgent;
+  details='LOMBRIX 0.7.0\n'+message.slice(0,1500)+'\nNavigateur : '+navigator.userAgent;
   if(notice){notice.hidden=false;notice.dataset.state='error';}
   if(text)text.textContent='Le jeu a rencontré un problème : '+message.slice(0,240)+'. Copie le diagnostic pour signaler ce blocage.';
   if(copy)copy.hidden=false;

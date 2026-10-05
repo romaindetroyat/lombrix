@@ -1,21 +1,23 @@
 {
-  "version": "0.6.2",
+  "version": "0.7.0",
   "repository": "romaindetroyat/lombrix",
   "files": {
-    "site/app.js": "4ec65ca6bd572490d68de801d6d8e7bdc879bf5271e56c63c8b22bd1792267c6",
-    "site/art.js": "5e535027518766f846613e4fb8b74b6818d539555527518c97c06eaa889893d6",
+    "site/app.js": "4181adb201c6292c1c1ed3bd1d8619aa2caff4f94a9a7bd7ae1ad17cfa48bbb2",
+    "site/art.js": "e6b7c71010b9dc0a7ca35aff3fc9d46e17d568b7c8f89f536e7f2bceb1775ecf",
     "site/audio.js": "e79b858a51d2dbd8aff05ed7c5904840a165c67ac83627d7fbfd3c3b5e019d70",
-    "site/boot.js": "a4876c65e8beb08d32f5cfc0dd62a0c0cd78b9094cece044ddd6e22570f6b2e2",
-    "site/engine.js": "bf787b751caf972d2767400cb6dbc09864870e27ed0482ce5b5c09b05afaa544",
-    "site/index.html": "22d31a4fe9342671b43be508773a0c047fe99f8eeaa5a9bdfcce2c079ea002f4",
+    "site/boot.js": "715e3d2962da9a7e254c6f88d2a28c83ad7432618ddae90120f201f71ea77c86",
+    "site/comfort.css": "0a410368c9968c4c16bf92a4b295e32e18c212750061ad91b612584727d7a334",
+    "site/comfort.js": "f2b915b258258c716ec21ba9b60ba8842a3c69c7182a9f1752cd3bbc8ced6c52",
+    "site/engine.js": "cedd67f649d45cd246760b5f017afa37ba512e80372f9184ad4b7a43fa67a7be",
+    "site/index.html": "3e6e464baf80f5489252b6393e0d5bd527d69d34740c2f12fe47bef378bded94",
     "site/interaction.js": "ae1240db2108a9cf2626f8669455ae43dfa551c3d6e5a0e236f11ecd0dfccf10",
     "site/manifest.webmanifest": "af396210520378bb981762f909914e2ac408c22c18f1f2f51fb406fd52b5d851",
     "site/render-cache.js": "99c01e8e18efc0c2bbfd029d2221d6141cfb1b0f0e59e743da25ec271d4b8df8",
-    "site/renderer.js": "4af02c07ea656de9418e1217532e81d44881a04ba24e3054091b27e2e8e79208",
-    "site/style.css": "198f8990fff355bf10a08a6539aafdb23374e595bd8214bc54d3ec10c896f9ff",
-    "site/sw.js": "f8d302fb303e604c4961111f1423a09b1dbeaedce136182758e01705dec3edc7",
+    "site/renderer.js": "d5964bf19face559c5ad4692a674021be39f2ff8dc0da9bf52ba80ce4ff15fa2",
+    "site/style.css": "1fe44ec2aa2508b79557793139288da9e06c7fe9af29f6860417ca7133966d3c",
+    "site/sw.js": "9c265390ab6f244687ef301ce56f473eee2ab9dd6423ccad432168fa187a3cda",
     "core.mjs": "73c16b2dfedf075d1c8d5dba9d257e024c23031d8ef84a79d0555b2ff714e615",
     "worker.mjs": "ce055d263d27ec3554a72f514f20c989426714e52d415f1db52b2b98f5f5f1fa",
-    "solo.html": "a6400467d0e3b8aa5635ec960e44d26b6d18bb545dd30d5b18b96dec4d3ad694"
+    "solo.html": "99d617ac847ef89b68fb4f8455b7f4ab11c6d83fa686278a9ec72078a6bbd5fb"
   }
 }

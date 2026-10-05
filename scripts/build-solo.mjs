@@ -1,12 +1,12 @@
 /** Build the offline single-file preview from current sources, never an old solo. */
 import {readFile,writeFile} from 'node:fs/promises';
 const read=p=>readFile(p,'utf8'),escape=s=>s.replace(/<\/script/gi,'<\\/script');
-const cssSafe=await read('site/style.css');
+const cssSafe=await read('site/style.css')+'\n'+await read('site/comfort.css');
 let html=(await read('site/index.html')).replace(/<link[^>]+>/g,'');
 html=html.replace('</head>',()=>'<style>'+cssSafe+'</style></head>');
 
 let js='';
-for(const name of ['engine','interaction','render-cache','art','renderer','audio','app']){
+for(const name of ['engine','interaction','render-cache','art','renderer','audio','comfort','app']){
  let code=await read(`site/${name}.js`);
  code=code.replace(/^import .+?;\s*/gm,'').replace(/\bexport (?=const|class|function)/g,'');
  js+=code+'\n';

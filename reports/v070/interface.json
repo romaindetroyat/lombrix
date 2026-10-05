@@ -1,0 +1,1325 @@
+{
+  "version": "0.7.0",
+  "url": null,
+  "physicalIPhone": false,
+  "mode": "self-contained-html",
+  "records": [
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 230,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 844,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 304,
+          "w": 844,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 410,
+          "y": 314,
+          "w": 210,
+          "h": 60,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 726,
+          "y": 314,
+          "w": 106,
+          "h": 60,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 136,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 74,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 632,
+          "y": 314,
+          "w": 82,
+          "h": 60,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 784,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 726,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 465,
+          "y": 347.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "two-finger-pan-keeps-aim-and-release-safe",
+      "status": "pass",
+      "input": "synthetic-TouchEvent",
+      "distance": 91.98717948717945
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "pinch-keeps-aim",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "actual-shot-AI-return-controls-restored",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 215,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 667,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 289,
+          "w": 667,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 301,
+          "y": 301,
+          "w": 174,
+          "h": 56,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 563,
+          "y": 301,
+          "w": 92,
+          "h": 56,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 120,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 66,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 483,
+          "y": 301,
+          "w": 72,
+          "h": 56,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 607,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 553,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 348,
+          "y": 332.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 168,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 568,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 242,
+          "w": 568,
+          "h": 78,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 232,
+          "y": 251,
+          "w": 154,
+          "h": 54,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 466,
+          "y": 251,
+          "w": 90,
+          "h": 54,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 120,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 66,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 392,
+          "y": 251,
+          "w": 68,
+          "h": 54,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 508,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 454,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 279,
+          "y": 281.15625,
+          "w": 98,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 557,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 139,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 696,
+          "w": 390,
+          "h": 148,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 12,
+          "y": 772,
+          "w": 170,
+          "h": 56,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 278,
+          "y": 772,
+          "w": 100,
+          "h": 56,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 140,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 76,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 192,
+          "y": 772,
+          "w": 76,
+          "h": 56,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 334,
+          "y": 27,
+          "w": 44,
+          "h": 44,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 334,
+          "y": 95,
+          "w": 44,
+          "h": 44,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 59,
+          "y": 803.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 740,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 814,
+          "w": 1440,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 1006,
+          "y": 824,
+          "w": 210,
+          "h": 60,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 1322,
+          "y": 824,
+          "w": 106,
+          "h": 60,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 136,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 74,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 1228,
+          "y": 824,
+          "w": 82,
+          "h": 60,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 1380,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 1322,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 1061,
+          "y": 857.15625,
+          "w": 130,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 230,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 844,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 304,
+          "w": 844,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 410,
+          "y": 314,
+          "w": 210,
+          "h": 60,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 726,
+          "y": 314,
+          "w": 106,
+          "h": 60,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 136,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 74,
+          "y": 308.5,
+          "w": 56,
+          "h": 60,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 632,
+          "y": 314,
+          "w": 82,
+          "h": 60,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 784,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 726,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 465,
+          "y": 347.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "two-finger-pan-keeps-aim-and-release-safe",
+      "status": "pass",
+      "input": "native-CDP",
+      "distance": 91.98717948717945
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "pinch-keeps-aim",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "native-inventory-scroll-does-not-equip",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "actual-shot-AI-return-controls-restored",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        844,
+        390
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 215,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 667,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 289,
+          "w": 667,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 301,
+          "y": 301,
+          "w": 174,
+          "h": 56,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 563,
+          "y": 301,
+          "w": 92,
+          "h": 56,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 120,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 66,
+          "y": 295.5,
+          "w": 48,
+          "h": 56,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 483,
+          "y": 301,
+          "w": 72,
+          "h": 56,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 607,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 553,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 348,
+          "y": 332.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        667,
+        375
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 168,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 568,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 242,
+          "w": 568,
+          "h": 78,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 232,
+          "y": 251,
+          "w": 154,
+          "h": 54,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 466,
+          "y": 251,
+          "w": 90,
+          "h": 54,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 120,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 66,
+          "y": 245.5,
+          "w": 48,
+          "h": 54,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 392,
+          "y": 251,
+          "w": 68,
+          "h": 54,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 508,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 454,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 279,
+          "y": 281.15625,
+          "w": 98,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        568,
+        320
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 557,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 139,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 696,
+          "w": 390,
+          "h": 148,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 12,
+          "y": 772,
+          "w": 170,
+          "h": 56,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 278,
+          "y": 772,
+          "w": 100,
+          "h": 56,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 140,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 76,
+          "y": 699.5,
+          "w": 58,
+          "h": 54,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 192,
+          "y": 772,
+          "w": 76,
+          "h": 56,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 334,
+          "y": 27,
+          "w": 44,
+          "h": 44,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 334,
+          "y": 95,
+          "w": 44,
+          "h": 44,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 59,
+          "y": 803.15625,
+          "w": 106,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "readable-controls-and-clear-battlefield",
+      "status": "pass",
+      "centralHeight": 740,
+      "measurements": {
+        ".battle-top": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 74,
+          "font": "15px"
+        },
+        ".battle-controls": {
+          "x": 0,
+          "y": 814,
+          "w": 1440,
+          "h": 86,
+          "font": "15px"
+        },
+        "#arsenal": {
+          "x": 1006,
+          "y": 824,
+          "w": 210,
+          "h": 60,
+          "font": "15px"
+        },
+        "#fire": {
+          "x": 1322,
+          "y": 824,
+          "w": 106,
+          "h": 60,
+          "font": "17px"
+        },
+        "#move-left": {
+          "x": 12,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#move-right": {
+          "x": 136,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "24px"
+        },
+        "#jump": {
+          "x": 74,
+          "y": 818.5,
+          "w": 56,
+          "h": 60,
+          "font": "25px"
+        },
+        "#precision-toggle": {
+          "x": 1228,
+          "y": 824,
+          "w": 82,
+          "h": 60,
+          "font": "15px"
+        },
+        "#game-menu": {
+          "x": 1380,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#comfort-camera": {
+          "x": 1322,
+          "y": 17,
+          "w": 48,
+          "h": 48,
+          "font": "24px"
+        },
+        "#weapon-name": {
+          "x": 1061,
+          "y": 857.15625,
+          "w": 130,
+          "h": 18.6875,
+          "font": "17px"
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "full-labels-one-tap-equips-dismisses-without-fire",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "optional-precision-and-fuse-preserve-settings",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "camera-and-escape-accessible",
+      "status": "pass"
+    },
+    {
+      "engine": "chromium",
+      "viewport": [
+        1440,
+        900
+      ],
+      "name": "20px-text-preference-and-no-page-errors",
+      "status": "pass"
+    }
+  ]
+}
