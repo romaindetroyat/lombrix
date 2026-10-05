@@ -1,40 +1,36 @@
-# LOMBRIX — version 0.6.2
+# LOMBRIX — version 0.7.0
 
-Jeu d’artillerie PWA : équipes de vers, terrains destructibles, solo et salons privés entre appareils distincts. Dépôt exclusivement consacré à LOMBRIX, indépendant des autres applications.
+Jeu d’artillerie PWA : équipes de vers, terrains destructibles, solo et salons privés entre appareils distincts. Ce dépôt est exclusivement consacré à LOMBRIX, indépendant des autres applications.
 
-## Ce qui change
+## Interface lisible, plus de place pour jouer
 
-**Premières images.** Le contrôle visuel a révélé un véritable canevas vide au démarrage sous WebKit, alors que les commandes fonctionnaient déjà. Le combat est désormais peint immédiatement lorsqu’il devient visible. Un redimensionnement inchangé ne réinitialise plus le bitmap ; un changement réel repeint le décor sans attendre le prochain cycle d’animation. Les mesures avant correction restent dans `reports/v061/first-frame/`.
+La bande permanente des 18 armes, les curseurs de tir et la barre panoramique ne sont plus affichés simultanément. Le terrain reste visible entre une ligne d’état et les commandes de pouce.
 
-**Caméra tactile.** Deux doigts déplacent le décor et règlent le zoom. Le geste fonctionne aussi lorsque le premier doigt commence sur le décor et le second sur une commande : celle-ci ne prend pas le dessus et ne tire pas. Le doigt restant ne reprend pas accidentellement la visée. La barre panoramique reste disponible. Les deux doigts uniquement sur marcher/sauter ne sont pas automatiquement interprétés comme une caméra.
+- **Armes :** toucher le bouton de l’arme équipée ouvre un tiroir temporaire de grandes vignettes, avec les noms complets et les munitions. Faire défiler verticalement, puis toucher une arme : elle est équipée et le tiroir se ferme. Pas de catégorie intermédiaire, pas de confirmation supplémentaire. Le chronomètre continue.
+- **Visée :** le doigt sur le terrain conserve le réglage direct de l’angle et de la puissance. Le bouton Visée donne accès aux curseurs plus grands et à la mèche pour les grenades. FEU reste une action distincte.
+- **Caméra :** deux doigts déplacent le décor ; le pincement zoome. Le bouton Caméra ouvre les réglages de zoom, la barre panoramique et le recentrage. Les manipulations de caméra ne modifient pas la visée.
+- **Lisibilité :** noms des armes à 17 pixels CSS par défaut, contre 9 pixels dans l’ancienne bande. Menu → Lisibilité propose 20 pixels pour les textes principaux. Les boutons principaux ont des cibles tactiles d’au moins 44 × 44 pixels CSS dans les formats contrôlés.
+- **Observation :** les commandes du bas se retirent pendant le tour adverse et après la fin de la retraite, puis reviennent au tour du joueur. Le menu et la caméra restent disponibles. La version, le tour et le terrain restent consultables dans le menu.
 
-**Équipements directement accessibles.** La roue a été remplacée par une bande permanente des 18 armes et outils, en ordre fixe, avec noms et munitions. Balayer horizontalement parcourt la bande sans changer d’arme ; un appui équipe immédiatement. Aucun dialogue, onglet ni confirmation supplémentaire. FEU déclenche l’action, jamais le relâchement d’un geste. Au clavier, flèches/Home/End puis Entrée permettent de choisir dans la bande.
+À 844 × 390, la hauteur centrale sans barre d’interface passe de **151 à 230 pixels**, soit environ 52 % de plus. Il s’agit d’une mesure de disposition dans un navigateur, hors marges physiques et chrome de Safari ; ce n’est pas une mesure sur iPhone réel ni un pourcentage de gain de performances.
 
-**Couleurs et cadrage.** Sols plus colorés, bleus profonds, végétation et icônes plus saturées, accessoires moins blanchis. Le cadrage tient compte de la bande d’armes. La version est indiquée pendant le combat (`SOLO · 0.6.2` / `EN LIGNE · 0.6.2`). La définition du canevas est bornée pour limiter les allocations ; aucune mesure de fluidité sur iPhone physique n’est annoncée.
+Les terrains adaptatifs, 1 à 8 vers par équipe, les bousculades, tirs descendants, mimiques et éliminations sont conservés. Le moteur des dégâts et l’autorité du serveur ne sont pas reconstruits.
 
-Les terrains adaptatifs, le choix de 1 à 8 vers par équipe, les bousculades, la visée descendante, les mimiques et les départs comiques sont conservés. Le moteur des dégâts et l’autorité du serveur n’ont pas été reconstruits.
+## Validation et limites
 
-## Validation
+`reports/v070/gate.json` et `interface.json` conservent les contrôles de la version HTML autonome dans WebKit et Chromium sur cinq formats (petit paysage, paysage, portrait et bureau). `node-tests.tap` contient les 43 tests unitaires. Les contrôles de l’adresse publique sont distincts et ne sont pas déduits de ces tests locaux.
 
-Les rapports de cette livraison sont dans `reports/v062/` :
+Les gestes multipoints WebKit sont injectés comme snapshots TouchEvent ; Chromium utilise les entrées tactiles natives CDP. Les boutons sont actionnés via l’interface. WebKit Linux n’est pas un iPhone physique : la fluidité, le son réel, les appels téléphoniques et les particularités de toutes les versions d’iOS ne sont pas certifiés par ces tests.
 
-- `node-tests.tap` : contrôles unitaires du moteur, des interactions, de l’autorité et du cache.
-- `first-frame/result.json` : huit prélèvements de pixels, dès l’ouverture du combat, dans WebKit et Chromium.
-- `interface.json` : commandes, gestes multipoints, sélection directe et riposte de l’IA.
-- `two-phones/result.json` : invitation, état prêt, droits de tir, cratère partagé, changement de tour et reconnexion dans deux processus WebKit indépendants.
-- `offline-origin-stopped.json` : reprise solo après arrêt réel du serveur d’origine.
-- `gate.json` : résultat global des étapes locales ; une étape en échec empêche la validation.
-- `session/` : résultats distincts de publication et de contrôle de l’adresse publique.
+Les anciennes preuves, y compris leurs échecs, restent dans les répertoires précédents. `docs/v070/NOTES.md` détaille la présente évolution. `BUILD.json` décrit les fichiers exacts de la livraison.
 
-Les anciennes preuves et les échecs restent conservés dans `reports/v061/` et les répertoires précédents. `docs/v061/NOTES.md` et `docs/v062/NOTES.md` détaillent les correctifs.
+## Hébergement stable
 
-**Limites :** WebKit Linux n’est pas un iPhone physique. Les gestes multipoints WebKit sont injectés comme snapshots TouchEvent ; Chromium utilise les entrées tactiles natives CDP. Les boutons sont actionnés via l’interface. Les tests ne valident pas toutes les versions d’iOS, l’audio réel, les appels téléphoniques ou le réseau mobile d’un appareil physique. Un HTTP 200 n’est pas à confondre avec une validation navigateur ou avec un hébergement permanent.
+**Adresse du jeu : https://lombrix.romaindetroyat.workers.dev/**
 
-## Hébergement
+Le propriétaire a relié directement ce dépôt à Cloudflare Workers Builds. La production utilise la branche `main`, `npm test` et `npx wrangler deploy`. Ne pas lancer les anciens workflows de démonstration temporaire pour remplacer ce déploiement.
 
-Lire `reports/v062/session/deployment.json` pour l’adresse et le statut, ainsi que `session/gate.json` pour les résultats navigateur. Un ancien lien temporaire peut expirer et une icône déjà installée ne pointe pas automatiquement vers une nouvelle adresse.
-
-Le workflow `publish-v062.yml` utilise le compte Cloudflare si les secrets `CLOUDFLARE_API_TOKEN` et, au besoin, `CLOUDFLARE_ACCOUNT_ID` sont configurés. Sinon, la démonstration est temporaire et doit être revendiquée dans le délai indiqué. Les liens de revendication sont conservés chiffrés, jamais publiés en clair. Ne pas commettre de jeton API ni de clé privée.
+Une nouvelle version est disponible après réussite du déploiement Cloudflare. Le service worker ne remplace pas une partie en cours ; une mise à jour en attente s’active depuis l’accueil. Il n’est pas nécessaire d’effacer les sauvegardes Safari pour une mise à jour normale.
 
 ## Développement
 
@@ -45,4 +41,4 @@ node scripts/build-solo.mjs
 node scripts/prepare-release.mjs
 ```
 
-`site/` contient le moteur partagé, le rendu, l’audio et l’interface. `core.mjs` valide les règles des salons. `worker.mjs` fournit le serveur et le stockage Cloudflare Durable Objects. Le serveur conserve l’autorité sur les tours, les dégâts et les résultats. `solo.html` est régénéré depuis la même source mais ne fournit pas de serveur multijoueur.
+`site/` contient le moteur partagé, le rendu, l’audio et l’interface. `comfort.js` et `comfort.css` définissent l’interface à divulgation progressive. `core.mjs` valide les règles des salons ; `worker.mjs` fournit le serveur et le stockage Cloudflare Durable Objects. Le serveur conserve l’autorité sur les tours, dégâts et résultats. `solo.html` est régénéré depuis la même source mais ne fournit pas de serveur multijoueur.
