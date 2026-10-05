@@ -1,0 +1,94 @@
+name: LOMBRIX 0.7 production acceptance
+on:
+  push:
+    branches: [ui/comfort-v070]
+    paths: [.github/workflows/verify-comfort-production.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lombrix-comfort-production-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LOMBRIX_URL: https://lombrix.romaindetroyat.workers.dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the stable deployment version and both UI assets
+        id: http
+        run: |
+          test "$GITHUB_REPOSITORY" = 'romaindetroyat/lombrix'
+          mkdir -p reports/v070/production
+          python3 - <<'PY'
+          import datetime,hashlib,json,os,time,urllib.request,urllib.error
+          from pathlib import Path
+          url=os.environ['LOMBRIX_URL']
+          out=Path('reports/v070/production/http.json')
+          data={'url':url,'version':'0.7.0','checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'checks':[],'ready':False}
+          paths=['/health','/','/comfort.js?v=0.7.0','/comfort.css?v=0.7.0','/sw.js','/manifest.webmanifest']
+          for attempt in range(18):
+              passed=True
+              for path in paths:
+                  try:
+                      with urllib.request.urlopen(urllib.request.Request(url+path,headers={'User-Agent':'LOMBRIX-version-check','Cache-Control':'no-cache'}),timeout=12) as response:
+                          body=response.read();text=body.decode()
+                          if path=='/health':valid=json.loads(text).get('version')=='0.7.0'
+                          elif path=='/':valid='0.7.0' in text and '/comfort.css' in text
+                          elif path.startswith('/comfort.js'):valid='installComfortUI' in text and hashlib.sha256(body).digest()==hashlib.sha256(Path('site/comfort.js').read_bytes()).digest()
+                          elif path.startswith('/comfort.css'):valid='comfort-hud' in text and hashlib.sha256(body).digest()==hashlib.sha256(Path('site/comfort.css').read_bytes()).digest()
+                          elif path=='/sw.js':valid='0.7.0' in text and 'comfort.js' in text
+                          else:valid=json.loads(text).get('display')=='standalone'
+                          data['checks'].append({'path':path,'http':response.status,'valid':valid});passed=passed and valid
+                  except urllib.error.HTTPError as e:
+                      data['checks'].append({'path':path,'http':e.code});passed=False
+                      if e.code==403:
+                          out.write_text(json.dumps(data,indent=2));raise SystemExit('Host protection refused the verification; no bypass attempted')
+                  except Exception as e:data['checks'].append({'path':path,'error':type(e).__name__});passed=False
+              data['ready']=passed;out.write_text(json.dumps(data,indent=2))
+              if passed:break
+              time.sleep(6)
+          print(json.dumps(data,indent=2))
+          if not data['ready']:raise SystemExit('Production does not yet serve verified 0.7.0 assets')
+          PY
+      - name: Install actual browser engines
+        id: browsers
+        run: |
+          python3 -m pip install playwright --quiet
+          python3 -m playwright install --with-deps webkit chromium > /tmp/browser-install.log 2>&1
+      - name: Live readability gestures equipment and full solo turns
+        id: ui
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v070/production/interface timeout 360 python3 scripts/check-comfort-v070.py
+      - name: Live independent multiplayer sessions and test-room cleanup
+        id: network
+        if: always() && steps.http.outcome == 'success' && steps.browsers.outcome == 'success'
+        continue-on-error: true
+        run: LOMBRIX_REPORT_DIR=reports/v070/production/network timeout 180 python3 scripts/check-two-phones.py
+      - name: Record measured production outcomes
+        if: always()
+        env:
+          HTTP: ${{ steps.http.outcome }}
+          BROWSERS: ${{ steps.browsers.outcome }}
+          UI: ${{ steps.ui.outcome }}
+          NETWORK: ${{ steps.network.outcome }}
+        run: |
+          mkdir -p reports/v070/production
+          python3 - <<'PY'
+          import datetime,json,os
+          from pathlib import Path
+          data={'url':os.environ['LOMBRIX_URL'],'version':'0.7.0','run':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'physicalIPhone':False,'steps':{k:os.environ[k] for k in ['HTTP','BROWSERS','UI','NETWORK']}}
+          data['allPassed']=all(v=='success' for v in data['steps'].values())
+          Path('reports/v070/production/gate.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lombrix-v070-production-verification
+          path: reports/v070/production/
+          retention-days: 7
+      - name: Require all production gates
+        if: always()
+        run: python3 -c 'import json; assert json.load(open("reports/v070/production/gate.json"))["allPassed"] is True'
