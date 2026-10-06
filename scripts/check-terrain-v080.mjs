@@ -1,4 +1,4 @@
-import {Game,LAYOUTS} from './site/engine.js';
+import {Game,LAYOUTS} from '../site/engine.js';
 let maps=0,worms=0,minWidth=Infinity,maxWidth=0;
 for(const layout of LAYOUTS)for(const count of [1,3,5,8])for(const teams of [2,4])for(let seed=1;seed<=10;seed++){
   const names=Array.from({length:teams},(_,i)=>'T'+i);
