@@ -1,0 +1,34 @@
+name: LOMBRIX terrain 0.8 acceptance
+on:
+  push:
+    branches: [terrain/playable-v080]
+permissions:
+  contents: write
+concurrency:
+  group: lombrix-terrain-v080
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply isolated terrain migration
+        run: python3 scripts/apply-terrain-v080.py
+      - name: Existing regressions
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test
+      - name: Stress 800 procedural maps
+        run: node scripts/check-terrain-v080.mjs
+      - name: Preserve validated source on review branch
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site/engine.js
+          git diff --cached --quiet || git commit -m 'Make procedural terrains wider and spawn-safe'
+          git pull --rebase origin terrain/playable-v080
+          git push origin HEAD:terrain/playable-v080
