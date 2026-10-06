@@ -1,6 +1,6 @@
 /** Simulation partagée. Aucun DOM et aucune dépendance. Le serveur décide en ligne. */
 export const WORLD = { w: 1600, h: 900, water: 825 };
-export const VERSION = '0.7.0';
+export const VERSION = '0.8.0';
 export const THEMES = [
   { id:'lagoon', name:'Les îles du grabuge', short:'Lagon pirate', tagline:'Palmiers, coffres et mauvaises intentions.', sky:['#0c3152','#64ccdd'], dirt:['#d8914f','#633c45'], top:'#e8dc9a', water:'#22b8c5', accent:'#77ffe0', gravity:1, icon:'◈' },
   { id:'candy', name:'Sucre & représailles', short:'Confiserie', tagline:'Un peu de douceur. Beaucoup de cratères.', sky:['#51396d','#f5a3b2'], dirt:['#b26d94','#633554'], top:'#fff0d7', water:'#c564ba', accent:'#ffd289', gravity:0.88, icon:'✿' },
@@ -56,9 +56,9 @@ export const PACES = {
 export function worldFor(options={},teamCount=2){
   if(options.generation===2||options.generation===3)return {...WORLD};
   const total=clamp(Number(options.worms)||3,1,8)*clamp(teamCount,2,4);
-  const automatic=Math.round(clamp(1240+60*total,1360,3200)/80)*80;
+  const automatic=Math.round(clamp(1500+85*total,1760,3200)/80)*80;
   const fixed=Number(options.worldWidth);
-  const w=options.sizeMode==='code'&&Number.isInteger(fixed)&&fixed>=1360&&fixed<=3200&&fixed%80===0?fixed:automatic;
+  const w=options.sizeMode==='code'&&Number.isInteger(fixed)&&fixed>=1760&&fixed<=3200&&fixed%80===0?fixed:automatic;
   return {w,h:900,water:825};
 }
 export function levelCode(o){
@@ -68,7 +68,7 @@ export function levelCode(o){
 export function parseLevelCode(text){
  const m=/^LX([34]):([a-z]+):([a-z]+):(\d{1,10})(?::(\d{4}))?$/i.exec(String(text).trim());
  if(!m||!THEMES.some(t=>t.id===m[2].toLowerCase())||!LAYOUTS.some(t=>t.id===m[3].toLowerCase())||+m[4]>4294967295||
-   (m[1]==='3'&&m[5])||(m[1]==='4'&&(!m[5]||+m[5]<1360||+m[5]>3200||+m[5]%80)))
+   (m[1]==='3'&&m[5])||(m[1]==='4'&&(!m[5]||+m[5]<1760||+m[5]>3200||+m[5]%80)))
    throw new Error('Code terrain invalide. Exemple : LX4:jungle:skylands:12345:1600');
  return {theme:m[2].toLowerCase(),layout:m[3].toLowerCase(),seed:+m[4],generation:+m[1],
    sizeMode:m[1]==='4'?'code':'auto',worldWidth:m[5]?+m[5]:1600};
@@ -232,17 +232,33 @@ export class Terrain {
     const packed=[];for(const p of this.spawnSites())if(packed.every(q=>Math.hypot(q.x-p.x,q.y-p.y)>=38))packed.push(p);
     if(packed.length<40)for(let i=0;i<8;i++)isle(115+i*195,250+(i%2)*40+(r()-.5)*14,65,38);
   }
-  /** Emplacements candidats : dégagement, pente et hauteur sûrs avant placement. */
+  /** Emplacements candidats : une vraie zone jouable, pas seulement la place du corps.
+   *  Le ver doit pouvoir se tenir debout, sauter et marcher de part et d'autre sans
+   *  heurter immédiatement une voûte, une anfractuosité ou une plateforme suspendue. */
   spawnSites(water=this.world.water) {
     const sites=[];
-    for(let x=34;x<this.world.w-34;x+=4)for(let y=135;y<water-44;y++){
-      if(!this.solid(x,y)||!this.solid(x,y+1)||!this.solid(x,y+4)||this.solid(x,y-1)||this.solid(x,y-32))continue;
-      if(Math.abs(this.surface(x-9,y-11)-y)>10||Math.abs(this.surface(x+9,y-11)-y)>10)continue;
-      if(this.solid(x-10,y-18)||this.solid(x+10,y-18))continue;
-      let clear=true;for(let h=2;h<32;h++)if(this.solid(x,y-h)){clear=false;break;}if(!clear)continue;
+    for(let x=52;x<this.world.w-52;x+=4)for(let y=135;y<water-44;y++){
+      if(!this.solid(x,y)||!this.solid(x,y+1)||!this.solid(x,y+4)||this.solid(x,y-1))continue;
+      let clear=true;
+      for(let dx=-22;dx<=22&&clear;dx+=11)for(let h=2;h<=96;h+=3)if(this.solid(x+dx,y-h)){clear=false;break;}
+      if(!clear)continue;
+      const left=this.surface(x-28,y-18),right=this.surface(x+28,y-18);
+      if(Math.abs(left-y)>14||Math.abs(right-y)>14)continue;
+      if(this.solid(x-30,y-18)||this.solid(x+30,y-18)||this.solid(x-30,y-34)||this.solid(x+30,y-34))continue;
       sites.push({x,y:y-1});
     }
     return sites;
+  }
+  /** Dernier garde-fou après choix du spawn : libère le volume de saut et crée
+   *  un petit palier marchable. Ne touche qu'au terrain initial, jamais aux cratères. */
+  makeSpawnPlayable(x,y){
+    const w=this.world.w,h=this.world.h;
+    for(let yy=Math.max(0,Math.floor(y-104));yy<Math.max(0,Math.floor(y));yy++){
+      const a=yy*w+Math.max(0,Math.floor(x-25)),b=yy*w+Math.min(w,Math.ceil(x+26));this.data.fill(0,a,b);
+    }
+    for(let yy=Math.max(0,Math.floor(y));yy<Math.min(h,Math.floor(y+10));yy++){
+      const a=yy*w+Math.max(0,Math.floor(x-34)),b=yy*w+Math.min(w,Math.ceil(x+35));this.data.fill(1,a,b);
+    }
   }
   solid(x,y) { x=Math.floor(x); y=Math.floor(y); return x>=0&&x<this.world.w&&y>=0&&y<this.world.h&&this.data[y*this.world.w+x]===1; }
   surface(x,start=0) { x=clamp(Math.floor(x),0,this.world.w-1); for(let y=Math.max(0,Math.floor(start));y<this.world.h;y++)if(this.data[y*this.world.w+x])return y;return this.world.h; }
@@ -258,7 +274,7 @@ export function cleanOptions(o={}) {
   if(!o||typeof o!=='object'||Array.isArray(o))o={};
   return { theme:o.theme==='random'||THEMES.some(t=>t.id===o.theme)?o.theme:'lagoon',
     layout:LAYOUTS.some(t=>t.id===o.layout)?o.layout:'auto',generation:[2,3].includes(o.generation)?o.generation:4,
-    sizeMode:o.sizeMode==='code'?'code':'auto',worldWidth:Number.isInteger(+o.worldWidth)&&+o.worldWidth>=1360&&+o.worldWidth<=3200&&+o.worldWidth%80===0?+o.worldWidth:undefined,
+    sizeMode:o.sizeMode==='code'?'code':'auto',worldWidth:Number.isInteger(+o.worldWidth)&&+o.worldWidth>=1760&&+o.worldWidth<=3200&&+o.worldWidth%80===0?+o.worldWidth:undefined,
     pace:Object.hasOwn(PACES,o.pace)?o.pace:'lively',
     worms:Number.isInteger(+o.worms)&&+o.worms>=1&&+o.worms<=8?+o.worms:3,
     hp:[75,100,150,200].includes(+o.hp)?+o.hp:100,
@@ -277,8 +293,8 @@ export class Game {
       const n=this.teams.length,slot=team*this.options.worms+i,total=n*this.options.worms;
       const W=this.world.w,span=W*.365;
       const target=n===2?(team===0?W*.07+i*(span/Math.max(1,this.options.worms-1)):W*.93-i*(span/Math.max(1,this.options.worms-1))):W*.05+slot*(W*.90/Math.max(1,total-1));
-      const minSpace=this.options.generation===4?58:36;
-      let valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=minSpace));
+      const minSpace=this.options.generation===4?72:36;
+      let valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=minSpace&&Math.abs(w.x-p.x)>=72));
       if(!valid.length&&this.options.sizeMode==='code')valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=32));
       const preferredY=[485,310,650,425][(i+this.seed%4)%4];
       valid.sort((a,b)=>(Math.abs(a.x-target)+Math.abs(a.y-preferredY)*.24)-(Math.abs(b.x-target)+Math.abs(b.y-preferredY)*.24)||a.y-b.y);
@@ -286,6 +302,7 @@ export class Game {
       // Le générateur possède normalement assez de places ; garde-fou pour cartes extrêmes.
       if(!p){const x=50+slot*((this.world.w-100)/Math.max(1,total-1)),y=110;this.terrain.circle(x,y-25,30);this.terrain.rect(x-20,y+1,40,22);p={x,y};}
       const {x,y}=p;
+      this.terrain.makeSpawnPlayable(x,y);
       this.worms.push({id:this.worms.length,team,name:labels[team][i],x,y,vx:0,vy:0,hp:this.options.hp,maxHp:this.options.hp,dir:x<this.world.w/2?1:-1,grounded:true,input:0,inputTTL:0,energy:230,frozen:0,fallFrom:0});
     }
     this.contactTimes={};this.nextTurn(true);
