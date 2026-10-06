@@ -243,10 +243,18 @@ export class Terrain {
       let clear=true;
       for(let dx=-22;dx<=22&&clear;dx+=11)for(let h=2;h<=96;h+=3)if(this.solid(x+dx,y-h)){clear=false;break;}
       if(!clear)continue;
-      const left=this.surface(x-28,y-18),right=this.surface(x+28,y-18);
-      if(Math.abs(left-y)>14||Math.abs(right-y)>14)continue;
-      if(this.solid(x-30,y-18)||this.solid(x+30,y-18)||this.solid(x-30,y-34)||this.solid(x+30,y-34))continue;
-      sites.push({x,y:y-1});
+      const corridor=dir=>{
+        for(let d=18;d<=92;d+=6){
+          const px=x+dir*d,ground=this.surface(px,y-20);
+          if(Math.abs(ground-y)>16)return false;
+          for(let h=8;h<=54;h+=8)if(this.solid(px,y-h))return false;
+        }
+        return true;
+      };
+      const left=corridor(-1),right=corridor(1);
+      // Au moins un vrai couloir de marche; les deux côtés sont fortement préférés.
+      if(!left&&!right)continue;
+      sites.push({x,y:y-1,leftOpen:left,rightOpen:right,mobility:(left?1:0)+(right?1:0)});
     }
     return sites;
   }
@@ -254,11 +262,13 @@ export class Terrain {
    *  un petit palier marchable. Ne touche qu'au terrain initial, jamais aux cratères. */
   makeSpawnPlayable(x,y){
     const w=this.world.w,h=this.world.h;
+    // A 170-unit launch pad prevents a pillar or floating ledge from sitting directly
+    // in front of a newly spawned worm. This is intentionally wider than its body.
     for(let yy=Math.max(0,Math.floor(y-104));yy<Math.max(0,Math.floor(y));yy++){
-      const a=yy*w+Math.max(0,Math.floor(x-25)),b=yy*w+Math.min(w,Math.ceil(x+26));this.data.fill(0,a,b);
+      const a=yy*w+Math.max(0,Math.floor(x-86)),b=yy*w+Math.min(w,Math.ceil(x+87));this.data.fill(0,a,b);
     }
     for(let yy=Math.max(0,Math.floor(y));yy<Math.min(h,Math.floor(y+10));yy++){
-      const a=yy*w+Math.max(0,Math.floor(x-34)),b=yy*w+Math.min(w,Math.ceil(x+35));this.data.fill(1,a,b);
+      const a=yy*w+Math.max(0,Math.floor(x-86)),b=yy*w+Math.min(w,Math.ceil(x+87));this.data.fill(1,a,b);
     }
   }
   solid(x,y) { x=Math.floor(x); y=Math.floor(y); return x>=0&&x<this.world.w&&y>=0&&y<this.world.h&&this.data[y*this.world.w+x]===1; }
@@ -298,7 +308,7 @@ export class Game {
       let valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=minSpace&&Math.abs(w.x-p.x)>=72));
       if(!valid.length&&this.options.sizeMode==='code')valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=32));
       const preferredY=[485,310,650,425][(i+this.seed%4)%4];
-      valid.sort((a,b)=>(Math.abs(a.x-target)+Math.abs(a.y-preferredY)*.24)-(Math.abs(b.x-target)+Math.abs(b.y-preferredY)*.24)||a.y-b.y);
+      valid.sort((a,b)=>{const sa=(2-(a.mobility||0))*180+Math.abs(a.x-target)+Math.abs(a.y-preferredY)*.24,sb=(2-(b.mobility||0))*180+Math.abs(b.x-target)+Math.abs(b.y-preferredY)*.24;return sa-sb||a.y-b.y;});
       let p=valid[0];
       // Le générateur possède normalement assez de places ; garde-fou pour cartes extrêmes.
       if(!p){const x=50+slot*((this.world.w-100)/Math.max(1,total-1)),y=110;this.terrain.circle(x,y-25,30);this.terrain.rect(x-20,y+1,40,22);p={x,y};}
