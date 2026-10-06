@@ -1,0 +1,30 @@
+name: LOMBRIX open landscapes 0.8.1
+on:
+  push:
+    branches: [terrain/open-landscapes-v081]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Apply landscape migration
+        run: python3 scripts/apply-open-landscapes-v081.py
+      - name: Existing regressions
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm test
+      - name: Measure 300 generated landscapes
+        run: node scripts/check-open-landscapes-v081.mjs
+      - name: Preserve only validated engine
+        run: |
+          git config user.name 'LOMBRIX build'
+          git config user.email 'lombrix-build@users.noreply.github.com'
+          git add site/engine.js
+          git diff --cached --quiet || git commit -m 'Open up procedural landscapes for movement'
+          git pull --rebase origin terrain/open-landscapes-v081
+          git push origin HEAD:terrain/open-landscapes-v081
