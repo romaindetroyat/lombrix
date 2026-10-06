@@ -8,6 +8,8 @@ repls=[
 ("fixed>=1360&&fixed<=3200&&fixed%80===0","fixed>=1760&&fixed<=3200&&fixed%80===0"),
 ("+m[5]<1360||+m[5]>3200","+m[5]<1760||+m[5]>3200"),
 ("+o.worldWidth>=1360&&+o.worldWidth<=3200","+o.worldWidth>=1760&&+o.worldWidth<=3200"),
+("const minSpace=this.options.generation===4?58:36;","const minSpace=this.options.generation===4?72:36;"),
+("let valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=minSpace));","let valid=sites.filter(p=>this.worms.every(w=>Math.hypot(w.x-p.x,w.y-p.y)>=minSpace&&Math.abs(w.x-p.x)>=72));"),
 ]
 for old,new in repls:
     if old not in s: raise SystemExit("missing: "+old)
