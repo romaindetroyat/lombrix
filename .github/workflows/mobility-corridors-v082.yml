@@ -1,0 +1,27 @@
+name: LOMBRIX mobility corridors 0.8.2
+on:
+  push:
+    branches: [terrain/mobility-corridors-v082]
+permissions: {contents: write}
+jobs:
+ verify:
+  runs-on: ubuntu-latest
+  timeout-minutes: 12
+  steps:
+   - uses: actions/checkout@v4
+   - uses: actions/setup-node@v4
+     with: {node-version: '22'}
+   - run: python3 scripts/apply-mobility-corridors-v082.py
+   - run: |
+       npm ci --ignore-scripts --no-audit --no-fund
+       npm test
+   - name: Stress 1050 maps with fortress emphasis
+     run: node scripts/check-mobility-corridors-v082.mjs
+   - name: Preserve validated engine
+     run: |
+       git config user.name 'LOMBRIX build'
+       git config user.email 'lombrix-build@users.noreply.github.com'
+       git add site/engine.js
+       git diff --cached --quiet || git commit -m 'Guarantee lateral mobility around every spawn'
+       git pull --rebase origin terrain/mobility-corridors-v082
+       git push origin HEAD:terrain/mobility-corridors-v082
