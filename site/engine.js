@@ -444,8 +444,13 @@ export class Game {
       if(w.id===this.activeId&&(this.phase==='aim'||this.retreat>0)&&w.energy>0){move=w.input*87*dt;w.energy=Math.max(0,w.energy-Math.abs(move));}
       w.driveVX=dt>0?move/dt:0;
       const requested=move+w.vx*dt;
-      if(this.displace(w,requested,0,true)<.95){w.vx*=.15;w.driveVX=0;}
-      w.vx*=Math.pow(w.grounded?.008:.55,dt);
+      const moved=this.displace(w,requested,0,true);
+      if(moved<.95){w.vx*=.08;w.driveVX=0;}
+      // Tiny residual wall velocity is numerical noise, not gameplay. Killing it
+      // prevents alternating sub-pixel poses and lets the turn settle immediately.
+      if(moved<.25&&Math.abs(w.vx)<34)w.vx=0;
+      w.vx*=Math.pow(w.grounded?.004:.48,dt);
+      if(w.grounded&&Math.abs(w.vx)<3)w.vx=0;
       const support=this.worms.find(z=>z.id===w.supportId&&z.hp>0&&z.y>w.y&&Math.abs(z.x-w.x)<20&&Math.abs(z.y-w.y-28)<3);
       if((!this.onFloor(w)&&!support)||w.vy<0){
         w.grounded=false;w.supportId=null;w.vy=Math.min(1300,w.vy+gravity*dt);let ny=w.y+w.vy*dt;
@@ -494,7 +499,17 @@ export class Game {
       if(!this.onFloor(a)&&a.supportId==null)a.grounded=false;
       if(!this.onFloor(b)&&b.supportId==null)b.grounded=false;
     }
-    for(const w of bodies){w.vx=clamp(w.vx,-1200,1200);w.vy=clamp(w.vy,-1200,1300);}
+    for(const w of bodies){
+      w.vx=clamp(w.vx,-1200,1200);w.vy=clamp(w.vy,-1200,1300);
+      if(w.grounded&&Math.abs(w.vx)<3)w.vx=0;
+      if(w.grounded&&Math.abs(w.vy)<3)w.vy=0;
+    }
+  }
+  wormActuallyMoving(w){
+    if(w.hp<=0)return false;
+    // A grounded body pressed against terrain with tiny residual velocity is asleep.
+    if(w.grounded&&Math.abs(w.vx)<6&&Math.abs(w.vy)<6)return false;
+    return !w.grounded||Math.abs(w.vx)>=6||Math.abs(w.vy)>=6;
   }
   step(dt,realDt) {
     if(this.phase==='over')return;this.elapsed+=realDt;this.flightAge=this.phase==='flight'?(this.flightAge||0)+realDt:0;this.retreat=Math.max(0,this.retreat-realDt);
@@ -524,7 +539,16 @@ export class Game {
     for(const m of this.mines){if(m.dead)continue;m.arm-=realDt;if(!this.terrain.solid(m.x,m.y+5)){m.vy+=gravity*dt;m.y+=m.vy*dt;if(this.terrain.solid(m.x,m.y+5)){while(this.terrain.solid(m.x,m.y+5)&&m.y>0)m.y--;m.vy=0;}}else m.vy=0;if(m.y>this.water){m.dead=true;continue;}if(m.arm<=0&&m.trigger===null&&this.worms.some(w=>w.hp>0&&Math.hypot(w.x-m.x,w.y-10-m.y)<46)){m.trigger=.65;this.emit('beep',{x:m.x,y:m.y});}if(m.trigger!==null){m.trigger-=realDt;if(m.trigger<=0){m.dead=true;this.explode({...m,weapon:'mine'});}}}
     this.mines=this.mines.filter(m=>!m.dead);
     if(this.phase==='aim'){this.time-=realDt;if(this.time<=0||this.active()?.hp<=0){this.phase='flight';this.settle=this.pace.settle;}}
-    if(this.phase==='flight'&&!this.projectiles.length&&this.retreat<=0){const moving=this.worms.some(w=>w.hp>0&&(!w.grounded||Math.abs(w.vx)>10));const ticking=this.mines.some(m=>m.trigger!==null);if(!moving&&!ticking)this.settle-=realDt;if(this.settle<=0||this.flightAge>18)this.nextTurn();}
+    if(this.phase==='flight'&&!this.projectiles.length&&this.retreat<=0){
+      const moving=this.worms.some(w=>this.wormActuallyMoving(w)),ticking=this.mines.some(m=>m.trigger!==null);
+      if(!moving&&!ticking)this.settle-=realDt;
+      else if(this.flightAge>2.8&&!ticking){
+        // Do not hold the match hostage for a body rubbing indefinitely on a wall.
+        const meaningful=this.worms.some(w=>w.hp>0&&(Math.abs(w.vx)>22||Math.abs(w.vy)>22));
+        if(!meaningful)this.settle-=realDt*2.5;
+      }
+      if(this.settle<=0||this.flightAge>7)this.nextTurn();
+    }
     if(!this.projectiles.length&&this.phase!=='over')this.checkWinner();
   }
   exportState() {
