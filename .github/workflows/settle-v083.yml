@@ -1,0 +1,27 @@
+name: LOMBRIX settle 0.8.3
+on:
+ push:
+  branches: [physics/settle-v083]
+permissions: {contents: write}
+jobs:
+ verify:
+  runs-on: ubuntu-latest
+  timeout-minutes: 10
+  steps:
+   - uses: actions/checkout@v4
+   - uses: actions/setup-node@v4
+     with: {node-version: '22'}
+   - run: python3 scripts/apply-settle-v083.py
+   - run: |
+       npm ci --ignore-scripts --no-audit --no-fund
+       npm test
+   - name: Wall jitter and settling stress
+     run: node scripts/check-settle-v083.mjs
+   - name: Preserve validated engine
+     run: |
+       git config user.name 'LOMBRIX build'
+       git config user.email 'lombrix-build@users.noreply.github.com'
+       git add site/engine.js
+       git diff --cached --quiet || git commit -m 'Stop wall jitter and accelerate settled turns'
+       git pull --rebase origin physics/settle-v083
+       git push origin HEAD:physics/settle-v083
